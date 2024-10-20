@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,10 +17,14 @@
     </head>
 
     <body class="bg-gray-100 min-h-screen flex flex-col">  
-        @include('layouts.components.navbar')
+        @if ($showNavbar ?? true)
+            @include('layouts.components.navbar')
+        @endif            
             <main class="flex-grow">
                 @yield('content')
             </main> 
-        @include('layouts.components.footer')
+        @if ($showFooter ?? true)
+            @include('layouts.components.footer')
+        @endif    
     </body>
 </html>
