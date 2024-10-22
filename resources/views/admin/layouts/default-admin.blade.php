@@ -16,18 +16,20 @@
 
     </head>
 
-    <body class="bg-gray-100 min-h-screen flex flex-col">  
-        <!-- Navbar -->
-        @if ($showNavbar ?? true)
-            @include('layouts.components.navbar')
-        @endif 
-        <!-- Conteudo -->           
-        <main class="flex-grow">
+    <body class="bg-gray-100">  
+        <!-- Sidebar -->
+        @if ($showSidebar ?? true)
+            @include('admin.layouts.components.sidebar')
+        @endif   
+        <!-- Conteudo -->
+        <main class="ms-7 mt-[80px] md:m-10 md:px-10 md:ml-64">
+            <!-- Navbar -->
+            @if ($showNavbar ?? true)
+                @include('admin.layouts.components.navbar')
+            @endif 
+            
             @yield('content')
-        </main> 
-        <!-- Footer -->
-        @if ($showFooter ?? true)
-            @include('layouts.components.footer')
-        @endif    
+        </main>    
     </body>
 </html>
+
