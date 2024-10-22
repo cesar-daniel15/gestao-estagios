@@ -11,7 +11,7 @@
                 <img src="{{ asset('images/white_icon.png') }}" class="h-20 my-5" alt="Gestão de Estágios Logo" />
                 <div class="text-2xl font-extrabold text-white my-5">Ainda não tem conta?</div>
                 <p class="text-white text-base mb-8 text-center">Crie agora mesmo a sua conta</p>
-                <div class="mt-10">
+                <div class="mt-5">
                     <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-6 transition-transform transform hover:scale-105 duration-300 ease-in-out"><a href="{{ url('/register') }}">Registar</a></button>
                 </div>
             </div>
@@ -20,6 +20,7 @@
             <div class="bg-white rounded-xl md:rounded-r-xl p-8 w-full md:w-1/2 flex flex-col">
                 <div class="text-xl font-extrabold text-center text-sky-400 mb-2 mt-10">Entrar na minha conta</div>
                 <p class="text-gray-400 font-bold text-base text-center mb-10">Preencha os seus dados</p>
+                
                 <form>
                     <!-- Email -->
                     <div class="mb-8 mt-5">
@@ -46,12 +47,16 @@
                     </div>
                     <!-- Submit --> 
                     <div class="flex justify-center">
-                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-10 transition-transform transform hover:scale-105 duration-300 ease-in-out" type="submit">Entrar</button>
+                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-5 transition-transform transform hover:scale-105 duration-300 ease-in-out" type="submit">Entrar</button>
                     </div>
                     <div class="md:hidden flex justify-center">
                         <a href="{{ url('/register') }}" class="text-gray-400 text-md text-base"><u>Ainda não tem conta?</u></a>
                     </div>
+                    <div class="flex justify-center">
+                        <a href="{{ url('/forgot-password') }}" class="text-gray-400 text-md text-base"><u>Não se lembra da sua password?</u></a>
+                    </div>
                 </form>
+
             </div>
         </div>
     </div>

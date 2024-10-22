@@ -1,6 +1,6 @@
 <!-- Button Mobile -->
-<button id="menu-toggle" type="button" class="fixed top-5 left-5 inline-flex items-center w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:text-sky-400 z-50" aria-controls="navbar-default" aria-expanded="false">
-   <svg class="menu-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+<button id="menu-toggle" type="button" class="fixed top-5 left-5 inline-flex items-center w-10 h-10 justify-center text-gray-500 rounded-lg md:hidden hover:text-sky-400 z-50" aria-controls="navbar-default" aria-expanded="false">
+   <svg class="menu-icon w-5 h-5 transition-colors duration-300 ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
       <path class="top transition-transform duration-300 ease-in-out" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15"/>
       <path class="middle transition-opacity duration-300 ease-in-out" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 7h15"/>
       <path class="bottom transition-transform duration-300 ease-in-out" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 13h15"/>
@@ -78,14 +78,6 @@
 
       button.addEventListener('click', function () {
          sidebar.classList.toggle('-translate-x-full'); 
-
-         iconTop.classList.toggle('translate-y-[12px]');
-         iconTop.classList.toggle('rotate-45');
-         
-         iconMiddle.classList.toggle('opacity-0');
-         
-         iconBottom.classList.toggle('-translate-y-[12px]');
-         iconBottom.classList.toggle('-rotate-45');
       });
    });
 </script>
