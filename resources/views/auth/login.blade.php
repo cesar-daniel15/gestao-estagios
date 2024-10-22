@@ -5,6 +5,7 @@
 @section('content')
     <div class="flex justify-center items-center min-h-screen drop-shadow-2xl">
         <div class="flex w-full max-w-4xl bg-white rounded-xl shadow-lg mx-4"> 
+
             <!-- Left Side -->
             <div class="bg-sky-400 rounded-l-xl p-8 w-1/2 hidden md:flex flex-col justify-center items-center">
                 <img src="{{ asset('images/white_icon.png') }}" class="h-20 my-5" alt="Gestão de Estágios Logo" />

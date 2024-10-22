@@ -66,8 +66,6 @@
         </div>
     </section>
 
-
-
     <section id="section3">
         <!-- Block 3 -->
         <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-5">

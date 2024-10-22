@@ -10,7 +10,7 @@
             </svg>
         </button>
         <div class="fixed top-20 mt-5 left-0 right-0 z-50 md:static md:top-0 md:mt-0 md:left-0 md:right-0 md:z-0 hidden w-full md:block md:w-auto bg-sky-400 md:bg-gray-100 rounded-xl" id="navbar-default">
-            <ul class="flex flex-col md:flex-row flex-nowrap items-center md:space-x-8 p-4 mt-4">
+            <ul class="flex flex-col md:flex-row flex-nowrap items-center md:space-x-8 p-4 mt-4 ">
                 @yield('navbar-items')
             </ul>
         </div>
@@ -32,7 +32,7 @@
 
         navItems.forEach(item => {
             item.addEventListener('click', function () {
-                if (window.innerWidth < 768) { // Mobile
+                if (window.innerWidth < 768) { 
                     menu.classList.add('hidden'); 
                     menu.classList.remove('md:flex'); 
                 }
