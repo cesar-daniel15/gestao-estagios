@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('units_curriculars', function (Blueprint $table) {
             $table->id(); // Chave primária
-            $table->foreignId('institution_id')->constrained(); // Chave estrangeira para 'institutions'
             $table->foreignId('course_id')->constrained(); // Chave estrangeira para 'courses'
             $table->string('name'); // Nome da unidade curricular
             $table->string('acronym'); // Acrônimo da unidade curricular
+            $table->integer('ects'); // Número de ECTS
             $table->timestamps(); // Gera created_at e updated_at automaticamente
         });
     }

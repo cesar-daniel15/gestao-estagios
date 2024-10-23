@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // Chave primária
             $table->string('name'); // Nome da empresa
             $table->string('email')->unique(); // Email único
+            $table->string('password'); // Adicionando a senha
             $table->string('phone'); // Telefone
             $table->string('picture')->nullable(); // Imagem (pode ser nulo)
             $table->string('industry'); // Indústria
