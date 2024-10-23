@@ -26,7 +26,7 @@
             <p class="text-white max-w-2xl text-center">
                 <span class="text-base md:font-semibold">Gestão de Estágios</span> é uma aplicação web que simplifica o processo de atribuição, acompanhamento e avaliação de estágios. Facilita a interação entre alunos, coordenadores, empresas e responsáveis, garantindo transparência e acesso à informação em tempo real, reduzindo o uso de papel e automatizando tarefas essenciais.
             </p>
-            <button class="bg-white font-bold text-sky-400 p-2 rounded-xl px-10 mt-5 transition-transform transform hover:scale-105 duration-300 ease-in-out"><a href="{{ url('/login') }}">Começar Agora</a></button>
+            <a href="{{ url('/login') }}" class="bg-white font-bold text-sky-400 p-2 rounded-xl px-10 mt-5 transition-transform transform hover:scale-105 duration-300 ease-in-out">Começar Agora</a>
         </div>
     </section>
 
