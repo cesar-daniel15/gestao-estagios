@@ -26,3 +26,12 @@ Route::get('/verify-acount', function () {
 Route::get('/admin', function () {
     return view('admin.dashboard');
 });
+
+Route::get('/admin/users', function () {
+    return view('admin.users');
+});
+
+Route::get('/admin/institutions', function () {
+    return view('admin.institutions');
+});
+
