@@ -32,13 +32,13 @@
 
     <section id="section2">
         <!-- Block 2 -->
-        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-5">
+        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-12">
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Tipos de Utilizadores</div>
             <p class="text-gray-400 font-bold max-w-2xl text-center mb-6 mx-auto">
                 Selecione o seu tipo de utilizador para prosseguir para o próximo passo
             </p>
             
-            <div class="flex flex-wrap justify-center md:justify-around overflow-x-auto my-10 mx-10 gap-4">
+            <div class="flex flex-wrap justify-center md:justify-around overflow-x-auto my-12 mx-10 gap-4">
                 <!-- Instituição Card -->
                 <a href="" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
                     <img src="{{ asset('images/icons/instituicao.png') }}" alt="Instituição" class="w-20 h-20 object-cover mx-auto mb-2"> 
@@ -68,7 +68,7 @@
 
     <section id="section3">
         <!-- Block 3 -->
-        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-5">
+        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-12">
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-8">Vantagens</div>
 
             <!-- Vantagem 1 -->
