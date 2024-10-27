@@ -21,3 +21,8 @@ Route::get('/forgot-password', function () {
 Route::get('/admin', function () {
     return view('admin.dashboard');
 });
+
+// Rota para a página da Instituição
+Route::get('/instituicao', function () {
+    return view('instituicao');
+});
