@@ -4,18 +4,19 @@
 
 @section('navbar-items')
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="#sobre" class="text-white md:text-gray-500 text-base font-bold">Sobre</a>
+        <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-base font-bold">Empresa</a>
     </li>
     <li class="mb-5 mt-5 md:mb-0 md:mt-0">
-        <a href="#funcionalidades" class="text-white md:text-gray-500 text-base font-bold">Principais Funcionalidades</a>
+        <a href="{{ url('/instituicao') }}" class="text-white md:text-gray-500 text-base font-bold">Instituição</a>
     </li>
     <li class="mb-5 mt-5 md:mb-0 md:mt-0">
-        <a href="#passos" class="text-white md:text-gray-500 text-base font-bold">Passos a Seguir</a>
+        <a href="{{ url('/aluno') }}" class="text-white md:text-gray-500 text-base font-bold">Aluno</a>
     </li>
     <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out mb-5 mt-5 md:mb-0 md:mt-0">
         <a href="{{ url('/login') }}" class="bg-white md:bg-sky-400 text-base font-bold md:text-white text-sky-400 p-2 rounded-xl px-10">Começar Agora</a>
     </li>
 @endsection
+
 
 @section('content')
 
