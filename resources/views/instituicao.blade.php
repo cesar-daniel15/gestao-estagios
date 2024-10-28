@@ -22,10 +22,11 @@
 <!-- Seção Sobre -->
 <section id="sobre" class="p-6 md:p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col justify-center items-center text-center">
     <div class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white mb-3 sm:mb-4 md:mb-5">Responsável da Instituição</div>
-    <p class="text-white max-w-lg sm:max-w-2xl text-sm sm:text-base md:text-lg text-center leading-relaxed px-4">
+    <p class="text-white max-w-lg sm:max-w-2xl text-sm sm:text-base md:text-lg text-justify leading-relaxed px-4">
         A nossa plataforma simplifica a gestão de estagiários, permitindo acompanhar o progresso, aprovar planos e avaliar desempenhos de forma rápida e organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
     </p>
 </section>
+
 
 <!-- Seção Principais Funcionalidades -->
 <section id="funcionalidades" class="p-6 md:p-10 bg-gray-100 flex flex-col justify-center items-center text-center">

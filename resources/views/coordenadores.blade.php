@@ -23,9 +23,9 @@
 <!-- Seção Sobre -->
 <section id="sobre">
     <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col justify-center items-center text-center">
-        <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 my-5">Responsável da Instituição</div>
+        <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 my-5">Responsável da Unidade Curricular</div>
         <p class="text-white max-w-2xl text-center">
-            A nossa plataforma simplifica a gestão de estagiários, permitindo acompanhar o progresso, aprovar planos e avaliar desempenhos de forma rápida e organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
+            O uso desta plataforma simplifica a gestão dos coordenadores, dando aos alunos a hipótese de estagiar, realizando várias tarefas,mas sempre de forma organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
         </p>
     </div>
 </section>
