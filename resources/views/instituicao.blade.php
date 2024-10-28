@@ -34,28 +34,57 @@
     <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center items-center text-center">
         <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Principais Funcionalidades</div>
 
-        <div class="flex flex-col items-center mb-6 max-w-md">
-            <div class="text-sky-400 font-extrabold text-lg">Criar Estágios</div>
-            <p class="text-gray-500">Permite às empresas registrar novas ofertas de estágio, especificando detalhes como área de atuação, duração e requisitos.</p>
-        </div>
+            <!-- Vantagem 1 -->
+            <div class="flex items-center justify-center mb-8 mt-8">
+                <!-- Ícone -->
+                <div class="flex-shrink-0">
+                    <img src="{{ asset('images/icons/pc-mobile.png') }}" alt="Ícone" class="w-12 h-12"> 
+                </div>
+                
+                <!-- Texto -->
+                <div class="ml-4 text-left">
+                    <p class="text-gray-400 font-bold">
+                        <span class="text-sky-400 font-extrabold">Controlo de Acesso:</span> Adicionar os alunos que irão realizar estágio e posteriormente atribuição de estágio.
+                    </p>
+                </div>
+            </div>
 
-        <div class="flex flex-col items-center mb-6 max-w-md">
-            <div class="text-sky-400 font-extrabold text-lg">Confirmar a Assiduidade do Aluno</div>
-            <p class="text-gray-500">A empresa pode verificar e aprovar os registros de assiduidade submetidos pelos alunos durante o estágio.</p>
-        </div>
+            <!-- Vantagem 2 -->
+            <div class="flex items-center justify-center mb-8">
+                <!-- Ícone -->
+                <div class="flex-shrink-0">
+                    <img src="{{ asset('images/icons/pc-mobile.png') }}" alt="Ícone" class="w-12 h-12"> 
+                </div>
+                
+                <!-- Texto -->
+                <div class="ml-4 text-left">
+                    <p class="text-gray-400 font-bold">
+                        <span class="text-sky-400 font-extrabold">Notificação de tarefas:</span> Simplifica o controlo de tarefas a realizar pelos alunos.
+                </div>
+            </div>
 
-        <div class="flex flex-col items-center mb-6 max-w-md">
-            <div class="text-sky-400 font-extrabold text-lg">Efetuar a Avaliação do Aluno Após o Estágio</div>
-            <p class="text-gray-500">No final do estágio, o responsável pode submeter a avaliação final do desempenho do aluno, com base no trabalho realizado.</p>
+            <!-- Vantagem 3 -->
+            <div class="flex items-center justify-center mb-8">
+                <!-- Ícone -->
+                <div class="flex-shrink-0">
+                    <img src="{{ asset('images/icons/ficheiro.png') }}" alt="Ícone" class="w-12 h-12"> 
+                </div>
+                
+                <!-- Texto -->
+                <div class="ml-4 text-left">
+                    <p class="text-gray-400 font-bold">
+                        <span class="text-sky-400 font-extrabold">Exportação da documentação:</span> Exportação de diferentes tipos de documentação relativa ao aluno durante o estágio.
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 <!-- Seção Passos a Seguir -->
 <section id="passos" class="scroll-mt-24">
     <div class="w-full h-auto p-10 bg-white flex flex-col justify-center items-center text-center">
         <!-- Título da Seção -->
-        <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-10">Passos a Seguir</div>
+        <div class="text-2xl md:text-3xl font-bold text-sky-400 mb-10">Passos a Seguir</div>
         
         <!-- Grid para organizar os itens em duas colunas com espaçamento aumentado -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-20 gap-11 max-w-3xl">
@@ -70,31 +99,31 @@
             <!-- Passo 2 -->
             <div class="flex items-center space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">2</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Criar uma Oferta de Estágio</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Registar Alunos no Sistema</div>
             </div>
 
             <!-- Passo 3 -->
             <div class="flex items-center space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">3</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Aprovar Assiduidade</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Concordar com Plano de Estágio</div>
             </div>
 
             <!-- Passo 4 -->
             <div class="flex items-center space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">4</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Anexar Plano de Estágio</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left"> Atribuir Estágio a Aluno</div>
             </div>
 
             <!-- Passo 5 -->
             <div class="flex items-center space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">5</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Fazer Avaliação Final</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Enviar Alertas</div>
             </div>
 
             <!-- Passo 6 -->
             <div class="flex items-center space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">6</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Encerrar Estágio</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Exportas Documentos</div>
             </div>
         </div>
     </div>
