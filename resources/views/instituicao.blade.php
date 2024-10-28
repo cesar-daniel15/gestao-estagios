@@ -44,38 +44,10 @@
                 <!-- Texto -->
                 <div class="ml-4 text-left">
                     <p class="text-gray-400 font-bold">
-                        <span class="text-sky-400 font-extrabold">Controlo de Acesso:</span> Adicionar os alunos que irão realizar estágio e posteriormente atribuição de estágio.
+                        <span class="text-sky-400 font-extrabold">Nota final:</span> Atribuição da nota final do aluno após a realização do estágio.
                     </p>
                 </div>
             </div>
-
-            <!-- Vantagem 2 -->
-            <div class="flex items-center justify-center mb-8">
-                <!-- Ícone -->
-                <div class="flex-shrink-0">
-                    <img src="{{ asset('images/icons/pc-mobile.png') }}" alt="Ícone" class="w-12 h-12"> 
-                </div>
-                
-                <!-- Texto -->
-                <div class="ml-4 text-left">
-                    <p class="text-gray-400 font-bold">
-                        <span class="text-sky-400 font-extrabold">Notificação de tarefas:</span> Simplifica o controlo de tarefas a realizar pelos alunos.
-                </div>
-            </div>
-
-            <!-- Vantagem 3 -->
-            <div class="flex items-center justify-center mb-8">
-                <!-- Ícone -->
-                <div class="flex-shrink-0">
-                    <img src="{{ asset('images/icons/ficheiro.png') }}" alt="Ícone" class="w-12 h-12"> 
-                </div>
-                
-                <!-- Texto -->
-                <div class="ml-4 text-left">
-                    <p class="text-gray-400 font-bold">
-                        <span class="text-sky-400 font-extrabold">Exportação da documentação:</span> Exportação de diferentes tipos de documentação relativa ao aluno durante o estágio.
-                    </p>
-                </div>
             </div>
         </div>
     </section>
@@ -99,31 +71,7 @@
             <!-- Passo 2 -->
             <div class="flex items-center space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">2</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Registar Alunos no Sistema</div>
-            </div>
-
-            <!-- Passo 3 -->
-            <div class="flex items-center space-x-3">
-                <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">3</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Concordar com Plano de Estágio</div>
-            </div>
-
-            <!-- Passo 4 -->
-            <div class="flex items-center space-x-3">
-                <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">4</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left"> Atribuir Estágio a Aluno</div>
-            </div>
-
-            <!-- Passo 5 -->
-            <div class="flex items-center space-x-3">
-                <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">5</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Enviar Alertas</div>
-            </div>
-
-            <!-- Passo 6 -->
-            <div class="flex items-center space-x-3">
-                <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-10 h-10 rounded-full text-center">6</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Exportas Documentos</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left">Atribuir Nota Final</div>
             </div>
         </div>
     </div>
