@@ -46,10 +46,11 @@
                 </a>
 
                 <!-- Empresa Card -->
-                <a  href="" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer"> 
+                <a href="{{ url('/empresa') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer"> 
                     <img src="{{ asset('images/icons/empresa.png') }}" alt="Empresa" class="w-20 h-20 object-cover mx-auto mb-2"> 
                     <div class="font-bold text-sky-400">Empresa</div>
                 </a>
+
 
                 <!-- Coordenadores Card -->
                 <a href="" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">

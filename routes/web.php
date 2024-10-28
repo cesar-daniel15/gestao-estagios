@@ -26,3 +26,8 @@ Route::get('/admin', function () {
 Route::get('/instituicao', function () {
     return view('instituicao');
 });
+
+// Nova rota para a página da Empresa
+Route::get('/empresa', function () {
+    return view('empresa');
+});
