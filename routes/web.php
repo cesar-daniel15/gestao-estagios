@@ -31,3 +31,13 @@ Route::get('/instituicao', function () {
 Route::get('/empresa', function () {
     return view('empresa');
 });
+
+// Nova rota para a página da Empresa
+Route::get('/coordenadores', function () {
+    return view('coordenadores');
+});
+
+// Nova rota para a página da Empresa
+Route::get('/aluno', function () {
+    return view('aluno');
+});

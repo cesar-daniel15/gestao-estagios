@@ -53,13 +53,13 @@
 
 
                 <!-- Coordenadores Card -->
-                <a href="" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
+                <a href="{{ url('/coordenadores') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
                     <img src="{{ asset('images/icons/coordenadores.png') }}" alt="Coordenadores" class="w-20 h-20 object-cover mx-auto mb-2">
                     <div class="text-lg font-bold text-sky-400">Coordenadores</div>
                 </a>
 
                 <!-- Aluno Card -->
-                <a href="" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
+                <a href="{{ url('/aluno') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
                     <img src="{{ asset('images/icons/aluno.png') }}" alt="Aluno" class="w-20 h-20 object-cover mx-auto mb-2"> 
                     <div class="text-lg font-bold text-sky-400">Aluno</div>
                 </a>
