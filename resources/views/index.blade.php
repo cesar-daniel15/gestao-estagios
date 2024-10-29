@@ -46,23 +46,14 @@
                 </a>
 
                 <!-- Empresa Card -->
-<<<<<<< HEAD
-                <a href="{{ url('/empresa') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer"> 
-=======
                 <a  href="{{ url('/empresa') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer"> 
->>>>>>> 43091eae3410411d12143835a74df128f5166bd7
                     <img src="{{ asset('images/icons/empresa.png') }}" alt="Empresa" class="w-20 h-20 object-cover mx-auto mb-2"> 
                     <div class="font-bold text-sky-400">Empresa</div>
                 </a>
 
-
                 <!-- Coordenadores Card -->
                 <a href="{{ url('/coordenadores') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
-<<<<<<< HEAD
-                    <img src="{{ asset('images/icons/coordenadores.png') }}" alt="Coordenadores" class="w-20 h-20 object-cover mx-auto mb-2">
-=======
                     <img src="{{ asset('images/icons/coordenadores.png') }}" alt="Coordenadores" class="w-20 h-20 object-cover mx-auto">
->>>>>>> 43091eae3410411d12143835a74df128f5166bd7
                     <div class="text-lg font-bold text-sky-400">Coordenadores</div>
                 </a>
 
@@ -125,6 +116,6 @@
                 </div>
             </div>
         </div>
-    </section>
+    <section>
 
 @endsection
