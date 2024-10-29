@@ -23,7 +23,9 @@
                     <label for="email" class="sr-only">Email</label>
                     <div class="flex items-center rounded-md border border-sky-400 bg-gray-100 p-2 shadow-sm my-10">
                         <!-- Ícone de email -->
-                        <img src="{{ asset('images/icons/email.png') }}" alt="Email Icon" class="mx-5 h-4 w-4 md:h-5 md:w-5" />
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.6em" height="1.6em" class="mx-5">
+                            <path fill="#9c9c9c" d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2zm-2 0l-8 5l-8-5zm0 12H4V8l8 5l8-5z"/>
+                        </svg>
                         <!-- Input -->
                         <input type="email" id="email" placeholder="Email" class="block w-full border-0 bg-gray-100 text-sm focus:outline-none md:text-base" required />
                     </div>

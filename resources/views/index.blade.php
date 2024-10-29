@@ -26,19 +26,19 @@
             <p class="text-white max-w-2xl text-center">
                 <span class="text-base md:font-semibold">Gestão de Estágios</span> é uma aplicação web que simplifica o processo de atribuição, acompanhamento e avaliação de estágios. Facilita a interação entre alunos, coordenadores, empresas e responsáveis, garantindo transparência e acesso à informação em tempo real, reduzindo o uso de papel e automatizando tarefas essenciais.
             </p>
-            <button class="bg-white font-bold text-sky-400 p-2 rounded-xl px-10 mt-5 transition-transform transform hover:scale-105 duration-300 ease-in-out"><a href="{{ url('/login') }}">Começar Agora</a></button>
+            <a href="{{ url('/login') }}" class="bg-white font-bold text-sky-400 p-2 rounded-xl px-10 mt-5 transition-transform transform hover:scale-105 duration-300 ease-in-out">Começar Agora</a>
         </div>
     </section>
 
     <section id="section2">
         <!-- Block 2 -->
-        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-5">
+        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-12">
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Tipos de Utilizadores</div>
             <p class="text-gray-400 font-bold max-w-2xl text-center mb-6 mx-auto">
                 Selecione o seu tipo de utilizador para prosseguir para o próximo passo
             </p>
             
-            <div class="flex flex-wrap justify-center md:justify-around overflow-x-auto my-10 mx-10 gap-4">
+            <div class="flex flex-wrap justify-center md:justify-around overflow-x-auto my-12 mx-10 gap-4">
                 <!-- Instituição Card -->
                 <a href="{{ url('/instituicao') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
                     <img src="{{ asset('images/icons/instituicao.png') }}" alt="Instituição" class="w-20 h-20 object-cover mx-auto mb-2"> 
@@ -46,7 +46,11 @@
                 </a>
 
                 <!-- Empresa Card -->
+<<<<<<< HEAD
                 <a href="{{ url('/empresa') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer"> 
+=======
+                <a  href="{{ url('/empresa') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer"> 
+>>>>>>> 43091eae3410411d12143835a74df128f5166bd7
                     <img src="{{ asset('images/icons/empresa.png') }}" alt="Empresa" class="w-20 h-20 object-cover mx-auto mb-2"> 
                     <div class="font-bold text-sky-400">Empresa</div>
                 </a>
@@ -54,7 +58,11 @@
 
                 <!-- Coordenadores Card -->
                 <a href="{{ url('/coordenadores') }}" class="bg-gray-200 rounded-xl border border-sky-400 w-40 sm:w-48 md:w-1/5 mx-2 p-3 transition-transform transform hover:scale-95 duration-100 ease-in cursor-pointer">
+<<<<<<< HEAD
                     <img src="{{ asset('images/icons/coordenadores.png') }}" alt="Coordenadores" class="w-20 h-20 object-cover mx-auto mb-2">
+=======
+                    <img src="{{ asset('images/icons/coordenadores.png') }}" alt="Coordenadores" class="w-20 h-20 object-cover mx-auto">
+>>>>>>> 43091eae3410411d12143835a74df128f5166bd7
                     <div class="text-lg font-bold text-sky-400">Coordenadores</div>
                 </a>
 
@@ -69,7 +77,7 @@
 
     <section id="section3">
         <!-- Block 3 -->
-        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-5">
+        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-12">
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-8">Vantagens</div>
 
             <!-- Vantagem 1 -->
