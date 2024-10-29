@@ -1,6 +1,6 @@
 @extends('layouts.default-page')
 
-@section('title', 'Instituição - Gestão de Estágios')
+@section('title', 'Coordenadores - Gestão de Estágios')
 
 @section('navbar-items')
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
@@ -24,10 +24,10 @@
 <section id="sobre">
     <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col justify-center items-center text-center">
         <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 my-5">Responsável da Unidade Curricular</div>
-        <p class="text-white max-w-2xl text-center">
+        <p class="text-white max-w-2xl text-justify">
             O uso desta plataforma simplifica a gestão dos coordenadores, dando aos alunos a hipótese de estagiar, realizando várias tarefas,mas sempre de forma organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
         </p>
-    </div>
+    </div> 
 </section>
 
 <!-- Seção Principais Funcionalidades -->

@@ -1,6 +1,6 @@
 @extends('layouts.default-page')
 
-@section('title', 'Instituição - Gestão de Estágios')
+@section('title', 'Aluno - Gestão de Estágios')
 
 @section('navbar-items')
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">

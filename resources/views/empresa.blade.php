@@ -1,6 +1,6 @@
 @extends('layouts.default-page')
 
-@section('title', 'Instituição - Gestão de Estágios')
+@section('title', 'Empresa - Gestão de Estágios')
 @section('navbar-items')
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/instituicao') }}" class="text-white md:text-gray-500 text-base font-bold">Instituição</a>
@@ -22,7 +22,7 @@
 <section id="sobre">
     <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col justify-center items-center text-center">
         <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 my-5">Responsável da Empresa</div>
-        <p class="text-white max-w-2xl text-center text-justify">
+        <p class="text-white max-w-2xl text-justify">
             A nossa plataforma serve para a criação de estágios, no qual permita acompanhar o progresso dos estagiários, aprovar  e avaliar desempenhos de forma rápida e organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
         </p>
     </div>
