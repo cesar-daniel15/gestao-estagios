@@ -1,9 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InstitutionController;
+
+Route::get('/admin/institutions', [InstitutionController::class, 'index']);
 
 Route::get('/', function () {
     return view('index');
+});
+
+Route::get('/admin', function () {
+    return view('admin.dashboard');
 });
 
 Route::get('/login', function () {
@@ -23,15 +30,5 @@ Route::get('/verify-acount', function () {
 });
 
 
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-});
 
-Route::get('/admin/users', function () {
-    return view('admin.users');
-});
-
-Route::get('/admin/institutions', function () {
-    return view('admin.institutions');
-});
 
