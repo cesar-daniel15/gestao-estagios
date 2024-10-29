@@ -15,10 +15,7 @@ class InstitutionController extends Controller
     public function index()
     {   
         $institutions = Institution::all();
-
-        // Retorna a view com as instituicoes
-        return view('admin.institutions', compact('institutions'));
-
+        return response()->json($institutions);
     }
 
     /**
@@ -51,8 +48,7 @@ class InstitutionController extends Controller
         // Cria uma nova instituicao
         $institution = Institution::create($validatedData);
 
-        // Retorna a nova instituicao 
-        return redirect()->route('institutions.index')->with('success', 'Instituição registrada com sucesso!');
+        return response()->json($institutions, 201);
     }
 
     /**
@@ -63,13 +59,8 @@ class InstitutionController extends Controller
         // Retorna um recurso específico pelo ID
         $institution = Institution::find($id);
 
-        // Verifica se encontroy
-        if (!$institution) {
-            return response()->json(['message' => 'Institution not found'], 404);
-        }
-
         // Return da instituicao
-        return response()->json($institution, 200);
+        return response()->json($institution);
     }
 
     /**
@@ -108,7 +99,7 @@ class InstitutionController extends Controller
         $institution->update(array_filter($validatedData)); // Remove campos nulos
 
         // Retorna a instituição atualizada
-        return redirect()->route('institutions.index')->with('success', 'Instituição atualizada com sucesso!');
+        return response()->json();
     }
 
     /**
@@ -120,16 +111,10 @@ class InstitutionController extends Controller
         // Procura a instituicao pelo ID
         $institution = Institution::find($id);
 
-        // Verifica se a instituicao foi encontrada
-        if (!$institution) {
-            return response()->json(['message' => 'Institution not found'], 404);
-        }
-
         // Remove a instituicao da db
         $institution->delete();
 
         // Return da mensagem
-        return response()->json(['message' => 'Institution deleted successfully'], 200);
-        
+        return response()->json();        
     }
 }
