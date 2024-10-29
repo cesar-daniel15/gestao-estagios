@@ -19,8 +19,6 @@ class InstitutionController extends Controller
         // Retorna a view com as instituicoes
         return view('admin.institutions', compact('institutions'));
 
-         // Retorna todas as instituições como JSON, para uso em requisições API
-        return response()->json($institutions, 200);
     }
 
     /**
