@@ -28,7 +28,7 @@
     </section>
 
 
-<!-- Seção Principais Funcionalidades -->
+    <!-- Seção Principais Funcionalidades -->
     <section id="funcionalidades">
         <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center items-center text-center">
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Principais Funcionalidades</div>
@@ -128,6 +128,5 @@
             </div>
         </div>
     </section>
-
 
 @endsection
