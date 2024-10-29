@@ -192,9 +192,9 @@
 
          </ul>
       </div>
-
+   
       <div id="navbar-default" class="flex flex-col px-5 justify-end h-full"> 
-         <ul class="space-y-4 mt-auto">
+         <ul class="space-y-4 mt-auto"> 
             <li>
                <a href="#" class="flex items-center p-2 text-gray-500 hover:text-white font-semibold rounded-lg hover:bg-yellow-400 group text-md">
                   <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 24 24"  class="ms-2">
