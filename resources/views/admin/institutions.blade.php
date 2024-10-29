@@ -36,39 +36,44 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-4 text-gray-600">1</td>
-                        <td class="p-4 text-gray-600">Instituição Exemplo</td>
-                        <td class="p-4 text-gray-600">EX</td>
-                        <td class="p-4 text-gray-600">exemplo@instituicao.com</td>
-                        <td class="p-4 text-gray-600">+351 123 456 789</td>
-                        <td class="p-4 text-gray-600">Rua Exemplo, 123</td>
-                        <td class="p-4 text-gray-600">
-                            <a href="https://instituicao.com" class="text-sky-400 hover:underline">instituicao.com</a>
-                        </td>
-                        <td class="p-4 text-gray-600">Sim</td>
-                        <td class="p-4 text-gray-600">2024-10-15 14:32</td>
-                        <td class="p-4 text-gray-600">2023-09-01</td>
-                        <td class="p-4 text-gray-600">
-                            <div class="flex space-x-2">
-                                <!-- Botão Editar -->
-                                <a href="#" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                        <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
-                                    </svg>
-                                </a>
+                    @foreach($institutions as $institution)
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-4 text-gray-600">{{ $institution['id'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['name'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['acronym'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['email'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['phone'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['address'] }}</td>
+                                <td class="p-4 text-gray-600">
+                                    <a href="{{ $institution['website'] }}" class="text-sky-400 hover:underline">{{ $institution['website'] }}</a>
+                                </td>
+                                <td class="p-4 text-gray-600">{{ $institution['account_is_verified'] ? 'Sim' : 'Não' }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['last_login'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['created_at'] }}</td>
+                                <td class="p-4 text-gray-600">
+                                    <div class="flex space-x-2">
+                                        <!-- Botão Editar -->
+                                        <a href="{{ route('institutions.show', $institution['id']) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                                <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                                            </svg>
+                                        </a>
 
-                                <!-- Botão Apagar -->
-                                <form action="#" method="">
-                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                                        <!-- Botão Apagar -->
+                                        <form action="{{ route('institutions.destroy', $institution['id']) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja apagar esta instituição?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                 </tbody>
             </table>
         </div>
@@ -79,15 +84,16 @@
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
             <h2 class="text-2sm font-bold text-gray-700 mb-4 text-center">Registrar Instituição</h2>
             
-            <form action="#" method="POST">
+            <form action="{{ route('institutions.store') }}" method="POST">
+                @csrf
                 <div class="mb-4">
-                    <label for="nome" class="block text-gray-600 mb-1">Nome</label>
-                    <input type="text" id="nome" name="nome" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                    <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-2" required>
                 </div>
 
                 <div class="mb-4">
-                    <label for="acronimo" class="block text-gray-600 mb-1">Acrónimo</label>
-                    <input type="text" id="acronimo" name="acronimo" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                    <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-2" required>
                 </div>
 
                 <div class="mb-4">
@@ -96,13 +102,18 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="contacto" class="block text-gray-600 mb-1">Contacto</label>
-                    <input type="text" id="contacto" name="contacto" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <label for="password" class="block text-gray-600 mb-1">Password</label>
+                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-2" required>
                 </div>
 
                 <div class="mb-4">
-                    <label for="morada" class="block text-gray-600 mb-1">Morada</label>
-                    <input type="text" id="morada" name="morada" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
+                    <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="address" class="block text-gray-600 mb-1">Morada</label>
+                    <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-2" required>
                 </div>
 
                 <div class="mb-4">
