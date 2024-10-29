@@ -25,13 +25,8 @@ Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
 });
 
-<<<<<<< HEAD
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-=======
 Route::get('/verify-acount', function () {
     return view('auth.verify-acount');
->>>>>>> 43091eae3410411d12143835a74df128f5166bd7
 });
 
 // Rota para a página da Instituição
@@ -52,11 +47,4 @@ Route::get('/coordenadores', function () {
 // Nova rota para a página da Empresa
 Route::get('/aluno', function () {
     return view('aluno');
-<<<<<<< HEAD
 });
-=======
-});
-
-
-
->>>>>>> 43091eae3410411d12143835a74df128f5166bd7
