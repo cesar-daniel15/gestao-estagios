@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="bg-gray-100 sticky top-0 z-50 border-b border-sky-400">
+<nav class="bg-gray-100  top-0 z-50 border-b border-sky-400">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-5 sticky-top">
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse mb-3 mb:mb-0">
             <img src="{{ asset('images/icon.png') }}" class="h-20" alt="Gestão de Estágios Logo" />
