@@ -61,7 +61,43 @@
                 </p>
             </div>
         </div>
+
+                    
+        <!-- Vantagem 2 -->
+        <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-lg">
+            <!-- Ícone -->
+            <div class="flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24">
+                    <path fill="#00b0eb" d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5v2H5v14h14v-5z"/><path fill="#00b0eb" d="M21 7h-4V3h-2v4h-4v2h4v4h2V9h4z"/>
+                </svg>                    
+            </div>
+                    
+            <!-- Texto -->
+            <div class="ml-4 text-left">
+                <p class="text-gray-400 font-bold">
+                    <span class="text-sky-400 font-extrabold">Visualizar os responsáveis da uc e alunos da instituição:</span> Acesso rápido e organizado aos detalhes dos responsáveis e dos alunos inscritos, facilitando a gestão acadêmica.
+                </p>
+            </div>
+        </div>
+
+        <!-- Vantagem 3 -->
+        <div class="flex items-center justify-center mb-8 mt-8">
+            <!-- Ícone -->
+            <div class="flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24">
+                    <path fill="#00b0eb" d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5v2H5v14h14v-5z"/><path fill="#00b0eb" d="M21 7h-4V3h-2v4h-4v2h4v4h2V9h4z"/>
+                </svg>                    
+            </div>
+                    
+            <!-- Texto -->
+            <div class="ml-4 text-left">
+                <p class="text-gray-400 font-bold">
+                    <span class="text-sky-400 font-extrabold">Acompanhar evolução de estágios:</span> Permite monitorar o progresso dos alunos em seus estágios, garantindo o cumprimento das atividades propostas.
+                </p>
+            </div>
+        </div>
     </section>
+
 
     <!-- Seção Passos a Seguir -->
     <section id="passos" class="scroll-mt-24 p-6 md:p-10 bg-white flex flex-col justify-center items-center text-center">
