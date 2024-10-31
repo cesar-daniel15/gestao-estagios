@@ -9,6 +9,9 @@ Route::get('/admin/auth', function () {
     return view('admin.auth');
 })->name('admin.auth');
 
+Route::get('/', function () {
+    return view('index');
+});
 
 Route::get('/admin', function () {
     return view('admin.dashboard');
