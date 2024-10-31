@@ -3,16 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InstitutionController;
 
-Route::get('/admin/institution', function () {
-    return view('admin.institution');
-});
-
- 
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
 
-// Route::get('/', function () {
-//     return view('index');
-// });
+Route::get('/admin/auth', function () {
+    return view('admin.auth');
+})->name('admin.auth');
+
 
 Route::get('/admin', function () {
     return view('admin.dashboard');
