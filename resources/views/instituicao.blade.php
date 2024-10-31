@@ -38,6 +38,8 @@
             <p class="text-white text-justify">
             A nossa plataforma simplifica a gestão de estagiários, permitindo acompanhar o progresso, aprovar planos e avaliar desempenhos de forma rápida e organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
         </p>
+    </div>
+    </div>
     </section>
 
 
