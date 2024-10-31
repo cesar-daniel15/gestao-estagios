@@ -1,6 +1,6 @@
 @extends('layouts.default-page', ['showNavbar' => false, 'showFooter' => false])
 
-@section('title', 'Gestão de Estágios | Registar')
+@section('title', 'Gestão de Estágios | Verificar Conta')
 
 @section('content') 
     <div class="flex justify-center items-center min-h-screen drop-shadow-2xl">

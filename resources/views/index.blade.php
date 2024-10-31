@@ -119,5 +119,3 @@
     <section>
 
 @endsection
-
-
