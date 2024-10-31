@@ -4,7 +4,7 @@
 
 @section('navbar-items')
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/instituicao') }}" class="text-white md:text-sky-400  text-sm sm:text-base font-bold">Instituição</a>
+        <a href="{{ url('/instituicao') }}" class="text-white md:text-sky-400 text-base font-bold">Instituição</a>
     </li>
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-sm sm:text-base font-bold">Empresa</a>
@@ -22,7 +22,7 @@
 
 @section('content')
         <!-- Seção Sobre -->
-        <section id="sobre">
+    <section id="sobre">
         <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col md:flex-row justify-center items-center text-center md:text-left">
 
         <!-- Imagem do Coordenador (Centralizado Verticalmente) -->
@@ -98,6 +98,7 @@
         </div>
     </section>
 
+
     <!-- Seção Passos a Seguir -->
     <section id="passos" class="scroll-mt-24 p-6 md:p-10 bg-white flex flex-col justify-center items-center text-center">
         <!-- Título da Seção -->
@@ -110,7 +111,7 @@
                 <!-- Círculo do número -->
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-8 h-8 sm:w-10 sm:h-10 rounded-full">1</div>
                 <!-- Retângulo com a frase -->
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Fazer o Registro no Sistema</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Autenticar no Sistema</div>
             </div>
 
             <!-- Passo 2 -->
