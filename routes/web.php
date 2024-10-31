@@ -5,9 +5,7 @@ use App\Http\Controllers\InstitutionController;
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
 
-Route::get('/admin/auth', function () {
-    return view('admin.auth');
-})->name('admin.auth');
+
 
 Route::get('/', function () {
     return view('index');
