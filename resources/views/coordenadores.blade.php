@@ -53,7 +53,7 @@
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Principais Funcionalidades</div>
 
                 <!-- Vantagem 1 -->
-                <div class="flex items-center justify-center mb-8 mt-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24">
@@ -70,7 +70,7 @@
                 </div>
 
                 <!-- Vantagem 2 -->
-                <div class="flex items-center justify-center mb-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <img src="{{ asset('images/icons/pc-mobile.png') }}" alt="Ícone" class="w-12 h-12"> 
@@ -84,7 +84,7 @@
                 </div>
 
                 <!-- Vantagem 3 -->
-                <div class="flex items-center justify-center mb-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 2048 2048">

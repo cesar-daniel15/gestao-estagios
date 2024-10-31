@@ -49,7 +49,7 @@
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Principais Funcionalidades</div>
 
                 <!-- Vantagem 1 -->
-                <div class="flex items-center justify-center mb-8 mt-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24">
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Vantagem 2 -->
-                <div class="flex items-center justify-center mb-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@
                 </div>
 
                 <!-- Vantagem 3 -->
-                <div class="flex items-center justify-center mb-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 48 48">
@@ -98,9 +98,9 @@
                     </div>
                 </div>
 
-                    <!-- Vantagem 2 -->
-                    <div class="flex items-center justify-center mb-8">
-                        <!-- Ícone -->
+                    <!-- Vantagem 4 -->
+                    <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
+                    <!-- Ícone -->
                         <div class="flex-shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 16 16">
                                 <path fill="none" stroke="#00b0eb" stroke-linejoin="round" d="M7.563 1.545H2.5v10.91h9V5.364M7.563 1.545L11.5 5.364M7.563 1.545v3.819H11.5m-7 9.136h9v-7M4 7.5h6M4 5h2m-2 5h6"/>

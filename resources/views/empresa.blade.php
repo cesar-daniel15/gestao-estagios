@@ -48,8 +48,8 @@
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Principais Funcionalidades</div>
 
                 <!-- Vantagem 1 -->
-                <div class="flex items-center justify-center mb-8 mt-8">
-                    <!-- Ícone -->
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
+                <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24">
                             <path fill="#00b0eb" d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5v2H5v14h14v-5z"/><path fill="#00b0eb" d="M21 7h-4V3h-2v4h-4v2h4v4h2V9h4z"/>
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Vantagem 2 -->
-                <div class="flex items-center justify-center mb-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 48 48">
@@ -82,7 +82,7 @@
                 </div>
 
                 <!-- Vantagem 3 -->
-                <div class="flex items-center justify-center mb-8">
+                <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
                     <!-- Ícone -->
                     <div class="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 48 48">
