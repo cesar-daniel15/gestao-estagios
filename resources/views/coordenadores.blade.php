@@ -3,16 +3,16 @@
 @section('title', 'Coordenadores - Gestão de Estágios')
 
 @section('navbar-items')
-<li class="mb-5 mt-5 md:mb-0 md:mt-0">
+<li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/instituicao') }}" class="text-white md:text-gray-500 text-base font-bold">Instituição</a>
     </li>
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-base font-bold">Empresa</a>
     </li>
-    <li class="mb-5 mt-5 md:mb-0 md:mt-0">
-        <a href="{{ url('/coordenadores') }}" class="text-white text-gray-500 md:text-sky-400 text-base font-bold">Coordenadores</a>
+    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
+        <a href="{{ url('/coordenadores') }}" class="text-white md:text-sky-400 text-base font-bold">Coordenadores</a>
     </li>
-    <li class="mb-5 mt-5 md:mb-0 md:mt-0">
+    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/aluno') }}" class="text-white md:text-gray-500 text-base font-bold">Aluno</a>
     </li>
     <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out mb-5 mt-5 md:mb-0 md:mt-0">

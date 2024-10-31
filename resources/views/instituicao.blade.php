@@ -4,15 +4,15 @@
 
 @section('navbar-items')
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/instituicao') }}" class="text-white text-gray-500 md:text-sky-400 text-base font-bold">Instituição</a>
+        <a href="{{ url('/instituicao') }}" class="text-white md:text-sky-400 text-base font-bold">Instituição</a>
     </li>
     <li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-sm sm:text-base font-bold">Empresa</a>
     </li>
-    <li class="mb-5 mt-5 md:mb-0 md:mt-0">
+    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/coordenadores') }}" class="text-white md:text-gray-500 text-sm sm:text-base font-bold">Coordenadores</a>
     </li>
-    <li class="mb-5 mt-5 md:mb-0 md:mt-0">
+    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
         <a href="{{ url('/aluno') }}" class="text-white md:text-gray-500 text-sm sm:text-base font-bold">Aluno</a>
     </li>
     <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out mb-5 mt-5 md:mb-0 md:mt-0">
@@ -111,7 +111,7 @@
                 <!-- Círculo do número -->
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-8 h-8 sm:w-10 sm:h-10 rounded-full">1</div>
                 <!-- Retângulo com a frase -->
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Fazer o Registro no Sistema</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Autenticar no Sistema</div>
             </div>
 
             <!-- Passo 2 -->
