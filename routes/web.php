@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InstitutionController;
+use Illuminate\Http\Request; 
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
 
@@ -10,9 +11,23 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-});
+Route::get('/admin/auth', function () {
+    return view('admin.auth'); // A view do formulário
+})->name('admin.login');
+
+Route::post('/admin/auth', function (Request $request) {
+    // Verificar o codigo inserido e igual ao valor do .env
+    if ($request->input('code') === env('ADMIN_CODE')) {
+        // Redirecionar para o painel de admin se o código estiver correto
+        return redirect()->route('admin.dashboard');
+    }
+    return back()->withErrors(['code' => 'Código de acesso incorreto.']);
+})->name('admin.auth');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard'); 
+})->name('admin.dashboard');
+
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -30,22 +45,18 @@ Route::get('/verify-acount', function () {
     return view('auth.verify-acount');
 });
 
-// Rota para a página da Instituição
 Route::get('/instituicao', function () {
     return view('instituicao');
 });
 
-// Nova rota para a página da Empresa
 Route::get('/empresa', function () {
     return view('empresa');
 });
 
-// Nova rota para a página da Empresa
 Route::get('/coordenadores', function () {
     return view('coordenadores');
 });
 
-// Nova rota para a página da Empresa
 Route::get('/aluno', function () {
     return view('aluno');
 });
