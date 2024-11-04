@@ -21,7 +21,7 @@
                 <div class="text-xl font-extrabold text-center text-sky-400 mb-2 mt-10">Entrar na minha conta</div>
                 <p class="text-gray-400 font-bold text-base text-center mb-5">Preencha os seus dados</p>
                 
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="">
                     <!-- Email -->
                     <div class="mb-8 mt-5">
                         <label for="email" class="sr-only">Email</label>
