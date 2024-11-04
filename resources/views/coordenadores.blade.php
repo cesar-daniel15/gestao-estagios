@@ -3,27 +3,12 @@
 @section('title', 'Coordenadores - Gestão de Estágios')
 
 @section('navbar-items')
-<<<<<<< HEAD
-<li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/instituicao') }}" class="text-white md:text-gray-500 text-base font-bold">Instituição</a>
-    </li>
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-base font-bold">Empresa</a>
-=======
     <li class="my-3 md:mb-0 md:mt-0">
         <a href="{{ url('/') }}" class="text-white md:text-gray-500  text-base font-extrabold">Home</a>
->>>>>>> a952bae85a988280a157a9b733b382ab28d1761f
     </li>
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/coordenadores') }}" class="text-white md:text-sky-400 text-base font-bold">Coordenadores</a>
+    <li class="mb-5 mt-5 md:mb-0 md:mt-0">
+        <a href="{{ url('/instituicao') }}" class="text-white md:text-gray-500 text-base font-bold">Instituição</a>
     </li>
-<<<<<<< HEAD
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/aluno') }}" class="text-white md:text-gray-500 text-base font-bold">Aluno</a>
-    </li>
-    <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out mb-5 mt-5 md:mb-0 md:mt-0">
-        <a href="{{ url('/login') }}" class="bg-white md:bg-sky-400 text-base font-bold md:text-white text-sky-400 p-2 rounded-xl px-6">Começar Agora</a>
-=======
     <li class="my-3 md:mb-0 md:mt-0">
         <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-base font-bold">Empresa</a>
     </li>
@@ -35,37 +20,11 @@
     </li>
     <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out my-5 md:mb-0 md:mt-0">
         <a href="{{ url('/register') }}" class="bg-white md:bg-sky-400 text-base font-bold md:text-white text-sky-400 p-2 rounded-xl px-6">Começar Agora</a>
->>>>>>> a952bae85a988280a157a9b733b382ab28d1761f
     </li>
 @endsection
 
 @section('content')
 
-<<<<<<< HEAD
-<!-- Seção Sobre -->
-<section id="sobre">
-    <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col md:flex-row justify-center items-center text-center md:text-left">
-
-        <!-- Imagem do Coordenador (Centralizado Verticalmente) -->
-        <div class="w-full md:w-1/2 flex justify-center items-center mt-6 md:mt-0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="7em" height="7em" viewBox="0 0 24 24">
-                <path fill="white" d="M20 17a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.46c.35.61.54 1.3.54 2h10v11h-9v2m4-10v2H9v13H7v-6H5v6H3v-8H1.5V9a2 2 0 0 1 2-2zM8 4a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2a2 2 0 0 1 2 2"/>
-            </svg>        
-        </div>
-
-        <!-- Texto de Apresentação (Alinhado à Esquerda) -->
-        <div class="w-full md:w-1/2 max-w-2xl md:text-left md:mr-8">
-            <div class="text-2xl md:text-3xl font-extrabold text-white mb-4">Responsável da Unidade Curricular</div>
-            <p class="text-white text-justify">
-                O uso desta plataforma simplifica a gestão dos coordenadores, dando aos alunos a hipótese de estagiar, realizando várias tarefas de forma organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
-            </p>
-        </div>
-        
-    </div>
-</section>
-
-
-=======
     <!-- Seção Sobre -->
     <section id="sobre">
         <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col md:flex-row justify-center items-center text-center md:text-left">
@@ -87,7 +46,6 @@
             
         </div>
     </section>
->>>>>>> a952bae85a988280a157a9b733b382ab28d1761f
 
     <!-- Seção Principais Funcionalidades -->
     <section id="funcionalidades">

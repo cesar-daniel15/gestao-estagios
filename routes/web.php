@@ -60,11 +60,3 @@ Route::get('/coordenadores', function () {
 Route::get('/aluno', function () {
     return view('aluno');
 });
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
-
->>>>>>> a952bae85a988280a157a9b733b382ab28d1761f
-=======
->>>>>>> d20ea9d0cfc3e7981110290d52cacd7baefaf354

@@ -3,22 +3,6 @@
 @section('title', 'Aluno - Gestão de Estágios')
 
 @section('navbar-items')
-<<<<<<< HEAD
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/instituicao') }}" class="text-white md:text-gray-500 text-base font-bold">Instituição</a>
-    </li>
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-base font-bold">Empresa</a>
-    </li>
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/coordenadores') }}" class="text-white md:text-gray-500 text-base font-bold">Coordenadores</a>
-    </li>
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
-        <a href="{{ url('/aluno') }}" class="text-white md:text-sky-400 text-base font-bold">Aluno</a>
-    </li>
-    <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out mb-5 mt-5 md:mb-0 md:mt-0">
-        <a href="{{ url('/login') }}" class="bg-white md:bg-sky-400 text-base font-bold md:text-white text-sky-400 p-2 rounded-xl px-6">Começar Agora</a>
-=======
     <li class="my-3 md:mb-0 md:mt-0">
         <a href="{{ url('/') }}" class="text-white md:text-gray-500  text-base font-extrabold">Home</a>
     </li>
@@ -36,7 +20,6 @@
     </li>
     <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out my-5 md:mb-0 md:mt-0">
         <a href="{{ url('/register') }}" class="bg-white md:bg-sky-400 text-base font-bold md:text-white text-sky-400 p-2 rounded-xl px-6">Começar Agora</a>
->>>>>>> a952bae85a988280a157a9b733b382ab28d1761f
     </li>
 @endsection
 
@@ -54,11 +37,7 @@
         </div>
     
     <!-- Texto de Apresentação (Alinhado à Esquerda) -->
-<<<<<<< HEAD
-    <div class="w-full md:w-1/2 max-w-2xl md:text-left md:mr-8">
-=======
     <div class="w-full md:w-1/2 max-w-2xl md:text-left my-5">
->>>>>>> a952bae85a988280a157a9b733b382ab28d1761f
         <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 text-center">Aluno</div>
             <p class="text-white text-justify">
                 Esta plataforma auxilia o aluno na gestão do estágio, permitindo registrar atividades diárias, acompanhar a carga horária, e submeter documentos de forma rápida e organizada. Com uma interface intuitiva, facilita a comunicação com a empresa e com os orientadores acadêmicos, centralizando toda a documentação e registros necessários.
@@ -187,6 +166,5 @@
             </div>
         </div>
     </section>
-
     
 @endsection
