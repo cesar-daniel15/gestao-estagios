@@ -15,4 +15,3 @@ Route::get('institutions/{id}', [InstitutionController::class, 'show'])->name('i
 Route::post('institutions', [InstitutionController::class, 'store'])->name('institutions.store'); // Para criar uma nova instituição
 Route::put('institutions/{id}', [InstitutionController::class, 'update'])->name('institutions.update');  // Para atualizar uma instituição existente
 Route::delete('institutions/{id}', [InstitutionController::class, 'destroy'])->name('institutions.destroy');  // Para apagar uma instituição
-
