@@ -22,16 +22,15 @@
         <p class="text-gray-400 font-bold text-md text-center mb-10">Introduza o código de acesso</p>
 
         <div class="flex justify-center space-x-4">
-            <form action="" method="POST">
+            <form action="{{ route('admin.auth') }}" method="POST">
             @csrf
-                <!-- Inputs para os 5 números -->
-                <input type="password" id="code" name="code" class=" h-12 w-50 rounded-md border-2 border-sky-400 text-center text-xl" required>
+                <input type="password" id="code" name="code" class="h-12 w-50 rounded-md border-2 border-sky-400 text-center text-xl" required>
+                
+                <!-- Submit button -->
+                <div class="flex justify-center">
+                    <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-10" type="submit">Entrar</button>
+                </div>
             </form>
-        </div>
-
-        <!-- Submit button -->
-        <div class="flex justify-center">
-            <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-10" type="submit">Entrar</button>
         </div>
     </div>
 </body>
