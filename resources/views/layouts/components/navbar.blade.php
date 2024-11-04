@@ -9,7 +9,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
             </svg>
         </button>
-        <div class="fixed top-20 mt-5 left-0 right-0 z-50 md:static md:top-0 md:mt-0 md:left-0 md:right-0 md:z-0 hidden w-full md:block md:w-auto bg-sky-400 md:bg-gray-100 rounded-xl" id="navbar-default">
+        <div  id="navbar-default" class="fixed top-20 mt-5 left-0 right-0 z-50 md:static md:top-0 md:mt-0 md:left-0 md:right-0 md:z-0 hidden w-full md:block md:w-auto bg-sky-400 md:bg-gray-100 rounded-xl">
             <ul class="flex flex-col md:flex-row flex-nowrap items-center md:space-x-8 p-4 mt-4 ">
                 @yield('navbar-items')
             </ul>

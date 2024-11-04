@@ -3,20 +3,23 @@
 @section('title', 'Coordenadores - Gestão de Estágios')
 
 @section('navbar-items')
+    <li class="my-3 md:mb-0 md:mt-0">
+        <a href="{{ url('/') }}" class="text-white md:text-gray-500  text-base font-extrabold">Home</a>
+    </li>
     <li class="mb-5 mt-5 md:mb-0 md:mt-0">
         <a href="{{ url('/instituicao') }}" class="text-white md:text-gray-500 text-base font-bold">Instituição</a>
     </li>
-    <li class="mb-5 mt-2 md:mb-0 md:mt-0">
+    <li class="my-3 md:mb-0 md:mt-0">
         <a href="{{ url('/empresa') }}" class="text-white md:text-gray-500 text-base font-bold">Empresa</a>
     </li>
-    <li class="mb-5 mt-5 md:mb-0 md:mt-0">
+    <li class="my-3 md:mb-0 md:mt-0">
         <a href="{{ url('/coordenadores') }}" class="text-white  md:text-sky-400 text-base font-bold">Coordenadores</a>
     </li>
-    <li class="mb-5 mt-5 md:mb-0 md:mt-0">
+    <li class="my-3 md:mb-0 md:mt-0">
         <a href="{{ url('/aluno') }}" class="text-white md:text-gray-500 text-base font-bold">Aluno</a>
     </li>
-    <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out mb-5 mt-5 md:mb-0 md:mt-0">
-        <a href="{{ url('/login') }}" class="bg-white md:bg-sky-400 text-base font-bold md:text-white text-sky-400 p-2 rounded-xl px-6">Começar Agora</a>
+    <li class="inline-block transition-transform transform hover:scale-105 duration-300 ease-in-out my-5 md:mb-0 md:mt-0">
+        <a href="{{ url('/register') }}" class="bg-white md:bg-sky-400 text-base font-bold md:text-white text-sky-400 p-2 rounded-xl px-6">Começar Agora</a>
     </li>
 @endsection
 
@@ -34,8 +37,8 @@
             </div>
 
             <!-- Texto de Apresentação (Alinhado à Esquerda) -->
-            <div class="w-full md:w-1/2 max-w-2xl md:text-left md:mr-8">
-                <div class="text-2xl md:text-3xl font-extrabold text-white mb-4">Responsável da Unidade Curricular</div>
+            <div class="w-full md:w-1/2 max-w-2xl md:text-left my-5">
+                <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 text-center">Responsável da Unidade Curricular</div>
                 <p class="text-white text-justify">
                     O uso desta plataforma simplifica a gestão dos coordenadores, dando aos alunos a hipótese de estagiar, realizando várias tarefas de forma organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
                 </p>
@@ -46,8 +49,8 @@
 
     <!-- Seção Principais Funcionalidades -->
     <section id="funcionalidades">
-        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center items-center text-center">
-            <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Principais Funcionalidades</div>
+        <div class="w-full h-auto p-10 bg-gray-100 flex flex-col my-12 justify-center items-center text-center">
+            <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-8">Principais Funcionalidades</div>
 
                 <!-- Vantagem 1 -->
                 <div class="flex items-center justify-center mb-6 sm:mb-8 mt-6 sm:mt-8 max-w-md md:max-w-2xl">
@@ -103,10 +106,10 @@
     <section id="passos" class="scroll-mt-24">
         <div class="w-full h-auto p-10 bg-white flex flex-col justify-center items-center text-center">
             <!-- Título da Seção -->
-            <div class="text-2xl md:text-3xl font-bold text-sky-400 mb-10">Passos a Seguir</div>
+            <div class="text-2xl md:text-3xl font-bold text-sky-400 my-12">Passos a Seguir</div>
             
             <!-- Grid para organizar os itens em duas colunas com espaçamento aumentado -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-20 gap-11 max-w-3xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 sm:gap-x-20 gap-y-6 sm:gap-y-11 max-w-lg md:max-w-3xl">
                 <!-- Passo 1 -->
                 <div class="flex items-center space-x-3">
                     <!-- Círculo do número -->

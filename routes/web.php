@@ -6,7 +6,6 @@ use App\Http\Controllers\InstitutionController;
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
 
 
-
 Route::get('/', function () {
     return view('index');
 });
@@ -50,6 +49,5 @@ Route::get('/coordenadores', function () {
 Route::get('/aluno', function () {
     return view('aluno');
 });
-
 
 
