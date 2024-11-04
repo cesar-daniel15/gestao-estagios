@@ -21,7 +21,7 @@
                 <div class="text-xl font-extrabold text-center text-sky-400 mb-2 mt-10">Entrar na minha conta</div>
                 <p class="text-gray-400 font-bold text-base text-center mb-5">Preencha os seus dados</p>
                 
-                <form>
+                <form method="POST" action="{{ route('login') }}">
                     <!-- Email -->
                     <div class="mb-8 mt-5">
                         <label for="email" class="sr-only">Email</label>
@@ -32,7 +32,7 @@
                             </svg>
 
                             <!-- Input -->
-                            <input type="email" id="email" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="email" id="email" name="email" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
                         </div>
                     </div>
 
@@ -45,7 +45,7 @@
                                 <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="#9c9c9c"/></g>
                             </svg>                            
                             <!-- Input -->
-                            <input type="password" id="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="password" id="password" name="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
                         </div>
                     </div>
                     
