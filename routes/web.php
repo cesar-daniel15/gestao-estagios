@@ -61,4 +61,3 @@ Route::get('/aluno', function () {
     return view('aluno');
 });
 
-
