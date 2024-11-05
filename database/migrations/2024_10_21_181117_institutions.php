@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('logo')->nullable(); // Logo (Pode ser NULL)
             $table->string('website')->nullable(); // Website (Pode ser NULL)
             $table->string('token')->nullable()->unique(); // Token de 5 números (deve ser unico)
-            $table->boolean('account_is_verify')->default(false); // Conta verificada
+            $table->boolean('account_is_verified')->default(false); // Conta verificada
             $table->timestamp('last_login')->nullable(); // Ultimo login (Pode ser NULL)
             $table->timestamps(); // Gera created_at e updated_at
         });
