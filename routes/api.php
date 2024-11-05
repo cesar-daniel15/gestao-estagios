@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\InstitutionController; // Import do Controller Institution
+use App\Http\Controllers\Api\InstitutionController; // Import do Controller Institution
 
 
 Route::get('/user', function (Request $request) {
