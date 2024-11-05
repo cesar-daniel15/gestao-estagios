@@ -21,7 +21,6 @@ Route::post('/admin/auth', function (Request $request) {
         // Redirecionar para o painel de admin se o código estiver correto
         return redirect()->route('admin.dashboard');
     }
-    return back()->withErrors(['code' => 'Código de acesso incorreto.']);
 })->name('admin.auth');
 
 Route::get('/admin/dashboard', function () {
