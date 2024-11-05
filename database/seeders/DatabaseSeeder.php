@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Institution; // Import da Model
+use App\Models\Institution; // Import da Model das Institution
+use App\Models\Course; // Import da Model dos Courses
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,7 +22,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // Criar 3 instituicoes ficticias
-        Institution::factory()->count(3)->create();
+        // Criar 2 instituicoes ficticias
+        Institution::factory()->count(2)->create();
+
+        // Criar 3 cursos ficticiois
+        Course::factory()->count(3)->create();
     }
 }
