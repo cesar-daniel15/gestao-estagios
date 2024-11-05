@@ -2,9 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Http\Request; 
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
+
+Route::get('/admin/students', [StudentController::class, 'index']);
 
 
 Route::get('/', function () {
@@ -30,6 +33,10 @@ Route::get('/admin/dashboard', function () {
 Route::get('/admin/users', function () {
     return view('admin.users'); 
 })->name('admin.users');
+
+Route::get('/admin/students', function () {
+    return view('admin.students'); 
+})->name('admin.students');
 
 
 Route::get('/login', function () {
