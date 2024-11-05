@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Institution; // Import do Model Institution
 use Illuminate\Support\Str; 
+use App\Http\Resources\InstitutionResource; // Import do Resource
 
 class InstitutionController extends Controller
 {
@@ -14,8 +15,10 @@ class InstitutionController extends Controller
      */
     public function index()
     {   
-        $institutions = Institution::all();
-        return view('admin.institutions', ['institutions' => $institutions]);
+        //$institutions = Institution::all();
+        //return view('admin.institutions', ['institutions' => $institutions]);
+
+        return InstitutionResource::collection(Institution::all());
     }
 
     /**
@@ -32,23 +35,6 @@ class InstitutionController extends Controller
     public function store(Request $request)
     {
         // Armazena um novo recurso na db
-        // Validacao dos dados recebidos 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'acronym' => 'required|string|max:10',
-            'email' => 'required|email|unique:institutions',
-            'password' => 'required|string|min:8',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-        ]);
-
-        // Gera um token
-        $validatedData['token'] = Str::random(5);
-
-        // Cria uma nova instituicao
-        $institution = Institution::create($validatedData);
-
-        return response()->json($institutions, 201);
     }
 
     /**
@@ -57,10 +43,8 @@ class InstitutionController extends Controller
     public function show(string $id)
     {
         // Retorna um recurso específico pelo ID
-        $institution = Institution::find($id);
 
-        // Return da instituicao
-        return response()->json($institution);
+        return new InstitutionResource(Institution::where('id',$id)->first());
     }
 
     /**
@@ -77,29 +61,6 @@ class InstitutionController extends Controller
     public function update(Request $request, string $id)
     {
         // Atualiza um recurso existente
-         // Validação dos dados recebidos 
-        $validatedData = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'acronym' => 'nullable|string|max:10',
-            'email' => 'nullable|email|unique:institutions,email,' . $id,
-            'password' => 'nullable|string|min:8',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-        ]);
-
-        // Procura pelo ID
-        $institution = Institution::find($id);
-
-        // Verifica se existe
-        if (!$institution) {
-            return response()->json(['message' => 'Institution not found'], 404);
-        }
-
-        // Atualiza os campos
-        $institution->update(array_filter($validatedData)); // Remove campos nulos
-
-        // Retorna a instituição atualizada
-        return response()->json();
     }
 
     /**
@@ -107,14 +68,6 @@ class InstitutionController extends Controller
      */
     public function destroy(string $id)
     {
-        // Remove um recurso da db
-        // Procura a instituicao pelo ID
-        $institution = Institution::find($id);
-
-        // Remove a instituicao da db
-        $institution->delete();
-
-        // Return da mensagem
-        return response()->json();        
+        // Remove um recurso da db     
     }
 }
