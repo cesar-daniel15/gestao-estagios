@@ -19,7 +19,7 @@
             </button>
         </div>
         <div class="overflow-x-auto">
-            <table class="table-auto w-full border-collapse text-center text-sm">
+            <table class="table-auto w-full border-collapse text-center text-sm overflow-hidden rounded-xl">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="p-4 border-b text-gray-600">ID</th>
