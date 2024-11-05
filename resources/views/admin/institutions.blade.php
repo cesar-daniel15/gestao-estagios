@@ -47,7 +47,7 @@
                                 <td class="p-4 text-gray-600">
                                     <a href="{{ $institution['website'] }}" class="text-sky-400 hover:underline">{{ $institution['website'] }}</a>
                                 </td>
-                                <td class="p-4 text-gray-600">{{ $institution['account_is_verified'] ? 'Sim' : 'Não' }}</td>
+                                <td class="p-4 text-gray-600">{{ $institution['account_is_verified'] }}</td>
                                 <td class="p-4 text-gray-600">{{ $institution['last_login'] }}</td>
                                 <td class="p-4 text-gray-600">{{ $institution['created_at'] }}</td>
                                 <td class="p-4 text-gray-600">
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="fixed inset-0 items-center justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+    <div class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
             <h2 class="text-2sm font-bold text-gray-700 mb-4 text-center">Registrar Instituição</h2>
             
@@ -88,42 +88,42 @@
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-gray-600 mb-1">Nome</label>
-                    <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                 </div>
 
                 <div class="mb-4">
                     <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
-                    <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                 </div>
 
                 <div class="mb-4">
                     <label for="email" class="block text-gray-600 mb-1">Email</label>
-                    <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                 </div>
 
                 <div class="mb-4">
                     <label for="password" class="block text-gray-600 mb-1">Password</label>
-                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                 </div>
 
                 <div class="mb-4">
                     <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
-                    <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                 </div>
 
                 <div class="mb-4">
                     <label for="address" class="block text-gray-600 mb-1">Morada</label>
-                    <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-2" required>
+                    <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                 </div>
 
                 <div class="mb-4">
                     <label for="website" class="block text-gray-600 mb-1">Website</label>
-                    <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-2">
+                    <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                 </div>
 
                 <div class="flex justify-end mt-4">
-                    <button type="button" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mr-2" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Registrar</button>
+                    <button type="button" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Registrar</button>
                 </div>
             </form>
         </div>
