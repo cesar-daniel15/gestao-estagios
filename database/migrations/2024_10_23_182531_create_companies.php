@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id(); // Chave primária
+            $table->unsignedBigInteger('institution_id'); // Chave estrangeira para a tabela institutions
             $table->string('name'); // Nome da empresa
             $table->string('email')->unique(); // Email único
-            $table->string('password'); // Adicionando a senha
+            $table->string('password'); // Senha
             $table->string('phone'); // Telefone
             $table->string('picture')->nullable(); // Imagem (pode ser nulo)
             $table->string('industry'); // Indústria
@@ -25,7 +26,10 @@ return new class extends Migration
             $table->string('token')->unique(); // Token único
             $table->boolean('account_is_verify')->default(false); // Conta verificada
             $table->timestamp('last_login')->nullable(); // Último login (pode ser nulo)
-            $table->timestamps(); // Gera created_at e updated_at automaticamente
+            $table->timestamps(); // Campos created_at e updated_at gerados automaticamente
+
+            // Define a chave estrangeira para a tabela institutions
+            $table->foreign('institution_id')->references('id')->on('institutions')->onDelete('cascade');
         });
     }
 

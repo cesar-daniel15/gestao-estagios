@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('internship_plans', function (Blueprint $table) {
             $table->id(); // Chave primária
+            $table->unsignedBigInteger('course_id'); // Chave estrangeira para 'courses', se aplicável
+            $table->unsignedBigInteger('institution_id'); // Chave estrangeira para 'institutions', se aplicável
             $table->integer('max_hours'); // Número máximo de horas
             $table->date('start_date'); // Data de início
             $table->date('end_date'); // Data de término
@@ -21,6 +23,10 @@ return new class extends Migration
             $table->boolean('approved_by_uc')->default(false); // Aprovado pela UC
             $table->string('status'); // Status do plano de estágio
             $table->timestamps(); // Gera created_at e updated_at automaticamente
+            
+            // Define as chaves estrangeiras para as tabelas 'courses' e 'institutions', caso necessário
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('institution_id')->references('id')->on('institutions')->onDelete('cascade');
         });
     }
 
