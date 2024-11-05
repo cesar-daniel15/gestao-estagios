@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\Api\InstitutionController;
 use Illuminate\Http\Request; 
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
@@ -12,8 +12,8 @@ Route::get('/', function () {
 });
 
 Route::get('/admin/auth', function () {
-    return view('admin.auth'); // A view do formulário
-})->name('admin.login');
+    return view('admin.auth'); 
+})->name('admin.auth');
 
 Route::post('/admin/auth', function (Request $request) {
     // Verificar o codigo inserido e igual ao valor do .env
