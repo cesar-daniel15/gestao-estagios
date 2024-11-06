@@ -61,6 +61,12 @@ class InstitutionController extends Controller
         $data = $validator->validated();
         $data['password'] = bcrypt($data['password']);
 
+        // Verifica se a instituicao ja existe
+        if (Institution::where('name', $request->name)->exists()) {
+            return $this->error('Institution already exists', 409);
+        }
+
+        // Cria o novo recurso
         $created = Institution::create($validator->validated());
 
         if($created){
