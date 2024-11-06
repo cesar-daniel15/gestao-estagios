@@ -37,7 +37,7 @@ class CourseController extends Controller
         // Validacao dos dados recebidos
         $validator = Validator::make($request->all(), [
             'institution_id' => 'required|exists:institutions,id', // Validação do ID da instituição
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:courses,name',
             'acronym' => 'required|string|max:10',
         ]);
 
@@ -46,6 +46,12 @@ class CourseController extends Controller
             return $this->error('Data Invalid', 422, $validator->errors());
         }
 
+        // Verifica se o nome do curso ja existe
+        if (Course::where('name', $request->name)->exists()) {
+            return $this->error('Course already exists', 409);
+        }
+
+        // Cria o novo recurso
         $created = Course::create($validator->validated());
 
         if($created){
