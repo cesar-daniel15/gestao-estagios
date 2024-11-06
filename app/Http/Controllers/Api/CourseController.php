@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course; // Import do Model Course
 use App\Http\Resources\CourseResource; // Import do Resource
+use Illuminate\Support\Facades\Validator; // Import do Validator
+use App\Traits\HttpResponses;
 
 class CourseController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +34,26 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validacao dos dados recebidos
+        $validator = Validator::make($request->all(), [
+            'institution_id' => 'required|exists:institutions,id', // Validação do ID da instituição
+            'name' => 'required|string|max:255',
+            'acronym' => 'required|string|max:10',
+        ]);
+
+        // Verifica se a validacao falhou
+        if ($validator->fails()) {
+            return $this->error('Data Invalid', 422, $validator->errors());
+        }
+
+        $created = Course::create($validator->validated());
+
+        if($created){
+            return $this->response('Course created', 201, new CourseResource($created->load('institution')));
+        }
+        else{
+            return $this->error('Course not create', 400);
+        }
     }
 
     /**
