@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Institution; // Import do Model Institution
 use Illuminate\Support\Str; 
 use App\Http\Resources\InstitutionResource; // Import do Resource
+use Illuminate\Support\Facades\Validator; // Import do Validator
+use App\Traits\HttpResponses;
 
 class InstitutionController extends Controller
 {
+    use HttpResponses;
+    
     /**
      * Display a listing of the resource.
      */
@@ -35,6 +39,36 @@ class InstitutionController extends Controller
     public function store(Request $request)
     {
         // Armazena um novo recurso na db
+
+        // Validação dos dados recebidos
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'acronym' => 'required|string|max:10',
+            'email' => 'required|email|max:255|unique:institutions,email',
+            'password' => 'required|string|min:8',
+            'phone' => 'required|string|max:11',
+            'address' => 'required|string|max:255',
+            'website' => 'nullable|url|max:255',
+            'logo' => 'nullable|string|max:255',
+        ]);
+
+        // Verifica se a validação falhou
+        if ($validator->fails()) {
+            return $this->error('Data Invalid', 422, $validator->errors());
+        }
+
+        // Hash da password
+        $data = $validator->validated();
+        $data['password'] = bcrypt($data['password']);
+
+        $created = Institution::create($validator->validated());
+
+        if($created){
+            return $this->response('Institution created', 200, $created);
+        }
+        else{
+            return $this->error('Institution not create', 400);
+        }
     }
 
     /**
