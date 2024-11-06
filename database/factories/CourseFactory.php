@@ -31,7 +31,7 @@ class CourseFactory extends Factory
         ];
 
         // Seleciona um curso e o seu acronimo
-        $courseName = $this->faker->randomElement(array_keys($courses));
+        $courseName = $this->faker->unique()->randomElement(array_keys($courses));
         $acronym = $courses[$courseName];
 
         return [
