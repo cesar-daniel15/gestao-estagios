@@ -60,7 +60,7 @@ class InstitutionFactory extends Factory
         return [
             'name' => $selectedInstitution, // Nome da instituição
             'acronym' => $details['acronym'], // Acrônimo correspondente ao nome
-            'email' => $details['email'], // Email da instituição
+            'email' => $this->faker->unique()->safeEmail, // Email único 
             'password' => bcrypt('password'), // Password (hashed)
             'phone' => $details['phone'], // Telefone da instituição
             'address' => $details['address'], // Morada da instituição
