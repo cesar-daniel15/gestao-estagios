@@ -30,8 +30,6 @@
                         <th class="p-4 border-b text-gray-600">Morada</th>
                         <th class="p-4 border-b text-gray-600">Website</th>
                         <th class="p-4 border-b text-gray-600">Conta Verificada</th>
-                        <th class="p-4 border-b text-gray-600">Último Login</th>
-                        <th class="p-4 border-b text-gray-600">Data de Criação</th>
                         <th class="p-4 border-b text-gray-600">Ações</th>
                     </tr>
                 </thead>
@@ -48,8 +46,6 @@
                                     <a href="{{ $institution['website'] }}" class="text-sky-400 hover:underline" target="_blank">{{ $institution['website'] }}</a>
                                 </td>
                                 <td class="p-4 text-gray-600">{{ $institution['account_is_verified'] }}</td>
-                                <td class="p-4 text-gray-600">{{ $institution['last_login'] }}</td>
-                                <td class="p-4 text-gray-600">{{ $institution['created_at'] }}</td>
                                 <td class="p-4 text-gray-600">
                                     <div class="flex space-x-2">
                                         <!-- Botão Editar -->
