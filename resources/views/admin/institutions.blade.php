@@ -45,7 +45,7 @@
                                 <td class="p-4 text-gray-600">{{ $institution['phone'] }}</td>
                                 <td class="p-4 text-gray-600">{{ $institution['address'] }}</td>
                                 <td class="p-4 text-gray-600">
-                                    <a href="{{ $institution['website'] }}" class="text-sky-400 hover:underline">{{ $institution['website'] }}</a>
+                                    <a href="{{ $institution['website'] }}" class="text-sky-400 hover:underline" target="_blank">{{ $institution['website'] }}</a>
                                 </td>
                                 <td class="p-4 text-gray-600">{{ $institution['account_is_verified'] }}</td>
                                 <td class="p-4 text-gray-600">{{ $institution['last_login'] }}</td>
