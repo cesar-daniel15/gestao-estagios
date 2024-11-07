@@ -69,6 +69,7 @@ class InstitutionController extends Controller
         $created = Institution::create($validator->validated());
 
         if($created){
+            //return redirect()->route('institutions.index')->with('success', 'Institution created successfully')->with('new_institution', $created);
             return $this->response('Institution created', 200, $created);
         }
         else{
