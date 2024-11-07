@@ -19,10 +19,9 @@ class InstitutionController extends Controller
      */
     public function index()
     {   
-        //$institutions = Institution::all();
-        //return view('admin.institutions', ['institutions' => $institutions]);
+        $institutions = InstitutionResource::collection(Institution::all())->resolve(); 
 
-        return InstitutionResource::collection(Institution::all());
+        return view('admin.institutions', compact('institutions'));
     }
 
     /**
@@ -42,11 +41,11 @@ class InstitutionController extends Controller
 
         // Validação dos dados recebidos
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:institutions,name', // O nome tem quer ser unico
             'acronym' => 'required|string|max:10',
-            'email' => 'required|email|max:255|unique:institutions,email',
+            'email' => 'required|email|max:255|unique:institutions,email', // O email tem de ser unico
             'password' => 'required|string|min:8',
-            'phone' => 'required|string|max:11',
+            'phone' => 'required|string|max:11|unique:institutions,phone', // O telemovel tem de ser unico
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|string|max:255',
