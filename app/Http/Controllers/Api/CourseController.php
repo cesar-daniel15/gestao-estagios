@@ -34,10 +34,11 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        // Armazena um novo curso na db
         // Validacao dos dados recebidos
         $validator = Validator::make($request->all(), [
             'institution_id' => 'required|exists:institutions,id', // Validação do ID da instituição
-            'name' => 'required|string|max:255|unique:courses,name',
+            'name' => 'required|string|max:255|unique:courses,name', // O nome tem que ser unicos
             'acronym' => 'required|string|max:10',
         ]);
 
@@ -65,10 +66,10 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Course $course)
     {
-        // Retorna um curso espeficio pelo ID
-        return new CourseResource(Course::where('id',$id)->first());
+        // Retorna um curso espeficio 
+        return new CourseResource($course);
     }
 
     /**
@@ -82,9 +83,37 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Course $course)
     {
-        //
+        // Atualiza o curso existente
+        // Validacao dos dados recebidos para atualizacao
+        $validator = Validator::make($request->all(), [
+            'institution_id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'acronym' => 'required|string|max:10',
+        ]);
+
+        // Verifica se a validacao falhou
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        // Verifica se a validacao funcionou
+        $validated = $validator->validated();
+
+        // Faz o Update
+        $update = $course->update([
+            'institution_id' => $validated['institution_id'],
+            'name' => $validated['name'],
+            'acronym' => $validated['acronym'],
+        ]);
+
+        if($update){
+            return $this->response('Course updated successfully', 200, new CourseResource($course->load('institution')));
+        }
+        else{
+            return $this->response('Institution not updated', 400);
+        }
     }
 
     /**
@@ -92,6 +121,16 @@ class CourseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Remove um curso da db
+
+        $deleted = $course->delete();
+
+        // Verificar se foi apagado
+        if($deleted){
+            return $this->response('Course deleted successfully', 200);
+        }else
+        {
+            return $this->response('Course not deleted', 400);
+        }
     }
 }
