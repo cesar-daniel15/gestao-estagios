@@ -70,10 +70,13 @@ class InstitutionController extends Controller
 
         if($created){
             //return redirect()->route('institutions.index')->with('success', 'Institution created successfully')->with('new_institution', $created);
-            return $this->response('Institution created', 200, $created);
+            //return $this->response('Institution created', 200, $created);
+
+            return redirect()->route('institutions.index')->with('success', 'Instituição criada com sucesso!');
         }
         else{
-            return $this->error('Institution not create', 400);
+            //return $this->error('Institution not create', 400);
+            return redirect()->route('institutions.index')->with('error', 'Erro ao criar instituição.');
         }
     }
 
@@ -82,9 +85,10 @@ class InstitutionController extends Controller
      */
     public function show(Institution $institution)
     {
-        // Retorna uma insituicao específica 
+        // return new InstitutionResource($institution);
 
-        return new InstitutionResource($institution);
+        // Manda dados para a view
+        return view('admin.institutions', compact('institution'));
     }
 
     /**
@@ -153,10 +157,13 @@ class InstitutionController extends Controller
 
         // Verificar se foi apagada
         if($deleted){
-            return $this->response('Institution deleted successfully', 200);
+            // return $this->response('Institution deleted successfully', 200);
+            return redirect()->route('institutions.index')->with('success', 'Instituição excluída com sucesso!');
+
         }else
         {
-            return $this->response('Institution not deleted', 400);
+           // return $this->response('Institution not deleted', 400);
+            return redirect()->route('institutions.index')->with('error', 'Erro ao excluir a instituição.');
         }
     }
 }
