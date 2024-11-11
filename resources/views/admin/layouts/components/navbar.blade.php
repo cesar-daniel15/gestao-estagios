@@ -7,8 +7,7 @@
 
     <!-- User Info -->
     <div class="hidden md:flex items-center bg-white drop-shadow-md rounded-xl ">
-        <img src="" 
-            alt="User Image" class="w-12 h-12 rounded-full mx-5 my-2"> 
+        <img src="" alt="User Image" class="w-12 h-12 rounded-full mx-5 my-2 object-cover"> 
         <span class="text-gray-500 font-semibold me-5">Nickname</span>
     </div>
 </nav>
