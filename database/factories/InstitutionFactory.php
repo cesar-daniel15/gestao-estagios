@@ -64,7 +64,7 @@ class InstitutionFactory extends Factory
             'password' => bcrypt('password'), // Password (hashed)
             'phone' => $details['phone'], // Telefone da instituição
             'address' => $details['address'], // Morada da instituição
-            'logo' => $this->faker->imageUrl(640, 480, 'business'), // URL da imagem do logo
+            'logo' => null,
             'website' => $details['website'], // Website da instituição
             'token' => $this->faker->unique()->numberBetween(10000, 99999), // Token de 5 dígitos
             'account_is_verified' => $this->faker->boolean, // Conta verificada
