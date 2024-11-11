@@ -24,9 +24,9 @@ class InstitutionResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,
-            'logo' => $this->logo,
+            'logo' => $this->logo ? asset('storage/' . $this->logo) : asset('images/default-user.png'), // Se nao tiver imagem fica com a default
             'website' => $this->website,
-            'account_is_verified' => $this->account_is_verified ? 'Sim' : 'Não',  // Retorna "Sim" ou "Não" dependendo do estado de verificação
+            'account_is_verified' => $this->account_is_verified ? 'Sim' : 'Não',  // Retorna "Sim" ou "Não" dependendo do estado de verificacao
             // Formata as datas com o Carbon
             'last_login' => $this->last_login ? Carbon::parse($this->last_login)->locale('pt')->diffForHumans() : 'Nunca',
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
