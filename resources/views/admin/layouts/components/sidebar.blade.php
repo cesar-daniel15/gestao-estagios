@@ -9,14 +9,14 @@
 
 <!-- Sidebar -->
 <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen bg-white rounded-r-lg drop-shadow-2xl transition-transform transform -translate-x-full md:translate-x-0" aria-label="Sidebar">
-   <div class="flex flex-col h-full px-3 py-10 overflow-y-auto">
-      <a class="flex flex-col items-center justify-center mb-10">
+   <div class="flex flex-col h-full px-3 py-5 xl:py-10 overflow-y-auto">
+      <a class="flex flex-col items-center justify-center mb-1">
          <img src="{{ asset('images/icon.png') }}" alt="Gestão de Estágios Logo" class="h-[70px] mb-2"/>
-         <span class="hidden md:flex self-center text-xl font-extrabold text-sky-400">Gestão Estágios</span>
+         <span class="hidden xl:flex self-center text-xl font-extrabold text-sky-400">Gestão Estágios</span>
       </a>
 
       <div id="navbar-default" class="flex-grow px-2"> 
-         <ul class="space-y-2 lg:space-y-4">
+         <ul class="space-y-2 mt-5 xl:mt-10 xl:space-y-4">
             <!-- Home -->
             <li>
                <a href="{{ url('/admin') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
@@ -193,8 +193,8 @@
          </ul>
       </div>
    
-      <div id="navbar-default" class="flex flex-col px-3 justify-center h-full"> 
-         <ul class="space-y-4 mt-auto"> 
+      <div id="navbar-default" class="flex flex-col px-3 justify-end xl:justify-center h-full"> 
+         <ul class="space-y-2 mt-4 xl:mt-auto xl:space-y-4 "> 
             <li>
                <a href="#" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-yellow-400 group">
                   <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 24 24"  class="ms-2">
