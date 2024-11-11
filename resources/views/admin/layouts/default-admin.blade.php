@@ -22,7 +22,7 @@
             @include('admin.layouts.components.sidebar')
         @endif   
         <!-- Conteudo -->
-        <main class="ms-7 mt-[80px] md:m-10 md:ps-10 md:ml-64">
+        <main class="m-7 mt-[80px] md:m-10 md:ps-10 md:ml-64">
             <!-- Navbar -->
             @if ($showNavbar ?? true)
                 @include('admin.layouts.components.navbar')
