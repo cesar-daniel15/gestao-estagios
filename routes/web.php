@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InstitutionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request; 
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
 
+Route::get('/admin/users', [UserController::class, 'index']);
 
 Route::get('/', function () {
     return view('index');
@@ -26,10 +28,6 @@ Route::post('/admin/auth', function (Request $request) {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
 })->name('admin.dashboard');
-
-Route::get('/admin/users', function () {
-    return view('admin.users'); 
-})->name('admin.users');
 
 Route::get('/login', function () {
     return view('auth.login');
