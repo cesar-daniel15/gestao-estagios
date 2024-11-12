@@ -22,7 +22,7 @@ class InstitutionResource extends JsonResource
             'name' => $this->name,
             'acronym' => $this->acronym,
             'email' => $this->email,
-            'phone' => $this->phone,
+            'phone' => $this->formatPhone($this->phone),
             'address' => $this->address,
             'logo' => $this->logo ? asset('storage/' . $this->logo) : asset('images/default-user.png'), // Se nao tiver imagem fica com a default
             'website' => $this->website,
@@ -32,5 +32,15 @@ class InstitutionResource extends JsonResource
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
         ];
+    }
+
+    // Formata o phone em grupos de tres .
+    private function formatPhone($phone)
+    {
+        // Remove caracteres nao numéricos para formatar corretamente
+        $digits = preg_replace('/\D/', '', $phone);
+
+        // Divide em grupos de 3 e junta com um espaço entre eles
+        return implode(' ', str_split($digits, 3));
     }
 }
