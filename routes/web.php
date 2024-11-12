@@ -8,7 +8,10 @@ use App\Http\Middleware\DetectPostmanRequest;
 
 Route::get('/', function () { return view('index'); });
 
-Route::get('/admin/institutions', [InstitutionController::class, 'index']);
+Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('institutions.index');
+Route::put('admin/institutions/{institution}', [InstitutionController::class, 'update'])->name('institutions.update');
+Route::put('admin/institutions', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
+
 Route::get('/admin/users', [UserController::class, 'index']);
 
 Route::post('/admin/auth', function (Request $request) {
@@ -31,10 +34,6 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
 })->name('admin.dashboard');
 
-
-Route::get('/admin/institutions', function () {
-    return view('admin.institutions'); 
-})->name('admin.institutions');
 
 Route::get('/login', function () {
     return view('auth.login');
