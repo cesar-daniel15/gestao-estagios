@@ -8,9 +8,7 @@ use App\Http\Middleware\DetectPostmanRequest;
 
 Route::get('/', function () { return view('index'); });
 
-Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('institutions.index');
-Route::put('admin/institutions/{institution}', [InstitutionController::class, 'update'])->name('institutions.update');
-Route::put('admin/institutions', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
+Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions');
 
 Route::get('/admin/users', [UserController::class, 'index']);
 
