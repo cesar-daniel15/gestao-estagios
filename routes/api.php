@@ -4,11 +4,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InstitutionController; // Import do Controller Institution
 use App\Http\Controllers\Api\CourseController; // Import do Controller Course
+use App\Http\Controllers\AuthController; // Import do Controller Auth
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);  // Fazer Login
 
 // Grupo das rotas de InstitutionController
 Route::prefix('institutions')->group(function () {
