@@ -1,21 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
-use App\Http\Controllers\InstitutionController;
-use App\Http\Controllers\StudentController;
-=======
 use App\Http\Controllers\Api\InstitutionController;
 use App\Http\Controllers\UserController;
->>>>>>> 5d86a9d8735f758e5e1a65f5ecaeccfa3c242024
 use Illuminate\Http\Request; 
 use App\Http\Middleware\DetectPostmanRequest;
 
 Route::get('/', function () { return view('index'); });
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions');
-
-Route::get('/admin/students', [StudentController::class, 'index']);
 
 
 Route::get('/admin/users', [UserController::class, 'index']);
@@ -39,14 +32,6 @@ Route::get('/', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
 })->name('admin.dashboard');
-
-Route::get('/admin/users', function () {
-    return view('admin.users'); 
-})->name('admin.users');
-
-Route::get('/admin/students', function () {
-    return view('admin.students'); 
-})->name('admin.students');
 
 
 Route::get('/login', function () {
