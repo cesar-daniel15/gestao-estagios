@@ -30,6 +30,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'profile' => $profile,
             'email' => $this->email,
+            'logo' => $this->logo ? asset('storage/' . $this->logo) : asset('images/default-user.png'), // Se nao tiver imagem fica com a default
             'account_is_verified' => $this->account_is_verified ? 'Sim' : 'Não',  // Retorna "Sim" ou "Não" dependendo do estado de verificação
             'last_login' => $this->last_login ? Carbon::parse($this->last_login)->locale('pt')->diffForHumans() : 'Nunca',
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
