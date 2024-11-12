@@ -4,18 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InstitutionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request; 
+use App\Http\Middleware\DetectPostmanRequest;
+
+Route::get('/', function () { return view('index'); });
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index']);
-
 Route::get('/admin/users', [UserController::class, 'index']);
-
-Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/admin/auth', function () {
-    return view('admin.auth'); 
-})->name('admin.auth');
 
 Route::post('/admin/auth', function (Request $request) {
     // Verificar o codigo inserido e igual ao valor do .env
@@ -24,6 +18,14 @@ Route::post('/admin/auth', function (Request $request) {
         return redirect()->route('admin.dashboard');
     }
 })->name('admin.auth');
+
+Route::get('/admin/auth', function () {
+    return view('admin.auth'); 
+})->name('admin.auth');
+
+Route::get('/', function () {
+    return view('index');
+});
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
