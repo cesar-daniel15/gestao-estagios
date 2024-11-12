@@ -10,6 +10,7 @@ Route::get('/', function () { return view('index'); });
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions');
 
+
 Route::get('/admin/users', [UserController::class, 'index']);
 
 Route::post('/admin/auth', function (Request $request) {
