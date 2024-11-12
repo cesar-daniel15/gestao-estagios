@@ -104,7 +104,7 @@
                                             </svg>
                                         </a>
 
-                                        <!-- Botão Editar -->
+                                        <!-- Botão Update -->
                                         <a href="javascript:void(0)" onclick="updateModal({{ $institution['id'] }})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                                 <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
@@ -131,56 +131,63 @@
         </div>
     </div>
 
-    <!-- Modal Criar Nova Instituicao -->
+    <!-- Modal Criar Nova Instituição -->
     <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Instituição</h2>
 
-            <!-- Forma -->
+            <!-- Formulário de Criação -->
             <form action="{{ route('institutions.store') }}" method="POST">
                 @csrf
-                <div class="mb-4">
-                    <label for="name" class="block text-gray-600 mb-1">Nome</label>
-                    <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+
+                <!-- Grid de campos -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+
+                    <div>
+                        <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                        <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    </div>
+
+                    <div>
+                        <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                        <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-gray-600 mb-1">Email</label>
+                        <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-gray-600 mb-1">Password</label>
+                        <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    </div>
+
+                    <div>
+                        <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
+                        <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    </div>
+
+                    <div>
+                        <label for="address" class="block text-gray-600 mb-1">Morada</label>
+                        <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    </div>
+
+                    <div>
+                        <label for="website" class="block text-gray-600 mb-1">Website</label>
+                        <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
                 </div>
 
-                <div class="mb-4">
-                    <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
-                    <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-600 mb-1">Email</label>
-                    <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="password" class="block text-gray-600 mb-1">Password</label>
-                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
-                    <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="address" class="block text-gray-600 mb-1">Morada</label>
-                    <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="website" class="block text-gray-600 mb-1">Website</label>
-                    <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                </div>
-
-                <div class="flex justify-end">
+                <div class="flex justify-center">
                     <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeCreateModal()">Cancelar</button>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Registrar</button>
                 </div>
             </form>
         </div>
     </div>
+
 
     <!-- Modal de Visualização -->
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
@@ -213,52 +220,55 @@
     </div>
 
     <!-- Modal de Update -->
-    <div id="updateModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg w-11/12 md:w-1/3">
+    <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Instituição</h2>
 
             <!-- Formulário de Atualização -->
             <form id="updateForm" action="{{ route('institutions.update', $institution['id']) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <div class="mb-4">
-                    <label for="name" class="block text-gray-600 mb-1">Nome</label>
-                    <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                        <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('name', $institution['name'] ?? '') }}" required>
+                    </div>
 
-                <div class="mb-4">
-                    <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
-                    <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
+                    <div>
+                        <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                        <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('acronym', $institution['acronym'] ?? '') }}" required>
+                    </div>
 
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-600 mb-1">Email</label>
-                    <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
+                    <div>
+                        <label for="email" class="block text-gray-600 mb-1">Email</label>
+                        <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('email', $institution['email'] ?? '') }}" required>
+                    </div>
 
-                <div class="mb-4">
-                    <label for="password" class="block text-gray-600 mb-1">Password</label>
-                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
+                    <div>
+                        <label for="password" class="block text-gray-600 mb-1">Password</label>
+                        <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('password', '') }}">
+                    </div>
 
-                <div class="mb-4">
-                    <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
-                    <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
+                    <div>
+                        <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
+                        <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('phone', $institution['phone'] ?? '') }}" required>
+                    </div>
 
-                <div class="mb-4">
-                    <label for="address" class="block text-gray-600 mb-1">Morada</label>
-                    <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
+                    <div>
+                        <label for="address" class="block text-gray-600 mb-1">Morada</label>
+                        <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('address', $institution['address'] ?? '') }}" required>
+                    </div>
 
-                <div class="mb-4">
-                    <label for="website" class="block text-gray-600 mb-1">Website</label>
-                    <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                </div>
+                    <div>
+                        <label for="website" class="block text-gray-600 mb-1">Website</label>
+                        <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('website', $institution['website'] ?? '') }}">
+                    </div>
 
-                <div class="mb-4">
-                    <label for="logo" class="block text-gray-600 mb-1">Logo</label>
-                    <input type="file" id="logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    <div>
+                        <label for="logo" class="block text-gray-600 mb-1">Logo</label>
+                        <input type="file" id="logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('logo', $institution['logo'] ?? '') }}">
+                    </div>
                 </div>
 
                 <div class="flex justify-end">
@@ -266,8 +276,10 @@
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
                 </div>
             </form>
-        </div>
+        </div> 
     </div>
+
+
 
     <!-- Modal de Confirmação -->
     <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
@@ -350,7 +362,7 @@
         // Abrir Modal para fazer update de uma Instituicao
         function updateModal(id) {
             const updateModal = document.getElementById('updateModal');
-
+            
             updateModal.style.display = 'flex';
             updateModal.classList.remove('hidden');
         }
