@@ -31,6 +31,11 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
 })->name('admin.dashboard');
 
+
+Route::get('/admin/institutions', function () {
+    return view('admin.institutions'); 
+})->name('admin.institutions');
+
 Route::get('/login', function () {
     return view('auth.login');
 });
