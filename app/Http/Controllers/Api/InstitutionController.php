@@ -86,7 +86,7 @@ class InstitutionController extends Controller
                 return $this->response('Institution created', 200, $created);
             }
 
-            return redirect()->route('institutions.index')->with('success', 'Instituição criada com sucesso!');
+            return redirect()->route('admin.institutions')->with('success', 'Instituição criada com sucesso!');
         }
         else{
 
@@ -95,7 +95,7 @@ class InstitutionController extends Controller
                 return $this->error('Institution not created', 400);
             }
 
-            return redirect()->route('institutions.index')->with('error', 'Erro ao criar instituição.');
+            return redirect()->route('admin.institutions')->with('error', 'Erro ao criar instituição.');
         }
     }
 
@@ -113,7 +113,7 @@ class InstitutionController extends Controller
             return new InstitutionResource($institution);
         }
 
-        // Mnada os dados para a view
+        // Manda os dados para a view
         return view('admin.institutions', compact('institution'));
     }
 
@@ -185,7 +185,7 @@ class InstitutionController extends Controller
                 return $this->response('Institution not updated', 400);
             }
             
-            return redirect()->route('institutions.index')->with('error', 'Erro ao atualizar a instituição.');
+            return redirect()->route('admin.institutions')->with('error', 'Erro ao atualizar a instituição.');
         }
     }
 
@@ -208,7 +208,7 @@ class InstitutionController extends Controller
                 return $this->response('Institution deleted successfully', 200);
             }
 
-            return redirect()->route('institutions.index')->with('success', 'Instituição excluída com sucesso!');
+            return redirect()->route('admin.institutions')->with('success', 'Instituição excluída com sucesso!');
 
         }else
         {
@@ -216,7 +216,7 @@ class InstitutionController extends Controller
             if ($isPostmanRequest || request()->wantsJson()) {
                 return $this->response('Institution not deleted', 400);
             }
-            return redirect()->route('institutions.index')->with('error', 'Erro ao excluir a instituição.');
+            return redirect()->route('admin.institutions')->with('error', 'Erro ao excluir a instituição.');
         }
     }
 }
