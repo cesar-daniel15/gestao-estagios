@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Institution extends Model
 {
+    use HasFactory;
+
     // Defenicao dos atributos da tabela 
     protected $fillable = [
         'name',

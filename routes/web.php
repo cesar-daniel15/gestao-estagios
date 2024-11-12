@@ -1,22 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\StudentController;
+=======
+use App\Http\Controllers\Api\InstitutionController;
+use App\Http\Controllers\UserController;
+>>>>>>> 5d86a9d8735f758e5e1a65f5ecaeccfa3c242024
 use Illuminate\Http\Request; 
+use App\Http\Middleware\DetectPostmanRequest;
 
-Route::get('/admin/institutions', [InstitutionController::class, 'index']);
+Route::get('/', function () { return view('index'); });
+
+Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions');
 
 Route::get('/admin/students', [StudentController::class, 'index']);
 
 
-Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/admin/auth', function () {
-    return view('admin.auth'); // A view do formulário
-})->name('admin.login');
+Route::get('/admin/users', [UserController::class, 'index']);
 
 Route::post('/admin/auth', function (Request $request) {
     // Verificar o codigo inserido e igual ao valor do .env
@@ -25,6 +27,14 @@ Route::post('/admin/auth', function (Request $request) {
         return redirect()->route('admin.dashboard');
     }
 })->name('admin.auth');
+
+Route::get('/admin/auth', function () {
+    return view('admin.auth'); 
+})->name('admin.auth');
+
+Route::get('/', function () {
+    return view('index');
+});
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
