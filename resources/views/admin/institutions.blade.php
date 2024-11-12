@@ -96,15 +96,16 @@
                                 <td class="p-4 text-gray-600">{{ $institution['account_is_verified'] }}</td>
                                 <td class="p-4 text-gray-600">
                                     <div class="flex space-x-2 justify-center">
+                                        
                                         <!-- Botão Ver -->
-                                        <a href="{{ route('institutions.show', $institution['id']) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <a href="javascript:void(0)" onclick="openViewModal(this)" data-id="{{ $institution['id'] }}" data-name="{{ $institution['name'] }}" data-acronym="{{ $institution['acronym'] }}" data-email="{{ $institution['email'] }}" data-phone="{{ $institution['phone'] }}" data-address="{{ $institution['address'] }}" data-website="{{ $institution['website'] }}" data-verified="{{ $institution['account_is_verified'] }}" data-lastlogin="{{ $institution['last_login'] }}" data-createdat="{{ $institution['created_at'] }}" data-logo="{{ $institution['logo'] }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                                 <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                             </svg>
                                         </a>
 
                                         <!-- Botão Editar -->
-                                        <a href="{{ route('institutions.update', $institution['id']) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <a href="javascript:void(0)" onclick="updateModal({{ $institution['id'] }})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                                 <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                             </svg>
@@ -181,6 +182,93 @@
         </div>
     </div>
 
+    <!-- Modal de Visualização -->
+    <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg relative">
+            <div class="modal-content">
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $institution['name'] }}</h2>
+                <div class="modal-body flex text-base">
+                    <!-- Coluna da imagem -->
+                    <div class="flex-shrink-0 w-1/2 flex items-center justify-center">
+                        <img src="{{ asset($institution['logo']) }}" alt="Logo" class="w-full h-48 object-contain rounded">
+                    </div>
+                    
+                    <!-- Coluna com as informações -->
+                    <div class="ml-4 w-1/2">
+                        <p><strong>Acrónimo:</strong> {{ $institution['acronym'] }}</p>
+                        <p><strong>Email:</strong> {{ $institution['email'] }}</p>
+                        <p><strong>Contacto:</strong> {{ $institution['phone'] }}</p>
+                        <p><strong>Morada:</strong>  {{ $institution['address'] }}</p>
+                        <p><strong>Website:</strong> <a href="{{ $institution['website'] }}" target="_blank">{{ $institution['website'] }}</a></p>
+                        <p><strong>Conta Verificada:</strong> {{ $institution['account_is_verified'] }}</p>
+                        <p><strong>Último Login:</strong> {{ $institution['last_login'] }}</p>
+                        <p><strong>Data de Criação:</strong> {{ $institution['created_at'] }}</p>
+                    </div>
+                </div>
+                <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
+                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeViewModal()">×</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Update -->
+    <div id="updateModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg w-11/12 md:w-1/3">
+            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Instituição</h2>
+
+            <!-- Formulário de Atualização -->
+            <form id="updateForm" action="{{ route('institutions.update', $institution['id']) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                    <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                    <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-600 mb-1">Email</label>
+                    <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-600 mb-1">Password</label>
+                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
+                    <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="address" class="block text-gray-600 mb-1">Morada</label>
+                    <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="website" class="block text-gray-600 mb-1">Website</label>
+                    <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                </div>
+
+                <div class="mb-4">
+                    <label for="logo" class="block text-gray-600 mb-1">Logo</label>
+                    <input type="file" id="logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeUpdateModal()">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modal de Confirmação -->
     <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg w-1/3">
@@ -192,40 +280,22 @@
         </div>
     </div>
 
-    <!-- Modal de Visualizacao -->
-    <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg">
-            <div class="modal-content">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $institution['name'] }}</h2>
-                <div class="modal-body flex text-base">
-                    <!-- Coluna da imagem -->
-                    <div class="flex-shrink-0 w-1/3">
-                        <img src="{{ $institution['logo'] }}" alt="Logo" class="w-full h-52 object-cover">
-                    </div>
-                    
-                    <!-- Coluna com as informações -->
-                    <div class="ml-4 w-2/3">
-                        <p><strong>Acrónimo:</strong> {{ $institution['acronym'] }}</p>
-                        <p><strong>Email:</strong> {{ $institution['email'] }}</p>
-                        <p><strong>Contacto:</strong> {{ $institution['phone'] }}</p>
-                        <p><strong>Morada:</strong>  {{ $institution['address'] }}</p>
-                        <p><strong>Website:</strong> <a href="{{ $institution['website'] }}" target="_blank">{{ $institution['website'] }}</a></p>
-                        <p><strong>Conta Verificada:</strong> {{ $institution['account_is_verified'] }}</p>
-                        <p><strong>Último Login:</strong> {{ $institution['last_login'] }}</p>
-                        <p><strong>Data de Criação:</strong> {{ $institution['created_at'] }}</p>
-                    </div>
-                </div>
-                <div class="modal-footer flex justify-end">
-                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeViewModal()">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
          // Abrir Modal para ver uma Instituicao
-        function openViewModal() {
+        function openViewModal(element) {
             const viewModal = document.querySelector('#viewModal');
+
+            // Atualiza o conteúdo do modal com os dados da instituição
+            viewModal.querySelector('h2').textContent = element.dataset.name;
+            viewModal.querySelector('img').src = element.dataset.logo || 'path/to/default/logo.png';
+            viewModal.querySelector('p:nth-child(1)').innerHTML = `<strong>Acrónimo:</strong> ${element.dataset.acronym}`;
+            viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Email:</strong> ${element.dataset.email}`;
+            viewModal.querySelector('p:nth-child(3)').innerHTML = `<strong>Contacto:</strong> ${element.dataset.phone}`;
+            viewModal.querySelector('p:nth-child(4)').innerHTML = `<strong>Morada:</strong> ${element.dataset.address}`;
+            viewModal.querySelector('p:nth-child(5)').innerHTML = `<strong>Website:</strong> <a href="${element.dataset.website}" target="_blank">${element.dataset.website}</a>`;
+            viewModal.querySelector('p:nth-child(6)').innerHTML = `<strong>Conta Verificada:</strong> ${element.dataset.verified}`;
+            viewModal.querySelector('p:nth-child(7)').innerHTML = `<strong>Último Login:</strong> ${element.dataset.lastlogin}`;
+            viewModal.querySelector('p:nth-child(8)').innerHTML = `<strong>Data de Criação:</strong> ${element.dataset.createdat}`;
 
             viewModal.style.display = 'flex';
             viewModal.classList.remove('hidden'); 
@@ -275,6 +345,21 @@
             const deleteModal = document.querySelector('#deleteModal');
             
             deleteModal.style.display = 'none'; 
+        }
+
+        // Abrir Modal para fazer update de uma Instituicao
+        function updateModal(id) {
+            const updateModal = document.getElementById('updateModal');
+
+            updateModal.style.display = 'flex';
+            updateModal.classList.remove('hidden');
+        }
+
+        // Função para fechar o modal de atualização
+        function closeUpdateModal() {
+            const updateModal = document.getElementById('updateModal');
+            updateModal.style.display = 'none';
+            updateModal.classList.add('hidden');
         }
 
     </script>
