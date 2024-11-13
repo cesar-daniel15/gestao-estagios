@@ -131,38 +131,38 @@ class InstitutionController extends Controller
         // Verifica se a request vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
         
-        // Validação dos dados recebidos para atualização
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:institutions,name,' . $institution->id,
             'acronym' => 'required|string|max:10',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:institutions,email,' . $institution->id,
             'password' => 'nullable|string|min:8', 
-            'phone' => 'required|string|max:11',
+            'phone' => 'required|string|max:11|unique:institutions,phone,' . $institution->id,
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|string|max:255',
         ]);
-        // Verifica se a validação falhou
+
+        // Verifica se a validacao falhou
         if ($validator->fails()) {
             if ($isPostmanRequest || request()->wantsJson()) {
                 return $this->error('Validation failed', 422, $validator->errors());
             }
-            
-            // Passa os erros de validação para a sessão
+
+            // Passa os erros para a session
             session()->flash('error', 'Erro de validação!');
             session()->flash('validation_errors', $validator->errors()->all());
     
-            // Redireciona de volta com os erros armazenados na sessão
+            // Redireciona de volta com os erros armazenados na session
             return redirect()->back()->withInput();
         }
     
         // Dados validados
         $validated = $validator->validated();
     
-        // Prepara os dados para atualização
+        // Prepara os dados para atualizar
         $dataToUpdate = [];
     
-        // Verifique se cada campo foi alterado e se sim, adicione ao array de atualização
+        // Verifique se cada campo foi alterado e se sim adiciona os ao array de atualizacao
         if ($validated['name'] != $institution->name) {
             $dataToUpdate['name'] = $validated['name'];
         }
@@ -191,36 +191,34 @@ class InstitutionController extends Controller
             $dataToUpdate['logo'] = $validated['logo'];
         }
     
-        // Atualiza a senha apenas se ela foi fornecida e diferente
+        // Atualiza a password apenas se ela foi introduzida no input com valor diferente
         if (!empty($validated['password']) && $validated['password'] != $institution->password) {
             $dataToUpdate['password'] = bcrypt($validated['password']);
         }
     
-        // Verifica se existem dados para atualização
-        if (empty($dataToUpdate)) {
-            if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('No data to update', 200);
-            }
-            return redirect()->route('admin.institutions.index')->with('info', 'Nenhuma alteração foi feita.');
-        }
-    
-        // Realiza a atualização
+        // Faz a atualizacao
         $update = $institution->update($dataToUpdate);
     
-        // Verifica se a atualização foi bem-sucedida
+        // Verifica se a atualizacao ocorreu
         if ($update) {
+            // Se for uma Request do Postman Retorna em Json
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('Institution updated successfully', 200, new InstitutionResource($institution));
+
+                return $this->response('Institution updated successfully', 200, new InstitutionResource($institution)); //  200 OK → Utilizado quando uma request é bem sucedida
+
             }
-            return redirect()->route('admin.institutions.index')->with('success', 'Instituição atualizada com sucesso.');
+            return redirect()->route('admin.institutions.index')->with('success', 'Instituição atualizada com sucesso!');
+
         } else {
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('Institution not updated', 400);
+
+                return $this->response('Institution not updated', 400); // 400 Bad Request  → Indica que a request é invalida devido a problemas 
+
             }
-            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao atualizar a instituição.');
+            
+            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao atualizar a instituição');
         }
     }
-    
 
     /**
      * Remove the specified resource from storage
@@ -236,20 +234,20 @@ class InstitutionController extends Controller
 
         // Verificar se foi apagada
         if($deleted){
-            // Ve foi uma request do Postman
+            // Ve for uma request do Postman retorna em JSON
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('Institution deleted successfully', 200);
+                return $this->response('Institution deleted successfully', 200); //  200 OK → Utilizado quando uma request é bem sucedida
             }
 
             return redirect()->route('admin.institutions.index')->with('success', 'Instituição excluída com sucesso!');
 
         }else
         {
-            // Ve foi uma request do Postman
+            // Ve for uma request do Postman retorna em JSON
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('Institution not deleted', 400);
+                return $this->response('Institution not deleted', 400); // 400 Bad Request  → Indica que a request é invalida devido a problemas 
             }
-            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao excluir a instituição.');
+            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao excluir a instituição');
         }
     }
 }
