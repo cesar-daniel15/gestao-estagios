@@ -212,7 +212,7 @@
                 </div>
 
                 <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
-                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeViewModal()">×</button>
+                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
                 </div>
 
             </div>
@@ -271,7 +271,7 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeUpdateModal()">Cancelar</button>
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
                 </div>
 
@@ -286,18 +286,33 @@
             <h2 class="text-md font-smibold py-10 text-center text-gray-500">Tem a certeza que deseja apagar a instituição?</h2>
 
             <div class="flex justify-center space-x-5">
-                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2.5 font-bold rounded" onclick="closeDeleteModal()">Cancelar</button>
+                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2.5 font-bold rounded" onclick="closeModal('deleteModal')">Cancelar</button>
                 <button id="confirmDeleteButton" class="bg-red-500 hover:bg-red-600 text-white p-2.5 font-bold rounded">Confirmar</button>
             </div>
         </div>
     </div>
 
     <script>
-         // Abrir Modal para ver uma Instituicao
-        function openViewModal(element) {
-            const viewModal = document.querySelector('#viewModal');
+        // Funcao para abrir o modal
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            modal.classList.remove('hidden');
+        }
 
-            // Atualiza o conteúdo do modal com os dados da instituição
+        // Funcao  para fechar o modal
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+        }
+
+        // Abrir Modal para visualizar uma Instituicao
+        function openViewModal(element) {
+            openModal('viewModal');  
+
+            const viewModal = document.getElementById('viewModal');
+
             viewModal.querySelector('h2').textContent = element.dataset.name;
             viewModal.querySelector('img').src = element.dataset.logo || 'path/to/default/logo.png';
             viewModal.querySelector('p:nth-child(1)').innerHTML = `<strong>Acrónimo:</strong> ${element.dataset.acronym}`;
@@ -308,101 +323,45 @@
             viewModal.querySelector('p:nth-child(6)').innerHTML = `<strong>Conta Verificada:</strong> ${element.dataset.verified}`;
             viewModal.querySelector('p:nth-child(7)').innerHTML = `<strong>Último Login:</strong> ${element.dataset.lastlogin}`;
             viewModal.querySelector('p:nth-child(8)').innerHTML = `<strong>Data de Criação:</strong> ${element.dataset.createdat}`;
-
-            viewModal.style.display = 'flex';
-            viewModal.classList.remove('hidden'); 
-        }
-
-        // Fechar Modal para ver uma Instituicao
-        function closeViewModal() {
-            const viewModal = document.querySelector('#viewModal');
-            
-            viewModal.style.display = 'none'; 
-        }
-
-        // Abrir Modal para criar nova Instituicao
-        function openCreateModal() {
-            const createModal = document.querySelector('#createModal');
-
-            createModal.style.display = 'flex';
-            createModal.classList.remove('hidden'); 
-        }
-
-        // Fechar Modal para criar nova Instituicao
-        function closeCreateModal() {
-            const createModal = document.querySelector('#createModal');
-            
-            createModal.style.display = 'none'; 
         }
 
         // Abrir Modal para apagar uma Instituicao
         function openDeleteModal(id) {
-            const deleteModal = document.querySelector('#deleteModal');
-            const deleteForm = document.querySelector('#deleteForm' + id);
-            
-            // Exibe o modal
-            deleteModal.style.display = 'flex';
-            deleteModal.classList.remove('hidden'); 
+            openModal('deleteModal');  
 
-            // Seleciona o botão de confirmação
-            const confirmDeleteButton = deleteModal.querySelector('#confirmDeleteButton');
-            
+            const deleteForm = document.querySelector('#deleteForm' + id);
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
             confirmDeleteButton.onclick = function () {
-                deleteForm.submit(); // Submete o formulário 
+                deleteForm.submit(); // Submete o Form 
             };
         }
 
-        // Fechar Modal para apagar uma Instituicao
-        function closeDeleteModal() {
-            const deleteModal = document.querySelector('#deleteModal');
-            
-            deleteModal.style.display = 'none'; 
+        // Abrir Modal para fazer uma atualizacao de uma Instituicao
+        function updateModal(id, name, acronym, email, phone, address, website) {
+            openModal('updateModal');  
+
+            document.getElementById('update_name').value = name;
+            document.getElementById('update_acronym').value = acronym;
+            document.getElementById('update_email').value = email;
+            document.getElementById('update_phone').value = phone;
+            document.getElementById('update_address').value = address;
+            document.getElementById('update_website').value = website;
+
+            const updateForm = document.getElementById('updateForm');
+            updateForm.action = `/admin/institutions/${id}`; 
         }
 
-        // Abrir Modal para fazer update de uma Instituicao
-        function updateModal(id, name, acronym, email, phone, address, website, logo) {
-    const updateModal = document.getElementById('updateModal');
-    
-    // Preencher os campos do formulário com os dados da instituição
-    document.getElementById('update_name').value = name;
-    document.getElementById('update_acronym').value = acronym;
-    document.getElementById('update_email').value = email;
-    document.getElementById('update_phone').value = phone;
-    document.getElementById('update_address').value = address;
-    document.getElementById('update_website').value = website;
-
-    updateModal.style.display = 'flex';
-    updateModal.classList.remove('hidden');
-}
-
-        // Função para fechar o modal de atualização
-        function closeUpdateModal() {
-            const updateModal = document.getElementById('updateModal');
-            updateModal.style.display = 'none';
-            updateModal.classList.add('hidden');    
-        }
-
+        // Funcao de pesquisa de Instituicoes
         function searchInstitution() {
-            // Captura o valor do campo de busca
             const searchValue = document.getElementById('search').value.toLowerCase();
-
-            // Seleciona todas as linhas da tabela
             const rows = document.querySelectorAll("#institutionTable tbody tr");
 
-            // Itera pelas linhas e exibe/esconde de acordo com o valor da pesquisa
             rows.forEach(row => {
                 const institutionName = row.querySelector(".institution-name").textContent.toLowerCase();
-
-                // Verifica se o nome da instituição contém o termo pesquisado
-                if (institutionName.includes(searchValue)) {
-                    row.style.display = "";  // Exibe a linha
-                } else {
-                    row.style.display = "none";  // Esconde a linha
-                }
+                row.style.display = institutionName.includes(searchValue) ? "" : "none";
             });
         }
-
-
     </script>
+
 
 @endsection
