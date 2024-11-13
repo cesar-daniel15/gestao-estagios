@@ -47,57 +47,49 @@ class InstitutionController extends Controller
      */
     public function store(Request $request)
     {
-        // Armazena uma nova instituicao na db
-
-        // Verifica se a request vem do Postman
+        // Verifica se a requisição vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
-
+    
         // Validação dos dados recebidos
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:institutions,name', // O nome tem quer ser unico
+            'name' => 'required|string|max:255|unique:institutions,name',
             'acronym' => 'required|string|max:10',
-            'email' => 'required|email|max:255|unique:institutions,email', // O email tem de ser unico
+            'email' => 'required|email|max:255|unique:institutions,email',
             'password' => 'required|string|min:8',
-            'phone' => 'required|string|max:11|unique:institutions,phone', // O telemovel tem de ser unico
+            'phone' => 'required|string|max:11|unique:institutions,phone',
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|string|max:255',
         ]);
-
-        // Ve foi uma request do Postman
-        if ($isPostmanRequest || request()->wantsJson()) {
-             // Verifica se a validação falhou
-            if ($validator->fails()) {
-                return $this->error('Data Invalid', 422, $validator->errors());
-            }
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-
+        
         // Hash da password
         $data = $validator->validated();
         $data['password'] = bcrypt($data['password']);
-
-        // Cria o novo recurso
-        $created = Institution::create($data);
-
-        if($created){
-
-            // Ve foi uma request do Postman
+    
+        // Cria a nova instituição
+        $institution = Institution::create($data);
+    
+        if ($institution) {
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('Institution created', 200, $created);
+                return $this->response('Institution created', 200, new InstitutionResource($institution));
             }
-
-            return redirect()->route('admin.institutions')->with('success', 'Instituição criada com sucesso!');
-        }
-        else{
-
-            // Ve foi uma request do Postman
+    
+            // Redireciona para a lista de instituições com uma mensagem de sucesso
+            return redirect()->route('admin.institutions.index')->with('success', 'Instituição criada com sucesso!');
+        } else {
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->error('Institution not created', 400);
+                return $this->response('Institution not created', 400);
             }
-
-            return redirect()->route('admin.institutions')->with('error', 'Erro ao criar instituição.');
+    
+            // Redireciona para a lista de instituições com uma mensagem de erro
+            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao criar instituição.');
         }
     }
+    
 
     /**
      * Display the specified resource.
@@ -114,7 +106,7 @@ class InstitutionController extends Controller
         }
 
         // Manda os dados para a view
-        return view('admin.institutions', compact('institution'));
+        return view('admin.institutions.index', compact('institution'));
     }
 
     /**
@@ -185,7 +177,7 @@ class InstitutionController extends Controller
                 return $this->response('Institution not updated', 400);
             }
             
-            return redirect()->route('admin.institutions')->with('error', 'Erro ao atualizar a instituição.');
+            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao atualizar a instituição.');
         }
     }
 
@@ -208,7 +200,7 @@ class InstitutionController extends Controller
                 return $this->response('Institution deleted successfully', 200);
             }
 
-            return redirect()->route('admin.institutions')->with('success', 'Instituição excluída com sucesso!');
+            return redirect()->route('admin.institutions.index')->with('success', 'Instituição excluída com sucesso!');
 
         }else
         {
@@ -216,7 +208,7 @@ class InstitutionController extends Controller
             if ($isPostmanRequest || request()->wantsJson()) {
                 return $this->response('Institution not deleted', 400);
             }
-            return redirect()->route('admin.institutions')->with('error', 'Erro ao excluir a instituição.');
+            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao excluir a instituição.');
         }
     }
 }

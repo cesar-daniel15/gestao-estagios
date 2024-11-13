@@ -3,37 +3,43 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InstitutionController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request; 
-use App\Http\Middleware\DetectPostmanRequest;
+use Illuminate\Http\Request;
 
-Route::get('/', function () { return view('index'); });
+Route::get('/', function () { 
+    return view('index'); 
+});
 
-Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions');
+// Rota para listar todas as instituições
+Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions.index');
 
+// Rota para mostrar uma instituição específica
+Route::get('/admin/institutions/{institution}', [InstitutionController::class, 'show'])->name('admin.institutions.show');
 
-Route::get('/admin/users', [UserController::class, 'index']);
+// Rota para criar uma nova instituição
+Route::post('/admin/institutions', [InstitutionController::class, 'store'])->name('admin.institutions.store'); 
 
+// Rota para atualizar uma instituição
+Route::put('/admin/institutions/{institution}', [InstitutionController::class, 'update'])->name('admin.institutions.update');
+
+// Rota para excluir uma instituição
+Route::delete('/admin/institutions/{institution}', [InstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
+
+// Outras rotas do admin
+Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
+
+// Rota de autenticação do admin
 Route::post('/admin/auth', function (Request $request) {
-    // Verificar o codigo inserido e igual ao valor do .env
     if ($request->input('code') === env('ADMIN_CODE')) {
-        // Redirecionar para o painel de admin se o código estiver correto
         return redirect()->route('admin.dashboard');
     }
 })->name('admin.auth');
 
-Route::get('/admin/auth', function () {
-    return view('admin.auth'); 
-})->name('admin.auth');
-
-Route::get('/', function () {
-    return view('index');
-});
-
+// Dashboard do admin
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
 })->name('admin.dashboard');
 
-
+// Outras rotas de login, registro e etc.
 Route::get('/login', function () {
     return view('auth.login');
 });
@@ -65,4 +71,3 @@ Route::get('/coordenadores', function () {
 Route::get('/aluno', function () {
     return view('aluno');
 });
-

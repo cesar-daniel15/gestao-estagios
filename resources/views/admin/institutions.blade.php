@@ -105,14 +105,14 @@
                                         </a>
 
                                         <!-- Botão Update -->
-                                        <a href="javascript:void(0)" onclick="updateModal({{ $institution['id'] }})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <button type="button" onclick="updateModal({{ $institution['id'] }})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                                 <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                             </svg>
-                                        </a>
+                                        </button>
 
                                         <!-- Botão Apagar -->
-                                        <form id="deleteForm{{ $institution['id'] }}" action="{{ route('institutions.destroy', $institution['id']) }}" method="POST">
+                                        <form id="deleteForm{{ $institution['id'] }}" action="{{ route('admin.institutions.destroy', $institution['id']) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" onclick="openDeleteModal({{ $institution['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
@@ -137,7 +137,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Instituição</h2>
 
             <!-- Formulário de Criação -->
-            <form action="{{ route('institutions.store') }}" method="POST">
+            <form action="{{ route('admin.institutions.store') }}" method="POST">
                 @csrf
 
                 <!-- Grid de campos -->
@@ -225,14 +225,14 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Instituição</h2>
 
             <!-- Formulário de Atualização -->
-            <form id="updateForm" action="{{ route('institutions.update', $institution['id']) }}" method="POST">
+            <form id="updateForm" action="{{ route('admin.institutions.update', 'placeholder_id') }}" method="POST">
                 @csrf
                 @method('PUT')
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div>
                         <label for="name" class="block text-gray-600 mb-1">Nome</label>
-                        <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('name', $institution['name'] ?? '') }}" required>
+                        <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('name', $institution['name'] ?? '') }}" required>
                     </div>
 
                     <div>
@@ -278,8 +278,6 @@
             </form>
         </div> 
     </div>
-
-
 
     <!-- Modal de Confirmação -->
     <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
