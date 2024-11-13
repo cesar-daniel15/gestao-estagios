@@ -15,13 +15,17 @@ export default {
                 sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans],
             },
             animation: {
-                'slide-out': 'slideOut 10s ease-in-out forwards', // 10 secs. com transicao suave
+                'slide-in-out': 'slideIn 0.5s ease-out, slideOut 0.5s ease-in 3s forwards',
             },
             keyframes: {
                 slideOut: {
                     '0%': { transform: 'translateX(0)', opacity: '1' },
-                    '90%': { transform: 'translateX(0)', opacity: '1' }, // Deixa o alerta visível até 90% do tempo
-                    '100%': { transform: 'translateX(100%)', opacity: '0' }, // Slide rapido no final
+                    '90%': { transform: 'translateX(0)', opacity: '1' }, 
+                    '100%': { transform: 'translateX(100%)', opacity: '0' }, 
+                },
+                slideIn: {
+                    '0%': { transform: 'translateX(100%)', opacity: '0' },
+                    '100%': { transform: 'translateX(0)', opacity: '1' },   
                 },
             },
         },
