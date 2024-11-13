@@ -22,24 +22,23 @@ class InstitutionController extends Controller
         // Verifica se a request vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
         
-        // Ve foi uma request do Postman
+        // Ve for uma request do Postman retorna em JSON 
         if ($isPostmanRequest || request()->wantsJson()) {
-            // Retorna em JSON 
             return InstitutionResource::collection(Institution::all());
         }
     
-        // Retorna a view com as instituicoes
         $institutions = InstitutionResource::collection(Institution::all())->resolve();
+
+        // Retorna para view com as instituicoes
         return view('admin.institutions', compact('institutions'));
     }
     
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // Retorna um form para criar um novo recurso
+        
     }
 
     /**
@@ -50,7 +49,7 @@ class InstitutionController extends Controller
         // Verifica se a requisição vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
     
-        // Validação dos dados recebidos
+        // Validação dos dados 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:institutions,name',
             'acronym' => 'required|string|max:10',
@@ -63,9 +62,10 @@ class InstitutionController extends Controller
         ], [
             'name.unique' => 'O nome da instituição já está em uso.',
             'email.unique' => 'O e-mail da instituição já está em uso.',
-            'phone.unique' => 'O telefone da instituição já está em uso.',d
+            'phone.unique' => 'O telefone da instituição já está em uso.',
         ]);
-    
+        
+        // Se a valicao falhar
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -78,22 +78,25 @@ class InstitutionController extends Controller
         $institution = Institution::create($data);
     
         if ($institution) {
+            
+            // Se for uma Request do Postman retorna em JSON
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('Institution created', 200, new InstitutionResource($institution));
+                return $this->response('Institution created', 200, new InstitutionResource($institution)); //  200 OK → Utilizado quando uma request é bem sucedida
             }
     
-            // Redireciona para a lista de instituições com uma mensagem de sucesso
+            // Da returna para a pagina das instituicoes com uma mensagem de success
             return redirect()->route('admin.institutions.index')->with('success', 'Instituição criada com sucesso!');
         } else {
+
+            // Se for uma Reuqest do Postman retorna em JSON
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('Institution not created', 400);
+                return $this->response('Institution not created', 400); // 400 Bad Request  → Indica que a request é invalida devido a problemas 
             }
     
-            // Redireciona para a lista de instituições com uma mensagem de erro
-            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao criar instituição.');
+            // Da return para a pagina das instituicoes com uma mensagem de error
+            return redirect()->route('admin.institutions.index')->with('error', 'Erro ao criar instituição');
         }
     }
-    
 
     /**
      * Display the specified resource.
@@ -103,13 +106,12 @@ class InstitutionController extends Controller
         // Verifica se a request vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
     
-        // Ve foi uma request do Postman
+        // Ve foi uma request do Postman e retorna os dados em JSON
         if ($isPostmanRequest || request()->wantsJson()) {
-            // Retorna os dados em JSON
             return new InstitutionResource($institution);
         }
 
-        // Manda os dados para a view
+        // Return para a view com os dados
         return view('admin.institutions.index', compact('institution'));
     }
 
@@ -118,7 +120,7 @@ class InstitutionController extends Controller
      */
     public function edit(string $id)
     {
-        // Retorna um form para editar um recurso
+        
     }
 
     /**
@@ -126,68 +128,99 @@ class InstitutionController extends Controller
      */
     public function update(Request $request, Institution $institution)
     {
-        // Atualiza uma instituicao existente
-        
         // Verifica se a request vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
         
         // Validação dos dados recebidos para atualização
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:institutions,name,' . $institution->id, // Ignora a exclusividade do ID
+            'name' => 'required|string|max:255',
             'acronym' => 'required|string|max:10',
-            'email' => 'required|email|max:255|unique:institutions,email,' . $institution->id, // Ignora a exclusividade do ID
-            'password' => 'nullable|string|min:8', // Permite que a password seja opcional
-            'phone' => 'required|string|max:11|unique:institutions,phone,' . $institution->id, // Ignora a exclusividade do ID
+            'email' => 'required|email|max:255',
+            'password' => 'nullable|string|min:8', 
+            'phone' => 'required|string|max:11',
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|string|max:255',
-        ],[
-            'name.unique' => 'O nome da instituição já está em uso.',
-            'email.unique' => 'O e-mail da instituição já está em uso.',
-            'phone.unique' => 'O telefone da instituição já está em uso.',
         ]);
-
-        // Verifica se a validation falhou
+        // Verifica se a validação falhou
         if ($validator->fails()) {
-
-            // Ve foi uma request do Postman
             if ($isPostmanRequest || request()->wantsJson()) {
                 return $this->error('Validation failed', 422, $validator->errors());
             }
+            
+            // Passa os erros de validação para a sessão
+            session()->flash('error', 'Erro de validação!');
+            session()->flash('validation_errors', $validator->errors()->all());
     
-            return redirect()->back()->withErrors($validator)->withInput();
+            // Redireciona de volta com os erros armazenados na sessão
+            return redirect()->back()->withInput();
         }
-
-        // Verifica se a validacao falhou
+    
+        // Dados validados
         $validated = $validator->validated();
-
-        // Faz o Update
-        $update = $institution->update([
-            'name' => $validated['name'],
-            'acronym' => $validated['acronym'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'phone' => $validated['phone'],
-            'address' => $validated['address'],
-            'website' => $validated['website'],
-            'logo' => $validated['logo'],
-        ]);
-
-        if($update){
-            // Ve foi uma request do Postman
+    
+        // Prepara os dados para atualização
+        $dataToUpdate = [];
+    
+        // Verifique se cada campo foi alterado e se sim, adicione ao array de atualização
+        if ($validated['name'] != $institution->name) {
+            $dataToUpdate['name'] = $validated['name'];
+        }
+    
+        if ($validated['acronym'] != $institution->acronym) {
+            $dataToUpdate['acronym'] = $validated['acronym'];
+        }
+    
+        if ($validated['email'] != $institution->email) {
+            $dataToUpdate['email'] = $validated['email'];
+        }
+    
+        if ($validated['phone'] != $institution->phone) {
+            $dataToUpdate['phone'] = $validated['phone'];
+        }
+    
+        if ($validated['address'] != $institution->address) {
+            $dataToUpdate['address'] = $validated['address'];
+        }
+    
+        if ($validated['website'] != $institution->website) {
+            $dataToUpdate['website'] = $validated['website'];
+        }
+    
+        if ($validated['logo'] != $institution->logo) {
+            $dataToUpdate['logo'] = $validated['logo'];
+        }
+    
+        // Atualiza a senha apenas se ela foi fornecida e diferente
+        if (!empty($validated['password']) && $validated['password'] != $institution->password) {
+            $dataToUpdate['password'] = bcrypt($validated['password']);
+        }
+    
+        // Verifica se existem dados para atualização
+        if (empty($dataToUpdate)) {
+            if ($isPostmanRequest || request()->wantsJson()) {
+                return $this->response('No data to update', 200);
+            }
+            return redirect()->route('admin.institutions.index')->with('info', 'Nenhuma alteração foi feita.');
+        }
+    
+        // Realiza a atualização
+        $update = $institution->update($dataToUpdate);
+    
+        // Verifica se a atualização foi bem-sucedida
+        if ($update) {
             if ($isPostmanRequest || request()->wantsJson()) {
                 return $this->response('Institution updated successfully', 200, new InstitutionResource($institution));
             }
-        }
-        else{
-            // Ve foi uma request do Postman
+            return redirect()->route('admin.institutions.index')->with('success', 'Instituição atualizada com sucesso.');
+        } else {
             if ($isPostmanRequest || request()->wantsJson()) {
                 return $this->response('Institution not updated', 400);
             }
-            
             return redirect()->route('admin.institutions.index')->with('error', 'Erro ao atualizar a instituição.');
         }
     }
+    
 
     /**
      * Remove the specified resource from storage
