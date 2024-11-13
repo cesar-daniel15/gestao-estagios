@@ -60,6 +60,10 @@ class InstitutionController extends Controller
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|string|max:255',
+        ], [
+            'name.unique' => 'O nome da instituição já está em uso.',
+            'email.unique' => 'O e-mail da instituição já está em uso.',
+            'phone.unique' => 'O telefone da instituição já está em uso.',d
         ]);
     
         if ($validator->fails()) {
@@ -137,6 +141,10 @@ class InstitutionController extends Controller
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|string|max:255',
+        ],[
+            'name.unique' => 'O nome da instituição já está em uso.',
+            'email.unique' => 'O e-mail da instituição já está em uso.',
+            'phone.unique' => 'O telefone da instituição já está em uso.',
         ]);
 
         // Verifica se a validation falhou
