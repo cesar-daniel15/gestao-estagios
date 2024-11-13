@@ -9,25 +9,16 @@ Route::get('/', function () {
     return view('index'); 
 });
 
-// Rota para listar todas as instituições
-Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions.index');
-
-// Rota para mostrar uma instituição específica
-Route::get('/admin/institutions/{institution}', [InstitutionController::class, 'show'])->name('admin.institutions.show');
-
-// Rota para criar uma nova instituição
-Route::post('/admin/institutions', [InstitutionController::class, 'store'])->name('admin.institutions.store'); 
-
-// Rota para atualizar uma instituição
-Route::put('/admin/institutions/', [InstitutionController::class, 'update'])->name('admin.institutions.update');
-
-// Rota para excluir uma instituição
-Route::delete('/admin/institutions/{institution}', [InstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
+Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions.index'); // Rota para mostrar todas as intituicoes
+Route::get('/admin/institutions/{institution}', [InstitutionController::class, 'show'])->name('admin.institutions.show'); // Rota para mostrar uma instituicao específica
+Route::post('/admin/institutions', [InstitutionController::class, 'store'])->name('admin.institutions.store'); // Rota para criar uma nova instituicao
+Route::put('/admin/institutions/{institution}', [InstitutionController::class, 'update'])->name('admin.institutions.update'); // Rota para atualizar uma instituicao
+Route::delete('/admin/institutions/{institution}', [InstitutionController::class, 'destroy'])->name('admin.institutions.destroy'); // Rota para excluir uma instituicao
 
 // Outras rotas do admin
 Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
 
-// Rota de autenticação do admin
+// Rota de auth do admin
 Route::post('/admin/auth', function (Request $request) {
     if ($request->input('code') === env('ADMIN_CODE')) {
         return redirect()->route('admin.dashboard');
