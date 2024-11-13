@@ -18,13 +18,6 @@ Route::delete('/admin/institutions/{institution}', [InstitutionController::class
 // Outras rotas do admin
 Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
 
-// Rota de auth do admin
-Route::post('/admin/auth', function (Request $request) {
-    if ($request->input('code') === env('ADMIN_CODE')) {
-        return redirect()->route('admin.dashboard');
-    }
-})->name('admin.auth');
-
 // Dashboard do admin
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
