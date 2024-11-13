@@ -12,7 +12,17 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Open Sans"', 'sans-serif'],
+                sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans],
+            },
+            animation: {
+                'slide-out': 'slideOut 10s ease-in-out forwards', // 10 secs. com transicao suave
+            },
+            keyframes: {
+                slideOut: {
+                    '0%': { transform: 'translateX(0)', opacity: '1' },
+                    '90%': { transform: 'translateX(0)', opacity: '1' }, // Deixa o alerta visível até 90% do tempo
+                    '100%': { transform: 'translateX(100%)', opacity: '0' }, // Slide rapido no final
+                },
             },
         },
     },
