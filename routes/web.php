@@ -19,7 +19,7 @@ Route::get('/admin/institutions/{institution}', [InstitutionController::class, '
 Route::post('/admin/institutions', [InstitutionController::class, 'store'])->name('admin.institutions.store'); 
 
 // Rota para atualizar uma instituição
-Route::put('/admin/institutions/{institution}', [InstitutionController::class, 'update'])->name('admin.institutions.update');
+Route::put('/admin/institutions/', [InstitutionController::class, 'update'])->name('admin.institutions.update');
 
 // Rota para excluir uma instituição
 Route::delete('/admin/institutions/{institution}', [InstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
