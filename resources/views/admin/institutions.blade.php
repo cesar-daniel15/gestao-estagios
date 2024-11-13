@@ -6,38 +6,44 @@
 
 @section('content')
 
-    <!-- Alertas -->
+    <!-- Alerta de Sucesso -->
     @if(session('success'))
-        <div class="flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:border-green-800" role="alert">
-            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <div class="ms-3 text-sm font-medium">
-                {{ session('success') }}
-            </div>
-            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-border-3" aria-label="Close">
-                <span class="sr-only">Dispensar</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        <div class="fixed top-5 right-5 max-w-xs p-4 text-white bg-green-600 border-l-4 border-green-800 rounded-lg shadow-lg animate-fade-out opacity-100 transition-opacity animate-slide-out">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                 </svg>
-            </button>
+                <span class="font-semibold">Sucesso!</span>
+            </div>
+            <p class="text-sm">{{ session('success') }}</p>
         </div>
     @endif
 
     @if(session('error'))
-        <div class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800" role="alert">
-            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <div class="ms-3 text-sm font-medium">
-                {{ session('error') }}
-            </div>
-            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-border-2" aria-label="Close">
-                <span class="sr-only">Dispensar</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        <div class="fixed top-5 right-5 max-w-xs p-4 text-white bg-red-600 border-l-4 border-red-800 rounded-lg shadow-lg animate-fade-out opacity-100 transition-opacity animate-slide-out">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                 </svg>
-            </button>
+                <span class="font-semibold">Erro!</span>
+            </div>
+            <p class="text-sm">{{ session('error') }}</p>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="fixed top-5 right-5 max-w-xs p-4 text-white bg-red-600 border-l-4 border-red-800 rounded-lg shadow-lg animate-fade-out opacity-100 transition-opacity animate-slide-out">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="font-semibold">Erro!</span>
+            </div>
+            <ul class="text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
@@ -105,7 +111,7 @@
                                         </a>
 
                                         <!-- Botão Update -->
-                                        <button type="button" onclick="updateModal({{ $institution['id'] }})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <button type="button" onclick="updateModal({{ $institution['id'] }}, '{{ $institution['name'] }}', '{{ $institution['acronym'] }}', '{{ $institution['email'] }}', '{{ $institution['phone'] }}', '{{ $institution['address'] }}', '{{ $institution['website'] }}', '{{ $institution['logo'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                                 <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                             </svg>
@@ -144,32 +150,32 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
-                        <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                        <label for="name" class="block text-gray-600 mb-1">* Nome</label>
                         <input type="text" id="name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
-                        <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                        <label for="acronym" class="block text-gray-600 mb-1">* Acrónimo</label>
                         <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
-                        <label for="email" class="block text-gray-600 mb-1">Email</label>
+                        <label for="email" class="block text-gray-600 mb-1">* Email</label>
                         <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
-                        <label for="password" class="block text-gray-600 mb-1">Password</label>
+                        <label for="password" class="block text-gray-600 mb-1">* Password</label>
                         <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
-                        <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
+                        <label for="phone" class="block text-gray-600 mb-1">* Contacto</label>
                         <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
-                        <label for="address" class="block text-gray-600 mb-1">Morada</label>
+                        <label for="address" class="block text-gray-600 mb-1">* Morada</label>
                         <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
@@ -178,12 +184,18 @@
                         <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
 
+                    <div>
+                        <label for="logo" class="block text-gray-600 mb-1">Logo</label>
+                        <input type="file" id="logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
                 </div>
+                <p class="text-center my-2">* Obrigatorio</p>
 
                 <div class="flex justify-center">
                     <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeCreateModal()">Cancelar</button>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Registrar</button>
                 </div>
+                
             </form>
         </div>
     </div>
@@ -194,7 +206,7 @@
         <div class="bg-white p-6 rounded-lg relative">
             <div class="modal-content">
                 <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $institution['name'] }}</h2>
-                <div class="modal-body flex text-base">
+                <div class="modal-body flex text-base px-5">
                     <!-- Coluna da imagem -->
                     <div class="flex-shrink-0 w-1/2 flex items-center justify-center">
                         <img src="{{ asset($institution['logo']) }}" alt="Logo" class="w-full h-48 object-contain rounded">
@@ -225,49 +237,49 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Instituição</h2>
 
             <!-- Formulário de Atualização -->
-            <form id="updateForm" action="{{ route('admin.institutions.update', 'placeholder_id') }}" method="POST">
+            <form id="updateForm" action="{{ route('admin.institutions.update', $institution['id']) }}" method="POST">
                 @csrf
                 @method('PUT')
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div>
                         <label for="name" class="block text-gray-600 mb-1">Nome</label>
-                        <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('name', $institution['name'] ?? '') }}" required>
+                        <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
                         <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
-                        <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('acronym', $institution['acronym'] ?? '') }}" required>
+                        <input type="text" id="update_acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
                         <label for="email" class="block text-gray-600 mb-1">Email</label>
-                        <input type="email" id="email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('email', $institution['email'] ?? '') }}" required>
+                        <input type="email" id="update_email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
                         <label for="password" class="block text-gray-600 mb-1">Password</label>
-                        <input type="password" id="password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('password', '') }}">
+                        <input type="password" id="update_password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
 
                     <div>
                         <label for="phone" class="block text-gray-600 mb-1">Contacto</label>
-                        <input type="text" id="phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('phone', $institution['phone'] ?? '') }}" required>
+                        <input type="text" id="update_phone" name="phone" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
                         <label for="address" class="block text-gray-600 mb-1">Morada</label>
-                        <input type="text" id="address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('address', $institution['address'] ?? '') }}" required>
+                        <input type="text" id="update_address" name="address" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
                         <label for="website" class="block text-gray-600 mb-1">Website</label>
-                        <input type="url" id="website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('website', $institution['website'] ?? '') }}">
+                        <input type="url" id="update_website" name="website" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
 
                     <div>
                         <label for="logo" class="block text-gray-600 mb-1">Logo</label>
-                        <input type="file" id="logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ old('logo', $institution['logo'] ?? '') }}">
+                        <input type="file" id="update_logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
                 </div>
 
@@ -291,6 +303,7 @@
     </div>
 
     <script>
+        
          // Abrir Modal para ver uma Instituicao
         function openViewModal(element) {
             const viewModal = document.querySelector('#viewModal');
@@ -358,9 +371,17 @@
         }
 
         // Abrir Modal para fazer update de uma Instituicao
-        function updateModal(id) {
+        function updateModal(id, name, acronym, email, phone, address, website, logo) {
             const updateModal = document.getElementById('updateModal');
             
+            // Preencher os campos do formulário com os dados da instituição
+            document.getElementById('update_name').value = name;
+            document.getElementById('update_acronym').value = acronym;
+            document.getElementById('update_email').value = email;
+            document.getElementById('update_phone').value = phone;
+            document.getElementById('update_address').value = address;
+            document.getElementById('update_website').value = website;
+
             updateModal.style.display = 'flex';
             updateModal.classList.remove('hidden');
         }
@@ -369,7 +390,7 @@
         function closeUpdateModal() {
             const updateModal = document.getElementById('updateModal');
             updateModal.style.display = 'none';
-            updateModal.classList.add('hidden');
+            updateModal.classList.add('hidden');    
         }
 
     </script>
