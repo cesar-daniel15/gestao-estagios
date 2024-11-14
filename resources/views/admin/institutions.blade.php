@@ -129,7 +129,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Instituição</h2>
 
             <!-- Form -->
-            <form action="{{ route('admin.institutions.store') }}" method="POST">
+            <form action="{{ route('admin.institutions.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
@@ -225,7 +225,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Instituição</h2>
 
             <!-- Form -->
-            <form id="updateForm" action="{{ route('admin.institutions.update', $institution['id']) }}" method="POST">
+            <form id="updateForm" action="{{ route('admin.institutions.update', $institution['id']) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -312,9 +312,11 @@
             openModal('viewModal');  
 
             const viewModal = document.getElementById('viewModal');
+            const logoUrl = element.dataset.logo || 'images/uploads/default-user.png';
+
 
             viewModal.querySelector('h2').textContent = element.dataset.name;
-            viewModal.querySelector('img').src = element.dataset.logo || 'path/to/default/logo.png';
+            viewModal.querySelector('img').src = logoUrl;  // Aqui usamos o valor correto da URL do logo
             viewModal.querySelector('p:nth-child(1)').innerHTML = `<strong>Acrónimo:</strong> ${element.dataset.acronym}`;
             viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Email:</strong> ${element.dataset.email}`;
             viewModal.querySelector('p:nth-child(3)').innerHTML = `<strong>Contacto:</strong> ${element.dataset.phone}`;
@@ -336,10 +338,11 @@
             };
         }
 
-        // Abrir Modal para fazer uma atualizacao de uma Instituicao
-        function updateModal(id, name, acronym, email, phone, address, website) {
+       // Abrir Modal para fazer uma atualizacao de uma Instituicao
+        function updateModal(id, name, acronym, email, phone, address, website, logo) {
             openModal('updateModal');  
 
+            // Preenche os campos de texto do formulário
             document.getElementById('update_name').value = name;
             document.getElementById('update_acronym').value = acronym;
             document.getElementById('update_email').value = email;
@@ -347,9 +350,20 @@
             document.getElementById('update_address').value = address;
             document.getElementById('update_website').value = website;
 
+            // Exibe a imagem atual do logo se existir
+            const logoImgElement = document.getElementById('current_logo');
+            if (logo) {
+                logoImgElement.src = logo;  // Define o caminho da logo atual
+                logoImgElement.style.display = 'block';  // Exibe a imagem atual
+            } else {
+                logoImgElement.style.display = 'none';  // Se não houver logo, oculta a imagem
+            }
+
+            // Configura a ação do formulário
             const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/admin/institutions/${id}`; 
+            updateForm.action = `/admin/institutions/${id}`;  // Define a URL do formulário de atualização
         }
+
 
         // Funcao de pesquisa de Instituicoes
         function searchInstitution() {
