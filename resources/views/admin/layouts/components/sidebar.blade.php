@@ -60,7 +60,7 @@
                      </li>
                      <!-- Submenu para Cursos -->
                      <li>
-                        <a href="{{ url('/admin/institutions/courses') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                        <a href="{{ url('/admin/courses') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
                            <span class="ms-5 text-sm">Cursos</span>
                         </a>
                      </li>

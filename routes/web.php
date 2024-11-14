@@ -55,3 +55,7 @@ Route::get('/coordenadores', function () {
 Route::get('/aluno', function () {
     return view('aluno');
 });
+
+Route::get('/admin/courses', function () {
+    return view('admin.courses');
+});
