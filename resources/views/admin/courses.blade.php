@@ -29,11 +29,8 @@
                     <tr class="bg-gray-100">
                         <th class="p-4 border-b text-gray-600">ID</th>
                         <th class="p-4 border-b text-gray-600">Nome</th>
-                        <th class="p-4 border-b text-gray-600">Perfil</th>
-                        <th class="p-4 border-b text-gray-600">Email</th>
-                        <th class="p-4 border-b text-gray-600">Conta Verificada</th>
-                        <th class="p-4 border-b text-gray-600">Último Login</th>
-                        <th class="p-4 border-b text-gray-600">Data de Criação</th>
+                        <th class="p-4 border-b text-gray-600">Acrónimo</th>
+                        <th class="p-4 border-b text-gray-600">Ações</th>
                     </tr>
                 </thead>
             </table>
