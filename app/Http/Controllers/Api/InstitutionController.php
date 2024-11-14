@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use App\Http\Resources\InstitutionResource; // Import do Resource
 use Illuminate\Support\Facades\Validator; // Import do Validator
 use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Storage;
+
 
 class InstitutionController extends Controller
 {
@@ -73,7 +75,20 @@ class InstitutionController extends Controller
         // Hash da password
         $data = $validator->validated();
         $data['password'] = bcrypt($data['password']);
-    
+        
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+        
+            // Verifica se o arquivo é uma imagem válida
+            if ($file->isValid()) {
+                // Define o caminho onde o arquivo será armazenado
+                $path = $file->store('images/uploads', 'public'); // Armazena no disco público
+        
+                // Armazena a URL corretamente
+                $data['logo'] = Storage::url($path); // Gera a URL correta
+            }
+        }
+
         // Cria a nova instituição
         $institution = Institution::create($data);
     
@@ -187,8 +202,17 @@ class InstitutionController extends Controller
             $dataToUpdate['website'] = $validated['website'];
         }
     
-        if ($validated['logo'] != $institution->logo) {
-            $dataToUpdate['logo'] = $validated['logo'];
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+        
+            // Verifica se o arquivo é uma imagem válida
+            if ($file->isValid()) {
+                // Define o caminho onde o arquivo será armazenado
+                $path = $file->store('images/uploads', 'public'); // Armazena no disco público
+        
+                // Armazena a URL corretamente
+                $data['logo'] = Storage::url($path); // Gera a URL correta
+            }
         }
     
         // Atualiza a password apenas se ela foi introduzida no input com valor diferente
