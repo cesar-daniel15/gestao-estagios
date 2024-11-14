@@ -12,13 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->id(); // Chave primária
-            $table->foreignId('institution_id')->constrained(); // Chave estrangeira para 'institutions'
-            $table->string('name'); // Nome do curso
-            $table->string('acronym'); // Acrônimo do curso
-            $table->timestamps(); // Gera created_at e updated_at automaticamente
+            $table->id();
+            $table->unsignedBigInteger('institution_id'); // FK Key do Id da instituição
+            $table->string('name'); // Nome
+            $table->string('acronym'); // Acronimo
+            $table->timestamps();
+
+            // Define a FK para a tabela institutions
+            $table->foreign('institution_id')->references('id')->on('institutions')->onDelete('cascade');
         });
     }
+
     /**
      * Reverse the migrations.
      */

@@ -137,7 +137,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Instituição</h2>
 
             <!-- Formulário de Criação -->
-            <form action="{{ route('institutions.store') }}" method="POST">
+            <form action="{{ route('admin.institutions.store') }}" method="POST">
                 @csrf
 
                 <!-- Grid de campos -->
@@ -225,7 +225,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Instituição</h2>
 
             <!-- Formulário de Atualização -->
-            <form id="updateForm" action="{{ route('institutions.update', $institution['id']) }}" method="POST">
+            <form id="updateForm" action="{{ route('admin.institutions.update', $institution['id']) }}" method="POST">
                 @csrf
                 @method('PUT')
                 
