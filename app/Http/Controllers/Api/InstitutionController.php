@@ -58,7 +58,7 @@ class InstitutionController extends Controller
             'phone' => 'required|string|max:11|unique:institutions,phone',
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
-            'logo' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ], [
             'name.unique' => 'O nome da instituição já está em uso.',
             'email.unique' => 'O e-mail da instituição já está em uso.',
@@ -139,7 +139,7 @@ class InstitutionController extends Controller
             'phone' => 'required|string|max:11|unique:institutions,phone,' . $institution->id,
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
-            'logo' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
         // Verifica se a validacao falhou
