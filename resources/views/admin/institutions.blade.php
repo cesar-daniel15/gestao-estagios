@@ -312,11 +312,9 @@
             openModal('viewModal');  
 
             const viewModal = document.getElementById('viewModal');
-            const logoUrl = element.dataset.logo || 'images/uploads/default-user.png';
-
 
             viewModal.querySelector('h2').textContent = element.dataset.name;
-            viewModal.querySelector('img').src = logoUrl;  // Aqui usamos o valor correto da URL do logo
+            viewModal.querySelector('img').src = element.dataset.logo;
             viewModal.querySelector('p:nth-child(1)').innerHTML = `<strong>Acrónimo:</strong> ${element.dataset.acronym}`;
             viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Email:</strong> ${element.dataset.email}`;
             viewModal.querySelector('p:nth-child(3)').innerHTML = `<strong>Contacto:</strong> ${element.dataset.phone}`;
@@ -338,11 +336,10 @@
             };
         }
 
-       // Abrir Modal para fazer uma atualizacao de uma Instituicao
+        // Abrir Modal para fazer uma atualizacao de uma Instituicao
         function updateModal(id, name, acronym, email, phone, address, website, logo) {
             openModal('updateModal');  
 
-            // Preenche os campos de texto do formulário
             document.getElementById('update_name').value = name;
             document.getElementById('update_acronym').value = acronym;
             document.getElementById('update_email').value = email;
@@ -350,20 +347,13 @@
             document.getElementById('update_address').value = address;
             document.getElementById('update_website').value = website;
 
-            // Exibe a imagem atual do logo se existir
-            const logoImgElement = document.getElementById('current_logo');
-            if (logo) {
-                logoImgElement.src = logo;  // Define o caminho da logo atual
-                logoImgElement.style.display = 'block';  // Exibe a imagem atual
-            } else {
-                logoImgElement.style.display = 'none';  // Se não houver logo, oculta a imagem
-            }
+            // Defina a imagem atual do logo
+            const currentLogo = document.getElementById('current_logo');
+            currentLogo.src = logo; // A URL do logo atual
 
-            // Configura a ação do formulário
             const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/admin/institutions/${id}`;  // Define a URL do formulário de atualização
+            updateForm.action = `/admin/institutions/${id}`; 
         }
-
 
         // Funcao de pesquisa de Instituicoes
         function searchInstitution() {
