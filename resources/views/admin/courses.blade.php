@@ -121,7 +121,7 @@
 
 <!-- Modal para registro -->
 <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
-<div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
         <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Novo Curso</h2>
 
         <!-- Form -->
@@ -129,23 +129,23 @@
             @csrf
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             
-            <div>
-                <label for="name" class="block text-gray-600 mb-1">*Nome da Instituição</label>
-                <input list type="text" name="name" id="name" required class="form-input mt-1 block w-full">
+                <div>
+                    <label for="institution" class="block text-gray-600 mb-1">*Nome da Instituição</label>
+                    <input list name="institution_name" id="institution" required class="form-input mt-1 block w-full border rounded-md py-2 px-4">
+                </div>
+
+                <div>
+                    <label for="course_name" class="block text-gray-600 mb-1">*Nome do Curso</label>
+                    <input type="text" name="name" id="course_name" required class="form-input mt-1 block w-full border rounded-md py-2 px-4">
+                </div>
+
+                <div>
+                    <label for="acronym" class="block text-gray-600 mb-1">*Acrónimo</label>
+                    <input type="text" name="acronym" id="acronym" required class="form-input mt-1 block w-full border rounded-md py-2 px-4">
+                </div>
             </div>
 
-            <div>
-                <label for="name" class="block text-gray-600 mb-1">*Nome do Curso</label>
-                <input type="text" name="name" id="name" required class="form-input mt-1 block w-full">
-            </div>
-
-            <div>
-                <label for="acronym" class="block text-gray-600 mb-1">*Acrónimo</label>
-                <input type="text" name="acronym" id="acronym" required class="form-input mt-1 block w-full">
-            </div>
-        </div>
-
-        <p class="text-center my-2">* Obrigatorio</p>
+            <p class="text-center my-2">* Obrigatório</p>
 
             <div class="flex justify-center">
                 <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('createModal')">Cancelar</button>
@@ -159,7 +159,7 @@
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
             <div class="bg-white p-6 rounded-lg relative">
                 <div class="modal-content">
-                    <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $course['name'] }}</h2>
+                    <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $course['institution']['name'] }}</h2>
                     <div class="modal-body flex text-base px-5">
 
                         <!-- Lado com as informações -->
