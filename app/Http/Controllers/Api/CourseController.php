@@ -4,21 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Course; // Import do Model Course
-use App\Http\Resources\CourseResource; // Import do Resource
-use Illuminate\Support\Facades\Validator; // Import do Validator
-use App\Traits\HttpResponses;
+use App\Models\Course;
+use App\Models\Institution;  // Importando o modelo Institution
+use App\Http\Resources\CourseResource;
+use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
-    use HttpResponses;
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return CourseResource::collection(Course::all());
+        // Recupera todos os cursos com os dados relacionados de instituição
+        $courses = CourseResource::collection(Course::all())->resolve();
+
+        // Retorna para view com os cursos
+        return view('admin.courses', compact('courses'));
     }
 
     /**
@@ -26,7 +28,11 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        // Recupera todas as instituições para que possam ser associadas aos cursos
+        $institutions = Institution::all();
+        
+        // Exibe o formulário de criação com as instituições
+        return view('admin.courses.create', compact('institutions'));
     }
 
     /**
@@ -34,103 +40,77 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        // Armazena um novo curso na db
-        // Validacao dos dados recebidos
+        // Validação dos dados recebidos
         $validator = Validator::make($request->all(), [
-            'institution_id' => 'required|exists:institutions,id', // Validação do ID da instituição
-            'name' => 'required|string|max:255|unique:courses,name', // O nome tem que ser unicos
+            'name' => 'required|string|max:255',
             'acronym' => 'required|string|max:10',
+            'institution_id' => 'required|exists:institutions,id',  // Valida se a instituição existe
+            'description' => 'nullable|string|max:1000',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Criação do curso, incluindo o ID da instituição
+        Course::create([
+            'name' => $request->input('name'),
+            'acronym' => $request->input('acronym'),
+            'institution_id' => $request->input('institution_id'), // Inclui o institution_id
+            'description' => $request->input('description'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        // Verifica se a validacao falhou
-        if ($validator->fails()) {
-            return $this->error('Data Invalid', 422, $validator->errors());
-        }
-
-        // Verifica se o nome do curso ja existe
-        if (Course::where('name', $request->name)->exists()) {
-            return $this->error('Course already exists', 409);
-        }
-
-        // Cria o novo recurso
-        $created = Course::create($validator->validated());
-
-        if($created){
-            return $this->response('Course created', 201, new CourseResource($created->load('institution')));
-        }
-        else{
-            return $this->error('Course not create', 400);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Course $course)
-    {
-        // Retorna um curso espeficio 
-        return new CourseResource($course);
+        // Redireciona para a lista de cursos com mensagem de sucesso
+        return redirect()->route('admin.courses.index')->with('success', 'Curso criado com sucesso!');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        // 
+        // Recupera o curso e as instituições para a edição
+        $course = Course::findOrFail($id);
+        $institutions = Institution::all();
+        
+        return view('admin.courses.edit', compact('course', 'institutions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, $id)
     {
-        // Atualiza o curso existente
-        // Validacao dos dados recebidos para atualizacao
+        // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'institution_id' => 'required|integer',
             'name' => 'required|string|max:255',
             'acronym' => 'required|string|max:10',
+            'institution_id' => 'required|exists:institutions,id',  // Verifica se a instituição existe
+            'description' => 'nullable|string|max:1000',
         ]);
 
-        // Verifica se a validacao falhou
         if ($validator->fails()) {
-            return $this->error('Validation failed', 422, $validator->errors());
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Verifica se a validacao funcionou
-        $validated = $validator->validated();
+        // Atualiza o curso
+        $course = Course::findOrFail($id);
+        $course->update($request->all());
 
-        // Faz o Update
-        $update = $course->update([
-            'institution_id' => $validated['institution_id'],
-            'name' => $validated['name'],
-            'acronym' => $validated['acronym'],
-        ]);
-
-        if($update){
-            return $this->response('Course updated successfully', 200, new CourseResource($course->load('institution')));
-        }
-        else{
-            return $this->response('Institution not updated', 400);
-        }
+        return redirect()->route('admin.courses.index')->with('success', 'Curso atualizado com sucesso!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        // Remove um curso da db
+        // Remove o curso
+        $course = Course::findOrFail($id);
+        $course->delete();
 
-        $deleted = $course->delete();
-
-        // Verificar se foi apagado
-        if($deleted){
-            return $this->response('Course deleted successfully', 200);
-        }else
-        {
-            return $this->response('Course not deleted', 400);
-        }
+        return redirect()->route('admin.courses.index')->with('success', 'Curso excluído com sucesso!');
     }
 }
