@@ -16,23 +16,29 @@ class CourseController extends Controller
      */
     public function index()
     {
-        // Recupera todos os cursos com os dados relacionados de instituição
-        $courses = CourseResource::collection(Course::all())->resolve();
-
-        // Retorna para view com os cursos
+        // Recupera os cursos com as instituições relacionadas
+        $courses = Course::with('institution')->get();
+    
+        // Aplica o resource para formatação
+        $courses = CourseResource::collection($courses)->resolve();
+    
+        // Retorna para a view com os cursos
         return view('admin.courses', compact('courses'));
     }
+
+    // App\Models\Course.php
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class);
+    }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // Recupera todas as instituições para que possam ser associadas aos cursos
-        $institutions = Institution::all();
-        
-        // Exibe o formulário de criação com as instituições
-        return view('admin.courses.create', compact('institutions'));
+
     }
 
     /**

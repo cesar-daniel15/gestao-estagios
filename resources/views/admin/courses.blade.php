@@ -76,7 +76,7 @@
                         <td class="p-4 text-gray-600">{{ $course['institution']['name'] ?? 'N/A' }}</td> <!-- Verifica se a chave existe -->
                         <td class="p-4 text-gray-600">{{ $course['name'] }}</td>
                         <td class="p-4 text-gray-600">{{ $course['acronym'] }}</td>
-                        <td class="p-4 text-gray-600">
+                        <td class="p-4 te xt-gray-600">
                         <div class="flex space-x-2 justify-center">
     
                         <div class="flex space-x-2 justify-center">
@@ -159,13 +159,13 @@
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
             <div class="bg-white p-6 rounded-lg relative">
                 <div class="modal-content">
-                    <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $course['institution']['name'] }}</h2>
+                    <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $course['name'] }}</h2>
                     <div class="modal-body flex text-base px-5">
 
                         <!-- Lado com as informações -->
-                        <div class="ml-4 w-1/2">
+                        <div class="ml-4 space-y-4 flex flex-col">
                             <p><strong>ID:</strong> {{ $course['id'] }}</p>
-                            <p><strong>Instituição:</strong> {{ $course['institution']['name'] ?? 'N/A' }}</p>
+                            <p><strong>Instituição:</strong> {{ $course['institution']['name'] }}</p>
                             <p><strong>Nome do Curso:</strong> {{ $course['name'] }}</p>
                             <p><strong>Acrónimo:</strong> {{ $course['acronym'] }}</p>
                         </div>
@@ -246,7 +246,7 @@
 
         viewModal.querySelector('h2').textContent = element.dataset.name;
         viewModal.querySelector('p:nth-child(1)').innerHTML = `<strong>ID:</strong> ${element.dataset.id}`;
-        viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Instituição:</strong> ${element.dataset.institution}`;
+        viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Instituição:</strong> ${element.dataset.institution.name}`;
         viewModal.querySelector('p:nth-child(3)').innerHTML = `<strong>Nome do Curso:</strong> ${element.dataset.name}`;
         viewModal.querySelector('p:nth-child(4)').innerHTML = `<strong>Acrónimo:</strong> ${element.dataset.acronym}`;
     }
