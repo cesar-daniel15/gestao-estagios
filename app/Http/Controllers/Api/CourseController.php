@@ -17,13 +17,13 @@ class CourseController extends Controller
     public function index()
     {
         // Recupera os cursos com as instituições relacionadas
-        $courses = Course::with('institution')->get();
+        $institutions = Institution::with('institution')->get();
     
         // Aplica o resource para formatação
         $courses = CourseResource::collection($courses)->resolve();
     
         // Retorna para a view com os cursos
-        return view('admin.courses', compact('courses'));
+        return view('admin.courses', compact('courses'),('institutions'));
     }
 
     // App\Models\Course.php
