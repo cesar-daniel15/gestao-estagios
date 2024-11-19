@@ -83,7 +83,8 @@
     
                             <!-- Botão Ver -->
                             <a href="javascript:void(0)" onclick="openViewModal(this)" 
-                            data-id="{{ $course['id'] }}" 
+                            data-id="{{ $course['id'] }}"
+                            data-institution_id="{{ $course['institution']['name'] }}"
                             data-name="{{ $course['name'] }}" 
                             data-acronym="{{ $course['acronym'] }}" 
                             data-createdat="{{ $course['created_at'] }}" 
@@ -246,7 +247,7 @@
 
         viewModal.querySelector('h2').textContent = element.dataset.name;
         viewModal.querySelector('p:nth-child(1)').innerHTML = `<strong>ID:</strong> ${element.dataset.id}`;
-        viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Instituição:</strong> ${element.dataset.institution.name}`;
+        viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Instituição:</strong> ${element.dataset.institution_id}`;        
         viewModal.querySelector('p:nth-child(3)').innerHTML = `<strong>Nome do Curso:</strong> ${element.dataset.name}`;
         viewModal.querySelector('p:nth-child(4)').innerHTML = `<strong>Acrónimo:</strong> ${element.dataset.acronym}`;
     }

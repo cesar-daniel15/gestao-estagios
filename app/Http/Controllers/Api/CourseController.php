@@ -77,46 +77,81 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        // Recupera o curso e as instituições para a edição
-        $course = Course::findOrFail($id);
-        $institutions = Institution::all();
-        
-        return view('admin.courses.edit', compact('course', 'institutions'));
+    
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Course $course)
     {
+        // Verifica se a requisição vem do Postman
+        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
+        
         // Validação dos dados
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'acronym' => 'required|string|max:10',
-            'institution_id' => 'required|exists:institutions,id',  // Verifica se a instituição existe
+            'institution_id' => 'required|exists:institutions,id', // Verifica se a instituição existe
             'description' => 'nullable|string|max:1000',
         ]);
-
+    
+        // Se a validação falhar
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            if ($isPostmanRequest || request()->wantsJson()) {
+                return $this->error('Validation failed', 422, $validator->errors());
+            }
+    
+            // Se não for request JSON, envia os erros via sessão
+            session()->flash('error', 'Erro de validação!');
+            session()->flash('validation_errors', $validator->errors()->all());
+            return redirect()->back()->withInput();
         }
-
-        // Atualiza o curso
-        $course = Course::findOrFail($id);
+    
+        // Atualiza o curso com os dados válidos
         $course->update($request->all());
-
+    
+        // Se for uma Request do Postman retorna em JSON
+        if ($isPostmanRequest || request()->wantsJson()) {
+            return $this->response('Course updated successfully', 200, new CourseResource($course));
+        }
+    
+        // Redireciona para a lista de cursos com uma mensagem de sucesso
         return redirect()->route('admin.courses.index')->with('success', 'Curso atualizado com sucesso!');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
-        // Remove o curso
+        // Verifica se a requisição vem do Postman
+        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
+    
+        // Recupera o curso
         $course = Course::findOrFail($id);
-        $course->delete();
-
-        return redirect()->route('admin.courses.index')->with('success', 'Curso excluído com sucesso!');
+    
+        // Deleta o curso
+        $deleted = $course->delete();
+    
+        // Verifica se foi deletado com sucesso
+        if ($deleted) {
+            // Se for uma requisição do Postman retorna em JSON
+            if ($isPostmanRequest || request()->wantsJson()) {
+                return $this->response('Course deleted successfully', 200);
+            }
+    
+            // Redireciona com mensagem de sucesso
+            return redirect()->route('admin.courses.index')->with('success', 'Curso excluído com sucesso!');
+        }
+    
+        // Se não foi possível deletar o curso
+        if ($isPostmanRequest || request()->wantsJson()) {
+            return $this->response('Course not deleted', 400); // 400 Bad Request
+        }
+    
+        // Se não foi request JSON, envia a mensagem via sessão
+        return redirect()->route('admin.courses.index')->with('error', 'Erro ao excluir o curso');
     }
+    
 }
