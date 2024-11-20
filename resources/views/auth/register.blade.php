@@ -19,7 +19,8 @@
             <div class="bg-white rounded-xl md:rounded-r-xl p-8 w-full md:w-1/2 flex flex-col">
                 <div class="text-xl font-extrabold text-center text-sky-400 mb-2 mt-5">Cria a minha conta</div>
                 <p class="text-gray-400 font-bold text-base text-center mb-5">Preencha os seus dados</p>
-                <form>
+                <form method="POST" action="{{ route('user.store') }}">
+                    @csrf
                     <!-- Nome -->
                     <div class="mb-8 mt-3">
                         <div class="flex items-center border border-sky-400 rounded-md shadow-sm p-2 bg-gray-100">
@@ -29,7 +30,7 @@
                             </svg>
                             
                             <!-- Input -->
-                            <input type="name" id="name" placeholder="Nome" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="name" id="name" name="name" placeholder="Nome" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
                         </div>
                     </div>
 
@@ -42,7 +43,7 @@
                             </svg>
                             
                             <!-- Input -->
-                            <input type="email" id="email" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400 " required>
+                            <input type="email" id="email" name="email" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400 " required>
                         </div>
                     </div>
 
@@ -55,7 +56,7 @@
                             </svg>
                             
                             <!-- Input -->
-                            <input type="password" id="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="password" id="password" name="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
                         </div>
                     </div>
 
@@ -68,11 +69,12 @@
                             </svg>
 
                             <!-- Select -->
-                            <select id="profile" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400">
+                            <select id="profile" name="profile" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400">
                                 <option value="" disabled selected>Selecione o seu perfil</option>
-                                <option value="a">A</option>
-                                <option value="b">B</option>
-                                <option value="c">B</option>
+                                <option value="Institution">Instituição</option>
+                                <option value="Company">Empresa</option>
+                                <option value="Responsible">Coordenador da Unidade Curricular</option>
+                                <option value="Student">Aluno</option>
                             </select>
                         </div>
                     </div>
@@ -84,6 +86,7 @@
                     <div class="md:hidden flex justify-center mt-5">
                         <a href="{{ url('/login') }}" class="text-gray-400 text-md text-base"><u>Já tem conta?</u></a>
                     </div>
+
                 </form>
             </div>
         </div>

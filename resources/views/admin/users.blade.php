@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($allUsers as $user) 
+                @foreach ($users as $user) 
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4 text-gray-600">{{ $user['id'] }}</td>
                         <td class="p-4 text-gray-600 user-name">{{ $user['name'] }}</td>
@@ -45,7 +45,7 @@
                         <td class="p-4 text-gray-600">{{ $user['email'] }}</td>
                         <td class="p-4 text-gray-600">{{ $user['account_is_verified'] }}</td>
                         <td class="p-4 text-gray-600">{{ $user['last_login'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $user['created_at'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $user['updated_at'] }}</td>
                         </td>
                     </tr>
                 @endforeach

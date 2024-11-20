@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -35,16 +35,28 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         // Armazena um novo curso na db
+
+        // Verifica se a requisição vem do Postman
+        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
+
         // Validacao dos dados recebidos
         $validator = Validator::make($request->all(), [
             'institution_id' => 'required|exists:institutions,id', // Validação do ID da instituição
             'name' => 'required|string|max:255|unique:courses,name', // O nome tem que ser unicos
             'acronym' => 'required|string|max:10',
+        ], [
+            'name.unique' => 'O nome do curso já está em uso.',
         ]);
 
-        // Verifica se a validacao falhou
+        // Se a valicao falhar
         if ($validator->fails()) {
-            return $this->error('Data Invalid', 422, $validator->errors());
+
+            // Para Postman ou JSON request
+            if ($isPostmanRequest || request()->wantsJson()) {
+                return $this->error('Validation failed', 422, $validator->errors());
+            }
+            // Para requisições normais
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         // Verifica se o nome do curso ja existe

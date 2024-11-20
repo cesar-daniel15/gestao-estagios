@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -29,7 +29,9 @@ class InstitutionController extends Controller
             return InstitutionResource::collection(Institution::all());
         }
     
-        $institutions = InstitutionResource::collection(Institution::all())->resolve();
+        // $institutions = InstitutionResource::collection(Institution::all())->resolve();
+
+        $institutions = InstitutionResource::with('users')->get();
 
         // Retorna para view com as instituicoes
         return view('admin.institutions', compact('institutions'));
@@ -53,39 +55,34 @@ class InstitutionController extends Controller
     
         // Validação dos dados 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:institutions,name',
-            'acronym' => 'required|string|max:10',
-            'email' => 'required|email|max:255|unique:institutions,email',
-            'password' => 'required|string|min:8',
+            'acronym' => 'required|string|max:10|unique:institutions,acronym',
             'phone' => 'required|string|max:11|unique:institutions,phone',
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ], [
-            'name.unique' => 'O nome da instituição já está em uso.',
-            'email.unique' => 'O e-mail da instituição já está em uso.',
+            'acronym.unique' => 'O acronimo da instituição já está em uso.',
             'phone.unique' => 'O telefone da instituição já está em uso.',
         ]);
         
-        // Se a valicao falhar
+       // Se a valicao falhar
         if ($validator->fails()) {
+
+            // Para Postman ou JSON request
+            if ($isPostmanRequest || request()->wantsJson()) {
+                return $this->error('Validation failed', 422, $validator->errors());
+            }
+            // Para requisições normais
             return redirect()->back()->withErrors($validator)->withInput();
         }
         
-        // Hash da password
         $data = $validator->validated();
-        $data['password'] = bcrypt($data['password']);
-        
+
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-        
-            // Verifica se o arquivo é uma imagem válida
             if ($file->isValid()) {
-                // Define o caminho onde o arquivo será armazenado
-                $path = $file->store('images/uploads', 'public'); // Armazena no disco público
-        
-                // Armazena a URL corretamente
-                $data['logo'] = Storage::url($path); // Gera a URL correta
+                $path = $file->store('images/uploads', 'public'); // Guarda na pasta public
+                $data['logo'] = $path; 
             }
         }
 
@@ -147,10 +144,7 @@ class InstitutionController extends Controller
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
         
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:institutions,name,' . $institution->id,
             'acronym' => 'required|string|max:10',
-            'email' => 'required|email|max:255|unique:institutions,email,' . $institution->id,
-            'password' => 'nullable|string|min:8', 
             'phone' => 'required|string|max:11|unique:institutions,phone,' . $institution->id,
             'address' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
@@ -178,16 +172,9 @@ class InstitutionController extends Controller
         $dataToUpdate = [];
     
         // Verifique se cada campo foi alterado e se sim adiciona os ao array de atualizacao
-        if ($validated['name'] != $institution->name) {
-            $dataToUpdate['name'] = $validated['name'];
-        }
     
         if ($validated['acronym'] != $institution->acronym) {
             $dataToUpdate['acronym'] = $validated['acronym'];
-        }
-    
-        if ($validated['email'] != $institution->email) {
-            $dataToUpdate['email'] = $validated['email'];
         }
     
         if ($validated['phone'] != $institution->phone) {
@@ -213,11 +200,6 @@ class InstitutionController extends Controller
                 // Armazena a URL corretamente
                 $data['logo'] = Storage::url($path); // Gera a URL correta
             }
-        }
-    
-        // Atualiza a password apenas se ela foi introduzida no input com valor diferente
-        if (!empty($validated['password']) && $validated['password'] != $institution->password) {
-            $dataToUpdate['password'] = bcrypt($validated['password']);
         }
     
         // Faz a atualizacao

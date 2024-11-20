@@ -3,25 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Institution extends Model
+
+class Company extends Model
 {
     use HasFactory;
 
-    // Defenicao dos atributos da tabela 
+    protected $table = 'companies';
+
     protected $fillable = [
-        'acronym',
         'phone',
-        'address',
         'logo',
-        'website',
+        'industry',
+        'brief_description',
+        'address',
+        'foundation_date',
     ];
 
     // Relacao com a tabela Users
     public function users()
     {
-        return $this->hasMany(User::class, 'id_institution');
+        return $this->hasMany(User::class, 'id_company');
     }
 }

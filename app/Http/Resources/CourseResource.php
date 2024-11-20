@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon; // Importar o Carbon para manipulação de datas
 
 class CourseResource extends JsonResource
 {
@@ -24,8 +25,8 @@ class CourseResource extends JsonResource
                 'name' => $this->institution->name,
                 'acronym' => $this->institution->acronym,
             ],
-            'created_at' => $this->created_at->diffForHumans(),
-            'updated_at' => $this->updated_at->diffForHumans(),
+            'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
+            'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
         ];
     }
 }

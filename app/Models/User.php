@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-
+    use HasApiTokens, HasFactory, Notifiable;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -19,8 +20,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'profile',
         'email',
         'password',
+        'id_institution',
+        'id_company',
+        'id_responsible',
+        'id_student',
+        'token',
+        'account_is_verified',
+        'last_login',
     ];
 
     /**
@@ -41,8 +50,33 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'account_is_verified' => 'boolean',
+            'last_login' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relacao com as Institutions
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class, 'id_institution'); 
+    }
+
+    // Relacao com as Companies
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'id_company');
+    }
+
+    // Relacao com os Responsaveis
+    public function responsible()
+    {
+        return $this->belongsTo(UCResponsible::class, 'id_responsible');
+    }
+
+    // Relacao com os Students
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'id_student');
     }
 }

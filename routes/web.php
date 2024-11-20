@@ -1,13 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\InstitutionController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\InstitutionController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Http\Request;
 
 Route::get('/', function () { 
     return view('index'); 
 });
+
+Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index'); // Rota para mostrar todas os users
+Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('admin.users.show'); // Rota para mostrar um user específico
+Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update'); // Rota para atualizar um user
+Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy'); // Rota para excluir um user
 
 Route::get('/admin/institutions', [InstitutionController::class, 'index'])->name('admin.institutions.index'); // Rota para mostrar todas as intituicoes
 Route::get('/admin/institutions/{institution}', [InstitutionController::class, 'show'])->name('admin.institutions.show'); // Rota para mostrar uma instituicao específica
@@ -18,6 +23,7 @@ Route::delete('/admin/institutions/{institution}', [InstitutionController::class
 // Outras rotas do admin
 Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
 
+Route::post('/register', [UserController::class, 'store'])->name('user.store');
 // Dashboard do admin
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
