@@ -8,9 +8,13 @@ use App\Models\Course;
 use App\Models\Institution;  // Importando o modelo Institution
 use App\Http\Resources\CourseResource;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\HttpResponses;
+
 
 class CourseController extends Controller
 {
+    use HttpResponses;
+    
     /**
      * Display a listing of the resource.
      */
@@ -22,13 +26,6 @@ class CourseController extends Controller
     
         return view('admin.courses', ['courses' => $courses, 'institutions' => $institutions]);
     }
-
-    // App\Models\Course.php
-    public function institution()
-    {
-        return $this->belongsTo(Institution::class);
-    }
-
 
     /**
      * Show the form for creating a new resource.
@@ -67,6 +64,23 @@ class CourseController extends Controller
 
         // Redireciona para a lista de cursos com mensagem de sucesso
         return redirect()->route('admin.courses.index')->with('success', 'Curso criado com sucesso!');
+    }
+
+/**
+     * Display the specified resource.
+     */
+    public function show(Course $course)
+    {
+        // Verifica se a request vem do Postman
+        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
+    
+        // Ve foi uma request do Postman e retorna os dados em JSON
+        if ($isPostmanRequest || request()->wantsJson()) {
+            return new CourseResource($course);
+        }
+
+        // Return para a view com os dados
+        return view('admin.couses.index', compact('course'));
     }
 
     /**
@@ -120,14 +134,11 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Course $course)
     {
         // Verifica se a requisição vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
-    
-        // Recupera o curso
-        $course = Course::findOrFail($id);
-    
+        
         // Deleta o curso
         $deleted = $course->delete();
     

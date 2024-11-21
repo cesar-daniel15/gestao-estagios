@@ -95,8 +95,7 @@
                             </a>
 
                             <!-- Botão Update -->
-                            <button type="button" onclick="updateModal({{ $course['id'] }}, '{{ $course['name'] }}', '{{ $course['acronym'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                            <button type="button" onclick="openUpdateModal({{ $course['id'] }}, '{{ $course['name'] }}', '{{ $course['acronym'] }}', {{ $course['institution_id']}})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                     <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                 </svg>
                             </button>
@@ -181,38 +180,39 @@
                 <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
                     <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
                 </div>
+    </div>           
 
     <!-- Modal de Update -->
     <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Curso</h2>
 
-        <!-- Form -->
-        <form id="updateForm" action="{{ route('admin.courses.update', $course['id']) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label for="name" class="block text-gray-600 mb-1">Nome</label>
-                    <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+            <!-- Form -->
+            <form id="updateForm" action="{{ route('admin.courses.update', $course['id']) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                        <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                        <input type="text" id="update_acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="institution_id" class="block text-gray-600 mb-1">Instituição</label>
+                        <input type="text" id="update_institution_id" name="institution_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" disabled>
+                    </div>
                 </div>
 
-                <div>
-                    <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
-                    <input type="text" id="update_acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
                 </div>
-
-                <div>
-                    <label for="institution" class="block text-gray-600 mb-1">Instituição</label>
-                    <input type="text" id="update_institution" name="institution" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" disabled>
-                </div>
-            </div>
-
-            <div class="flex justify-end">
-                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
-            </div>
-        </form>
+            </form>
     </div>
 </div>
 
@@ -271,12 +271,12 @@
     }
 
     // Abrir Modal para fazer uma atualização de um Curso
-    function openUpdateModal(id, name, acronym, institution) {
+    function openUpdateModal(id, name, acronym, institution_id) {
         openModal('updateModal');
 
         document.getElementById('update_name').value = name;
         document.getElementById('update_acronym').value = acronym;
-        document.getElementById('update_institution').value = institution;
+        document.getElementById('update_institution_id').value = institution_id;
 
         const updateForm = document.getElementById('updateForm');
         updateForm.action = `/admin/courses/${id}`; 
