@@ -2,7 +2,7 @@
 
 @section('title', 'Gestão de Cursos | Admin Dashboard')
 
-@section('page-name', 'Cursos /')
+@section('page-name', 'Instituições / Cursos')
 
 @section('content')
 
@@ -219,7 +219,9 @@
 <!-- Modal de Confirmação -->
 <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
     <div class="bg-white p-6 rounded-lg w-1/3">
+        
         <h2 class="text-md font-smibold py-10 text-center text-gray-500">Tem a certeza que deseja apagar o curso?</h2>
+        
         <div class="flex justify-center space-x-5">
             <button class="bg-gray-500 hover:bg-gray-600 text-white p-2.5 font-bold rounded" onclick="closeModal('deleteModal')">Cancelar</button>
             <button id="confirmDeleteButton" class="bg-red-500 hover:bg-red-600 text-white p-2.5 font-bold rounded">Confirmar</button>

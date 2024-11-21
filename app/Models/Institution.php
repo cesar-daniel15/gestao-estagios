@@ -36,4 +36,9 @@ class Institution extends Model
     {
         $this->attributes['password'] = Hash::make($value);
     }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
 }

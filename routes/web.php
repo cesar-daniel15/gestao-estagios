@@ -19,7 +19,7 @@ Route::delete('/admin/institutions/{institution}', [InstitutionController::class
 
 // Rotas para cursos
 Route::get('/admin/courses', [CourseController::class, 'index'])->name('admin.courses.index'); // Rota para listar todos os cursos
-Route::get('/admin/courses/{course}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit'); // Rota para editar um curso
+Route::get('/admin/courses/{course}', [CourseController::class, 'show'])->name('admin.courses.show'); // Rota para mostrar uma instituição específica
 Route::put('/admin/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update'); // Rota para atualizar um curso
 Route::post('/admin/courses', [CourseController::class, 'store'])->name('admin.courses.store'); // Rota para criar um curso
 Route::delete('/admin/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.destroy'); // Rota para excluir um curso
