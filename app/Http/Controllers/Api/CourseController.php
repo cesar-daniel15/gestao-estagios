@@ -16,15 +16,13 @@ class CourseController extends Controller
      */
     public function index()
     {
-        // Recupera os cursos com as instituições relacionadas
-        $institutions = Institution::with('institution')->get();
+        $courses = Course::with('institution')->get();
+        
+        $institutions = Institution::all(); // Carrega todas as instituições
     
-        // Aplica o resource para formatação
-        $courses = CourseResource::collection($courses)->resolve();
-    
-        // Retorna para a view com os cursos
-        return view('admin.courses', compact('courses'),('institutions'));
+        return view('admin.courses', ['courses' => $courses, 'institutions' => $institutions]);
     }
+    
 
     // App\Models\Course.php
     public function institution()
