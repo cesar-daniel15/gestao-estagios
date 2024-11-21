@@ -2,7 +2,7 @@
 
 @section('title', 'Gestão de Cursos | Admin Dashboard')
 
-@section('page-name', 'Instituições / Cursos')
+@section('page-name', 'Instituições / Cursos ')
 
 @section('content')
 
