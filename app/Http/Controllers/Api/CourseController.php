@@ -22,7 +22,6 @@ class CourseController extends Controller
     
         return view('admin.courses', ['courses' => $courses, 'institutions' => $institutions]);
     }
-    
 
     // App\Models\Course.php
     public function institution()
