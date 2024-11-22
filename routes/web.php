@@ -29,6 +29,11 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard'); 
 })->name('admin.dashboard');
 
+// Dashboard da instituição
+Route::get('/institution/dashboard', function () {
+    return view('institution.dashboard'); 
+})->name('institution.dashboard');
+
 // Rotas para login, registro, etc.
 Route::get('/login', function () {
     return view('auth.login');
