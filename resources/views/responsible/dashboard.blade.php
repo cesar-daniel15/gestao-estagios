@@ -1,6 +1,6 @@
-@extends('students.layouts.default-student')
+@extends('responsible.layouts.default-responsible')
 
-@section('title', 'Gestão Estágios | Student Dashboard')
+@section('title', 'Gestão Estágios | Responsible Dashboard')
 
 @section('page-name', 'Home Dashboard')
 
