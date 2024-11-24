@@ -34,6 +34,11 @@ Route::get('/institution/dashboard', function () {
     return view('institution.dashboard'); 
 })->name('institution.dashboard');
 
+// Dashboard da instituição
+Route::get('/students/dashboard', function () {
+    return view('students.dashboard'); 
+})->name('students.dashboard');
+
 // Rotas para login, registro, etc.
 Route::get('/login', function () {
     return view('auth.login');
