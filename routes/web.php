@@ -44,6 +44,11 @@ Route::get('/responsible/dashboard', function () {
     return view('responsible.dashboard'); 
 })->name('responsible.dashboard');
 
+// Dashboard do Company
+Route::get('/company/dashboard', function () {
+    return view('company.dashboard'); 
+})->name('company.dashboard');
+
 // Rotas para login, registro, etc.
 Route::get('/login', function () {
     return view('auth.login');
