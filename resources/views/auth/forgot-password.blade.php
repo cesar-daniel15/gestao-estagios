@@ -35,7 +35,7 @@
 
                     <!-- Submit button -->
                     <div class="flex justify-center">
-                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-10 transition-transform transform hover:scale-105 duration-300 ease-in-out" type="submit">Enviar</button>
+                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-10" type="submit">Enviar</button>
                     </div>
                 </form>
 
