@@ -24,12 +24,13 @@
 @endsection
 
 @section('content')
+
     <!-- Seção Sobre -->
     <section id="sobre">
         <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col md:flex-row justify-center items-center text-center md:text-left">
 
             <!-- Imagem do Coordenador -->
-            <div class="w-full md:w-1/2 flex justify-center items-center mb-4 md:mb-0">
+            <div class="w-full md:w-1/3 flex justify-center items-center mb-4 md:mb-0">
                 <svg xmlns="http://www.w3.org/2000/svg" width="7em" height="7em" viewBox="0 0 48 48">
                     <g fill="none" stroke="white" stroke-linejoin="round" stroke-width="4">
                         <path d="M2 17.4L23.022 9l21.022 8.4l-21.022 8.4z"/>
@@ -39,7 +40,7 @@
             </div>
 
             <!-- Texto de Apresentação -->
-            <div class="w-full md:w-1/2 max-w-2xl text-center md:text-left my-5">
+            <div class="w-full md:w-1/3 max-w-2xl text-center md:text-left my-5">
                 <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 text-center">Responsável da Instituição</div>
                 <p class="text-white text-justify">
                     A nossa plataforma simplifica a gestão de estagiários, permitindo acompanhar o progresso, aprovar planos e avaliar desempenhos de forma rápida e organizada. Com uma interface intuitiva, facilita a comunicação com responsáveis acadêmicos e centraliza toda a documentação necessária.
@@ -107,30 +108,35 @@
 
     <!-- Seção Passos a Seguir -->
     <section id="passos" class="scroll-mt-24 p-6 md:p-10 bg-white flex flex-col justify-center items-center text-center">
-        <!-- Título da Seção -->
+
         <div class="text-2xl md:text-3xl font-bold text-sky-400 my-12">Passos a Seguir</div>
         
-        <!-- Grid para organizar os itens em duas colunas com espaçamento aumentado -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 sm:gap-x-20 gap-y-6 sm:gap-y-11 max-w-lg md:max-w-3xl">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 sm:gap-x-20 gap-y-6 sm:gap-y-11 max-w-lg md:max-w-3xl mb-12">
+
             <!-- Passo 1 -->
             <div class="flex items-center space-x-2 sm:space-x-3">
-                <!-- Círculo do número -->
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-8 h-8 sm:w-10 sm:h-10 rounded-full">1</div>
-                <!-- Retângulo com a frase -->
                 <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Autenticar no Sistema</div>
             </div>
 
             <!-- Passo 2 -->
             <div class="flex items-center space-x-2 sm:space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-8 h-8 sm:w-10 sm:h-10 rounded-full">2</div>
-                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Acompanhar Estágios</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Registar Cursos</div>
             </div>
 
             <!-- Passo 3 -->
             <div class="flex items-center space-x-2 sm:space-x-3">
                 <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-8 h-8 sm:w-10 sm:h-10 rounded-full">3</div>
+                <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Acompanhar Estágios</div>
+            </div>
+
+            <!-- Passo 4 -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <div class="flex justify-center items-center bg-sky-400 text-white font-bold w-8 h-8 sm:w-10 sm:h-10 rounded-full">4</div>
                 <div class="bg-sky-400 text-white font-bold px-3 py-2 rounded-lg w-full text-left text-sm sm:text-base">Atribuir Nota Final</div>
             </div>
+
         </div>
     </section>
 

@@ -28,10 +28,8 @@ class InstitutionController extends Controller
         if ($isPostmanRequest || request()->wantsJson()) {
             return InstitutionResource::collection(Institution::all());
         }
-    
-        // $institutions = InstitutionResource::collection(Institution::all())->resolve();
 
-        $institutions = InstitutionResource::with('users')->get();
+        $institutions = InstitutionResource::collection(Institution::all())->resolve();
 
         // Retorna para view com as instituicoes
         return view('admin.institutions', compact('institutions'));

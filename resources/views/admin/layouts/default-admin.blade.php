@@ -16,20 +16,25 @@
 
     </head>
 
-    <body class="bg-gray-100">  
+    <body class="bg-gray-100 relative overflow-hidden">
+        <!-- Contêiner para a animação -->
+        <div id="background-animation" class="absolute inset-0 -z-10"></div>
+
         <!-- Sidebar -->
         @if ($showSidebar ?? true)
             @include('admin.layouts.components.sidebar')
-        @endif   
-        <!-- Conteudo -->
+        @endif
+
+        <!-- Conteúdo -->
         <main class="m-7 mt-[80px] md:m-10 md:ps-10 md:ml-64">
             <!-- Navbar -->
             @if ($showNavbar ?? true)
                 @include('admin.layouts.components.navbar')
             @endif 
-            
+
             @yield('content')
-        </main>    
+        </main>
     </body>
+
 </html>
 

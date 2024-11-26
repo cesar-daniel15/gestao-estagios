@@ -5,5 +5,8 @@
 @section('page-name', 'Home Dashboard')
 
 @section('content')
-    <h1 class="mt-10 font-extrabold text-sky-400">Hello World!</h1>
+
+@include('layouts.components.alert')
+
+    <h1 class="mt-10 font-extrabold text-sky-400">Hello Admin!</h1>
 @endsection

@@ -6,7 +6,7 @@
 
 @section('content')
 
-@extends('admin.layouts.alert')
+@extends('admin.layouts.components.alert')
 
     <div class="mt-10 bg-white drop-shadow-md rounded-xl p-10">
         <div class="text-lg font-bold text-gray-600 mb-6">
@@ -62,29 +62,34 @@
                     </tr>
                 </thead>
                 <tbody>
+                @if (empty($users))
+                    <tr>
+                        <td colspan="7" class="p-4 text-gray-600 text-center">Ainda não existem instituicoes registadas.</td>
+                    </tr>
+                @else
                     @foreach($institutions as $institution)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $institution['id'] }}</td>
-                            <td class="p-4 text-gray-600 institution-name">{{ $institution['name'] }}</td>
+                            <td class="p-4 text-gray-600 institution-name">{{ $institution['user']['name'] ?? 'Nome não disponível' }}</td>
                             <td class="p-4 text-gray-600">{{ $institution['acronym'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $institution['email'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $institution['user']['email']}}</td>
                             <td class="p-4 text-gray-600">{{ $institution['phone'] }}</td>
                             <td class="p-4 text-gray-600">
                                 <a href="{{ $institution['website'] }}" class="text-sky-400 hover:underline" target="_blank">{{ $institution['website'] }}</a>
                             </td>
-                            <td class="p-4 text-gray-600">{{ $institution['account_is_verified'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $institution['user']['account_is_verified'] }}</td>
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                         
                                     <!-- Botão Ver -->
-                                    <a href="javascript:void(0)" onclick="openViewModal(this)" data-id="{{ $institution['id'] }}" data-name="{{ $institution['name'] }}" data-acronym="{{ $institution['acronym'] }}" data-email="{{ $institution['email'] }}" data-phone="{{ $institution['phone'] }}" data-address="{{ $institution['address'] }}" data-website="{{ $institution['website'] }}" data-verified="{{ $institution['account_is_verified'] }}" data-lastlogin="{{ $institution['last_login'] }}" data-createdat="{{ $institution['created_at'] }}" data-logo="{{ $institution['logo'] }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a href="javascript:void(0)" onclick="openViewModal(this)" data-id="{{ $institution['id'] }}" data-name="{{ $institution['user']['name'] }}" data-acronym="{{ $institution['acronym'] }}" data-email="{{ $institution['user']['email'] }}" data-phone="{{ $institution['phone'] }}" data-address="{{ $institution['address'] }}" data-website="{{ $institution['website'] }}" data-verified="{{ $institution['user']['account_is_verified'] }}" data-lastlogin="{{ $institution['user']['last_login'] }}" data-createdat="{{ $institution['created_at'] }}" data-logo="{{ $institution['logo'] }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
                                     </a>
 
                                     <!-- Botão Update -->
-                                    <button type="button" onclick="updateModal({{ $institution['id'] }}, '{{ $institution['name'] }}', '{{ $institution['acronym'] }}', '{{ $institution['email'] }}', '{{ $institution['phone'] }}', '{{ $institution['address'] }}', '{{ $institution['website'] }}', '{{ $institution['logo'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <button type="button" onclick="updateModal({{ $institution['id'] }}, '{{ $institution['user']['name'] }}', '{{ $institution['acronym'] }}', '{{ $institution['user']['email'] }}', '{{ $institution['phone'] }}', '{{ $institution['address'] }}', '{{ $institution['website'] }}', '{{ $institution['logo'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -105,6 +110,7 @@
                             </td>
                         </tr>
                     @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
@@ -177,7 +183,7 @@
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg relative">
             <div class="modal-content">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $institution['name'] }}</h2>
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $institution['user']['name'] }}</h2>
                 <div class="modal-body flex text-base px-5">
 
                     <!-- Lado da imagem -->
@@ -188,12 +194,12 @@
                     <!-- Lado com as informacoes -->
                     <div class="ml-4 w-1/2">
                         <p><strong>Acrónimo:</strong> {{ $institution['acronym'] }}</p>
-                        <p><strong>Email:</strong> {{ $institution['email'] }}</p>
+                        <p><strong>Email:</strong> {{ $institution['user']['email'] }}</p>
                         <p><strong>Contacto:</strong> {{ $institution['phone'] }}</p>
                         <p><strong>Morada:</strong>  {{ $institution['address'] }}</p>
                         <p><strong>Website:</strong> <a href="{{ $institution['website'] }}" target="_blank">{{ $institution['website'] }}</a></p>
-                        <p><strong>Conta Verificada:</strong> {{ $institution['account_is_verified'] }}</p>
-                        <p><strong>Último Login:</strong> {{ $institution['last_login'] }}</p>
+                        <p><strong>Conta Verificada:</strong> {{ $institution['user']['account_is_verified'] }}</p>
+                        <p><strong>Último Login:</strong> {{ $institution['user']['last_login'] }}</p>
                         <p><strong>Data de Criação:</strong> {{ $institution['created_at'] }}</p>
                     </div>
                 </div>

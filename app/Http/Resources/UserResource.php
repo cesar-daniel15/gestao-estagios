@@ -25,6 +25,7 @@ class UserResource extends JsonResource
             'Company' => 'Empresa',
             'Responsible' => 'Coordenador da Unidade Curricular',
             'Student' => 'Aluno',
+            'Admin' => 'Administrador',
         ];
 
         return [

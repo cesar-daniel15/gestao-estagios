@@ -3,13 +3,16 @@
 @section('title', 'Gestão de Estágios | Registar')
 
 @section('content') 
+
+@include('layouts.components.alert')
+
     <div class="flex justify-center items-center min-h-screen drop-shadow-2xl">
         <div class="flex w-full max-w-4xl bg-white rounded-xl shadow-lg mx-4"> 
             <!-- Left Side -->
             <div class="bg-sky-400 rounded-l-xl p-8 w-1/2 hidden md:flex flex-col justify-center items-center">
                 <img src="{{ asset('images/white_icon.png') }}" class="h-20 my-5" alt="Gestão de Estágios Logo" />
                 <div class="text-2xl font-extrabold text-white my-5">Bem-vindo de volta!</div>
-                <p class="text-white text-base mb-8 text-center">Entre agora mesmo na sua conta</p>
+                <p class="text-white text-base mb-8 text-center">Já possui uma conta no sistema? <br> Entre agora mesmo nela</p>
                 <div class="mt-10">
                     <a href="{{ url('/login') }}" class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 my-6 transition-transform transform hover:scale-105 duration-300 ease-in-out">Entrar</a>
                 </div>
@@ -19,7 +22,7 @@
             <div class="bg-white rounded-xl md:rounded-r-xl p-8 w-full md:w-1/2 flex flex-col">
                 <div class="text-xl font-extrabold text-center text-sky-400 mb-2 mt-5">Cria a minha conta</div>
                 <p class="text-gray-400 font-bold text-base text-center mb-5">Preencha os seus dados</p>
-                <form method="POST" action="{{ route('user.store') }}">
+                <form method="POST" action="{{ route('register') }}">
                     @csrf
                     <!-- Nome -->
                     <div class="mb-8 mt-3">
@@ -30,7 +33,7 @@
                             </svg>
                             
                             <!-- Input -->
-                            <input type="name" id="name" name="name" placeholder="Nome" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="name" id="name" name="name"  value="{{ old('name') }}" placeholder="Nome" class="block w-full bg-gray-100 border-0 focus:outline-none" required>
                         </div>
                     </div>
 
@@ -43,7 +46,7 @@
                             </svg>
                             
                             <!-- Input -->
-                            <input type="email" id="email" name="email" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400 " required>
+                            <input type="email" id="email" name="email"  value="{{ old('email') }}" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none" required>
                         </div>
                     </div>
 
@@ -56,7 +59,7 @@
                             </svg>
                             
                             <!-- Input -->
-                            <input type="password" id="password" name="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="password" id="password" name="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none " required>
                         </div>
                     </div>
 
@@ -67,21 +70,22 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="1.6em" height="1.6em" class="mx-5">
                                 <path fill="#9c9c9c" d="M19 13h7v2h-7zm0-5h11v2H19zm0-5h11v2H19zm-8 27H7a2.006 2.006 0 0 1-2-2v-7a2.006 2.006 0 0 1-2-2v-6a2.947 2.947 0 0 1 3-3h6a2.947 2.947 0 0 1 3 3v6a2.006 2.006 0 0 1-2 2v7a2.006 2.006 0 0 1-2 2M6 12a.945.945 0 0 0-1 1v6h2v9h4v-9h2v-6a.945.945 0 0 0-1-1zm3-3a4 4 0 1 1 4-4a4.01 4.01 0 0 1-4 4m0-6a2 2 0 1 0 2 2a2.006 2.006 0 0 0-2-2"/>
                             </svg>
+                            
+                                <!-- Select -->
+                                <select id="profile" name="profile" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400 focus:text-black">
+                                    <option value="" disabled selected class="text-gray-400">Selecione o seu perfil</option>
+                                    <option value="Institution" class="text-black">Instituição</option>
+                                    <option value="Company" class="text-black">Empresa</option>
+                                    <option value="Responsible" class="text-black">Coordenador da Unidade Curricular</option>
+                                    <option value="Student" class="text-black">Aluno</option>
+                                </select>
 
-                            <!-- Select -->
-                            <select id="profile" name="profile" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400">
-                                <option value="" disabled selected>Selecione o seu perfil</option>
-                                <option value="Institution">Instituição</option>
-                                <option value="Company">Empresa</option>
-                                <option value="Responsible">Coordenador da Unidade Curricular</option>
-                                <option value="Student">Aluno</option>
-                            </select>
                         </div>
                     </div>
 
                     <!-- Submit --> 
                     <div class="flex justify-center">
-                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 transition-transform transform hover:scale-105 duration-300 ease-in-out" type="submit">Registar</button>
+                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10" type="submit">Registar</button>
                     </div>
                     <div class="md:hidden flex justify-center mt-5">
                         <a href="{{ url('/login') }}" class="text-gray-400 text-md text-base"><u>Já tem conta?</u></a>
@@ -92,3 +96,5 @@
         </div>
     </div>
 @endsection
+
+
