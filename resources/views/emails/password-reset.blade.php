@@ -15,7 +15,7 @@
         <p class="text-lg text-gray-700 mb-4">Olá,</p>
         <p class="text-gray-700 mb-4">Recebemos uma solicitação para redefinir sua password. Clique no link abaixo para redefinir sua password automaticamente:</p>
 
-        <a href="{{ route('password.reset', ['token' => $token, 'email' => $user->email]) }}" class="inline-block bg-sky-500 text-white text-xl  py-2 px-4 rounded mb-6">Redefinir Senha</a>
+        <a href="{{ route('password.reset', ['token' => $token, 'email' => $user->email]) }}" class="inline-block bg-sky-500 text-white text-xl  py-2 px-4 rounded mb-6">Redefinir Pasword</a>
 
         <p class="text-gray-700 mb-6">Se você não solicitou a redefinição de password, ignore este e-mail.</p>
     </div>
