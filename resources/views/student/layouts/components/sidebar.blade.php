@@ -73,7 +73,7 @@
             </li>
 
             <li>
-               <a href="{{ url('/') }}"  target="_blank" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
+               <a href="{{ url('/') }}"  target="_blank" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-red-500 group">
                <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 24 24" class="ms-2">
                   <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/>
                </svg>
