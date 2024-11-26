@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\InstitutionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
@@ -22,6 +23,12 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/institutions', [InstitutionController::class, 'store'])->name('admin.institutions.store');
     Route::put('/institutions/{institution}', [InstitutionController::class, 'update'])->name('admin.institutions.update');
     Route::delete('/institutions/{institution}', [InstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
+
+    Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index'); 
+    Route::get('/courses/{course}', [CourseController::class, 'show'])->name('admin.courses.show'); 
+    Route::put('/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update'); 
+    Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
+    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.destroy'); 
 
     Route::get('/dashboard', function () {
         return view('admin.dashboard');

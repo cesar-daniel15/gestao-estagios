@@ -12,23 +12,21 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
-    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
+        $token = rand(10000, 99999);
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'account_is_verified' => true,
+            'password' => Hash::make('password'), // Senha padrão
+            'profile' => 'User', // Perfil padrão
+            'token' => $token,
         ];
     }
 
