@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Institution; // Import da Model
+use App\Models\Institution; // Importa a model Institution
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Institution>
@@ -16,59 +16,52 @@ class InstitutionFactory extends Factory
      * @return array<string, mixed>
      */
 
-    // Indicar a Model associada
+    // Indicar a model associada
     protected $model = Institution::class;
 
     public function definition(): array
     {
-        // Lista de algumas instituições com informações adicionais
+        // Lista de algumas instituições com seus dados
         $institutions = [
-            'Universidade de Lisboa' => [
-                'acronym' => 'UL',
-                'email' => 'info@ul.pt',
-                'phone' => '218 123 456',
-                'address' => 'Campo Grande, 174, 1749-016 Lisboa, Portugal',
-                'website' => 'https://www.ul.pt',
+            [
+                'acronym' => 'IPVC ESTG',
+                'phone' => '258 809 610',
+                'address' => 'R. Escola Industrial e Comercial de Nun\'Alvares, 4900-347 Viana do Castelo',
+                'logo' => 'ipvc_estg_logo.png',
+                'website' => 'https://www.estg.ipvc.pt/',
             ],
-            'Instituto Politécnico do Porto' => [
-                'acronym' => 'IPP',
-                'email' => 'info@ipp.pt',
-                'phone' => '22 123 45 67',
-                'address' => 'Rua Dr. António Bernardino de Almeida, 431, 4200-072 Porto, Portugal',
-                'website' => 'https://www.ipp.pt',
+            [
+                'acronym' => 'IPCA',
+                'phone' => '253 802 260',
+                'address' => 'R. do Aldão, 4750-810 Barcelos',
+                'logo' => 'ipca_logo.png',
+                'website' => 'https://www.ipca.pt/',
             ],
-            'Universidade do Porto' => [
-                'acronym' => 'UP',
-                'email' => 'info@up.pt',
-                'phone' => '220 123 456',
-                'address' => 'Praça de Gomes Teixeira, 4099-002 Porto, Portugal',
-                'website' => 'https://www.up.pt',
+            [
+                'acronym' => 'Universidade do Porto',
+                'phone' => '222 074 800',
+                'address' => 'Praça de Gomes Teixeira, 4099-002 Porto',
+                'logo' => 'up_logo.png',
+                'website' => 'https://www.up.pt/',
             ],
-            'Universidade Nova de Lisboa' => [
-                'acronym' => 'UNL',
-                'email' => 'info@novasbe.pt',
-                'phone' => '21 393 7000',
-                'address' => 'Campus de Campolide, 1099-085 Lisboa, Portugal',
-                'website' => 'https://www.unl.pt',
+            [
+                'acronym' => 'Universidade de Lisboa',
+                'phone' => '210 113 400',
+                'address' => 'Alameda da Universidade, 1649-004 Lisboa',
+                'logo' => 'ul_logo.png',
+                'website' => 'https://www.ulisboa.pt/',
             ],
         ];
 
-        // Seleciona aleatoriamente uma instituição
-        $selectedInstitution = $this->faker->randomElement(array_keys($institutions));
-        $details = $institutions[$selectedInstitution]; // Pega os detalhes da instituição selecionada
+        // Seleciona uma instituição aleatoriamente
+        $institution = $this->faker->randomElement($institutions);
 
         return [
-            'name' => $selectedInstitution, // Nome da instituição
-            'acronym' => $details['acronym'], // Acrônimo correspondente ao nome
-            'email' => $this->faker->unique()->safeEmail, // Email único 
-            'password' => bcrypt('password'), // Password (hashed)
-            'phone' => $details['phone'], // Telefone da instituição
-            'address' => $details['address'], // Morada da instituição
-            'logo' => null,
-            'website' => $details['website'], // Website da instituição
-            'token' => $this->faker->unique()->numberBetween(10000, 99999), // Token de 5 dígitos
-            'account_is_verified' => $this->faker->boolean, // Conta verificada
-            'last_login' => $this->faker->dateTimeBetween('-1 month', 'now'), // Último login
+            'acronym' => $institution['acronym'],
+            'phone' => $institution['phone'],
+            'address' => $institution['address'],
+            'logo' => $institution['logo'],
+            'website' => $institution['website'],
         ];
     }
 }

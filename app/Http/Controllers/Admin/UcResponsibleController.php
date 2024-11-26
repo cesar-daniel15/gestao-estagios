@@ -1,31 +1,36 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Institution; // Import do Model Institution
-use App\Http\Resources\UserResource; // Import do Resource
+use App\Models\UcResponsible; // Import do Model UcResponsible
+use App\Http\Resources\UcResponsibleResource; // Import do UcResponsibleResource
+use Illuminate\Support\Facades\Validator; // Import do Validator
+use App\Traits\HttpResponses;
 
 
-
-class UserController extends Controller
+class UcResponsibleController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {   
-        // Vai buscar todos os dados as tabelas
-        $institutions = Institution::all();
-        // ...
+    {
+        // Verifica se a request vem do Postman
+        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
         
-        // UserResource para formatar os dados antes de enviar para a view
-        $formattedInstitutions = UserResource::collection($institutions)->toArray(request()); // Converter para array
+        // Ve for uma request do Postman retorna em JSON 
+        if ($isPostmanRequest || request()->wantsJson()) {
+            return UcResponsibleResource::collection(UcResponsible::all());
+        }
+    
+        $uc_responsibles = UcResponsibleResource::collection(UcResponsible::all())->resolve();
 
-        // Enviar os dados para a view
-        return view('admin.users', ['allUsers' => $formattedInstitutions]);
-        
+        // Retorna para view com os responsaveis da uc
+        // return view('admin.uc-responsibles', compact('uc_responsibles'));
     }
 
     /**

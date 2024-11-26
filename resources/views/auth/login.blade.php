@@ -3,6 +3,9 @@
 @section('title', 'Gestão de Estágios | Login')
 
 @section('content')
+
+@include('layouts.components.alert')
+
     <div class="flex justify-center items-center min-h-screen drop-shadow-2xl">
         <div class="flex w-full max-w-4xl bg-white rounded-xl shadow-lg mx-4"> 
 
@@ -21,7 +24,8 @@
                 <div class="text-xl font-extrabold text-center text-sky-400 mb-2 mt-10">Entrar na minha conta</div>
                 <p class="text-gray-400 font-bold text-base text-center mb-5">Preencha os seus dados</p>
                 
-                <form method="POST" action="">
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
                     <!-- Email -->
                     <div class="mb-8 mt-5">
                         <label for="email" class="sr-only">Email</label>
@@ -32,7 +36,7 @@
                             </svg>
 
                             <!-- Input -->
-                            <input type="email" id="email" name="email" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Email" class="block w-full bg-gray-100 border-0 focus:outline-none" required>
                         </div>
                     </div>
 
@@ -45,13 +49,13 @@
                                 <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="#9c9c9c"/></g>
                             </svg>                            
                             <!-- Input -->
-                            <input type="password" id="password" name="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400" required>
+                            <input type="password" id="password" name="password" placeholder="Password" class="block w-full bg-gray-100 border-0 focus:outline-none" required>
                         </div>
                     </div>
                     
                     <!-- Submit --> 
                     <div class="flex justify-center">
-                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 mt-2 transition-transform transform hover:scale-105 duration-300 ease-in-out" type="submit">Entrar</button>
+                        <button class="bg-sky-400 font-bold text-white border border-white p-2 rounded-xl px-10 mt-2" type="submit">Entrar</button>
                     </div>
                     <div class="md:hidden flex justify-center mt-5">
                         <a href="{{ url('/register') }}" class="text-gray-400 text-md text-base"><u>Ainda não tem conta?</u></a>

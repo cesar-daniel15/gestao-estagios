@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Course;
-use App\Models\Institution;  // Importando o modelo Institution
-use App\Http\Resources\CourseResource;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Course; // Import do Model Course
+use App\Http\Resources\CourseResource; // Import do Resource
+use Illuminate\Support\Facades\Validator; // Import do Validator
 use App\Traits\HttpResponses;
-
+use App\Models\Institution;  // Importando o modelo Institution
 
 class CourseController extends Controller
 {
     use HttpResponses;
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -25,6 +24,8 @@ class CourseController extends Controller
         $institutions = Institution::all(); // Carrega todas as instituições
     
         return view('admin.courses', ['courses' => $courses, 'institutions' => $institutions]);
+
+        //return CourseResource::collection(Course::all());
     }
 
     /**
@@ -32,7 +33,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -40,37 +41,53 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        // Validação dos dados recebidos
+        // Armazena um novo curso na db
+
+        // Verifica se a requisição vem do Postman
+        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
+
+        // Validacao dos dados recebidos
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'institution_id' => 'required|exists:institutions,id', // Validação do ID da instituição
+            'name' => 'required|string|max:255|unique:courses,name', // O nome tem que ser unicos
             'acronym' => 'required|string|max:10',
-            'institution_id' => 'required|exists:institutions,id',  // Valida se a instituição existe
-            'description' => 'nullable|string|max:1000',
+        ], [
+            'name.unique' => 'O nome do curso já está em uso.',
         ]);
-        
+
+        // Se a valicao falhar
         if ($validator->fails()) {
+
+            // Para Postman ou JSON request
+            if ($isPostmanRequest || request()->wantsJson()) {
+                return $this->error('Validation failed', 422, $validator->errors());
+            }
+            // Para requisições normais
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Criação do curso, incluindo o ID da instituição
-        Course::create([
-            'name' => $request->input('name'),
-            'acronym' => $request->input('acronym'),
-            'institution_id' => $request->input('institution_id'), // Inclui o institution_id
-            'description' => $request->input('description'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // Verifica se o nome do curso ja existe
+        if (Course::where('name', $request->name)->exists()) {
+            return $this->error('Course already exists', 409);
+        }
 
-        // Redireciona para a lista de cursos com mensagem de sucesso
-        return redirect()->route('admin.courses.index')->with('success', 'Curso criado com sucesso!');
+        // Cria o novo recurso
+        $created = Course::create($validator->validated());
+
+        if($created){
+            return $this->response('Course created', 201, new CourseResource($created->load('institution')));
+        }
+        else{
+            return $this->error('Course not create', 400);
+        }
     }
 
-/**
+    /**
      * Display the specified resource.
      */
     public function show(Course $course)
     {
+        // Retorna um curso espeficio 
         // Verifica se a request vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
     
@@ -79,16 +96,17 @@ class CourseController extends Controller
             return new CourseResource($course);
         }
 
-        // Return para a view com os dados
+         // Return para a view com os dados
         return view('admin.couses.index', compact('course'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-    
+        // 
     }
 
     /**
@@ -96,6 +114,8 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
+        // Atualiza o curso existente
+
         // Verifica se a requisição vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
         
@@ -130,12 +150,14 @@ class CourseController extends Controller
         // Redireciona para a lista de cursos com uma mensagem de sucesso
         return redirect()->route('admin.courses.index')->with('success', 'Curso atualizado com sucesso!');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(string $id)
     {
+        // Remove um curso da db
+
         // Verifica se a requisição vem do Postman
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
         
@@ -161,5 +183,4 @@ class CourseController extends Controller
         // Se não foi request JSON, envia a mensagem via sessão
         return redirect()->route('admin.courses.index')->with('error', 'Erro ao excluir o curso');
     }
-    
 }

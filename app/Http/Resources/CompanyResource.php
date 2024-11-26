@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon; // Importar o Carbon para manipulação de datas
 
-class InstitutionResource extends JsonResource
+class CompanyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,21 +15,15 @@ class InstitutionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $user = $this->users->first();
-
+        // return parent::toArray($request);
         return [
-            'user' => [
-                'id' => $user->id ?? 'N/A', 
-                'name' => $user->name ?? 'Utilizador não disponível', 
-                'email' => $user->email ?? 'Email não disponível', 
-                'account_is_verified' => $user->account_is_verified ?? false, 
-            ],
             'id' => $this->id,
-            'acronym' => $this->acronym,
-            'phone' => $this->phone ?? 'Não disponível', 
-            'address' => $this->address ?? 'Não disponível', 
-            'website' => $this->website ?? 'Não disponível', 
+            'phone' => $this->phone,
             'logo' => $this->logo ? asset('storage/' . $this->logo) : asset('images/uploads/default-user.png'),
+            'industry' => $this->industry,
+            'brief_description' => $this->brief_description,
+            'address' => $this->address,
+            'foundation_date' => $this->foundation_date ? Carbon::parse($this->foundation_date)->format('Y-m-d') : null,
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
         ];
