@@ -83,3 +83,24 @@ Route::get('/coordenadores', function () {
 Route::get('/aluno', function () {
     return view('aluno');
 });
+
+
+// Dashboard da instituição
+Route::get('/institution/dashboard', function () {
+    return view('institution.dashboard'); 
+})->name('institution.dashboard');
+
+// Dashboard do Student
+Route::get('/student/dashboard', function () {
+    return view('student.dashboard'); 
+})->name('student.dashboard');
+
+// Dashboard do Responsible
+Route::get('/responsible/dashboard', function () {
+    return view('responsible.dashboard'); 
+})->name('responsible.dashboard');
+
+// Dashboard do Company
+Route::get('/company/dashboard', function () {
+    return view('company.dashboard'); 
+})->name('company.dashboard');
