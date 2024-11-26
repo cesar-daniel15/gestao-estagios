@@ -38,7 +38,6 @@
             </li>
 
 
-
             <!-- Unidades Curriculares -->
             <li>
                <a href="{{ url('/institution/units-curriculars') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
