@@ -133,12 +133,12 @@ class UserController extends Controller
         $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
                 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:users,name',
-            'profile' => 'required|string|in:Institution,Company,Responsible,Student', 
-            'email' => 'required|email|unique:users,email',
-            'password' => 'string|min:6',
-            'id_institution' => 'nullable|exists:institutions,id', 
+            'name' => 'required|string|max:255|unique:users,name,' . $user->id,
+            'profile' => 'nullable|string|in:Institution,Company,Responsible,Student,Admin',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8',
         ]);
+
 
         // Verifica se a validacao falhou
         if ($validator->fails()) {
@@ -166,21 +166,18 @@ class UserController extends Controller
             $dataToUpdate['name'] = $validated['name'];
         }
 
-        if ($validated['profile'] != $user->phone) {
+        if (!empty($validated['profile']) && $validated['profile'] != $user->profile) {
             $dataToUpdate['profile'] = $validated['profile'];
-        }
+        }        
 
-        if ($validated['email'] != $user->address) {
+        if ($validated['email'] != $user->email) {
             $dataToUpdate['email'] = $validated['email'];
         }
 
-        if (!empty($validated['password'])) {
+        if (isset($validated['password']) && !empty($validated['password'])) {
             $dataToUpdate['password'] = Hash::make($validated['password']);
-        }
+        }        
 
-        if (isset($validated['id_institution'])) {
-            $dataToUpdate['id_institution'] = $validated['id_institution'];
-        }
 
         // Faz a atualizacao
         $update = $user->update($dataToUpdate);
@@ -212,26 +209,33 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // Verifica se a request vem do Postman
-        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
-
+        $isPostmanRequest = str_contains(request()->header('User -Agent'), 'Postman');
+    
+        // Verifica se o utilizador tem a ruel Admin
+        if ($user->profile === 'Admin') {
+            // Retorna uma resposta de erro se for uma requisição do Postman
+            if ($isPostmanRequest || request()->wantsJson()) {
+                return $this->error('Não é permitido apagar um utilizador com perfil Admin.', 403);
+            }
+    
+            return redirect()->route('admin.users.index')->with('error', 'Não é permitido apagar um utilizador com cargo de Admin.');
+        }
+    
         $deleted = $user->delete();
-
-        // Verificar se foi apagada
-        if($deleted){
+    
+        if ($deleted) {
             // Ve for uma request do Postman retorna em JSON
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('User deleted successfully', 200); //  200 OK → Utilizado quando uma request é bem sucedida
+                return $this->response('User  deleted successfully', 200); // 200 OK → Utilizado quando uma request é bem sucedida
             }
-
+    
             return redirect()->route('admin.users.index')->with('success', 'Utilizador apagado com sucesso!');
-
-        }else
-        {
+        } else {
             // Ve for uma request do Postman retorna em JSON
             if ($isPostmanRequest || request()->wantsJson()) {
-                return $this->response('User not deleted', 400); // 400 Bad Request  → Indica que a request é invalida devido a problemas 
+                return $this->response('User  not deleted', 400); // 400 Bad Request → Indica que a request é invalida devido a problemas 
             }
-            return redirect()->route('admin.users.index')->with('error', 'Erro ao apagar utilzador');
+            return redirect()->route('admin.users.index')->with('error', 'Erro ao apagar utilizador');
         }
     }
 }

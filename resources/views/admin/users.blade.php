@@ -6,28 +6,43 @@
 
 @section('content')
 
-@extends('admin.layouts.components.alert')
+@include('admin.layouts.components.alert')
 
     <div class="mt-10 bg-white drop-shadow-md rounded-xl p-10">
         <div class="text-lg font-bold text-gray-600 mb-6">
             Utilizadores Existentes
         </div>
         
-        <div class="flex flex-col gap-5 md:flex-row justify-between items-center my-5">
+        <div class="flex flex-col gap-5 md:flex-row md:justify-between items-center my-5">
 
-            <!-- Barra de pesquisa -->
-            <div class="flex">
-                <div class="relative w-full">
-                    <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" 
-                        placeholder="Procurar por Instituição" oninput="searchUser()" />
+            <div class="flex flex-col md:flex-row">
+                <!-- Barra de pesquisa -->
+                <div class="relative w-auto mb-4 md:mb-0">
+                    <input type="text" id="search-user" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" 
+                        placeholder="Procurar por Utilizador" oninput="searchUser()" />
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
                         <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
+                    </svg>
+                </div>
+
+                <!-- Filtro de Perfil -->
+                <div class="relative w-auto md:ms-5 mt-4 md:mt-0">
+                    <select id="search-profile" class="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" onchange="searchUser()">
+                        <option value="" disabled selected>Procurar por Perfil</option>
+                        <option value="Administrador" class="text-black">Administrador</option>
+                        <option value="Aluno" class="text-black">Aluno</option>
+                        <option value="Coordenador da Unidade Curricular" class="text-black">Coordenador de U.C</option>
+                        <option value="Empresa" class="text-black">Empresa</option>
+                        <option value="Instituição" class="text-black">Instituição</option>
+                    </select>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                        <path fill="#9c9c9c" d="M2 8a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2z"/>
                     </svg>
                 </div>
             </div>
 
             <!-- Botão de Atualizar -->
-            <div>
+            <div class="mt-4 md:mt-0 hidden md:flex">
                 <button id="refreshButton" class="bg-info text-white font-bold p-2.5 rounde bg-teal-600  hover:bg-teal-500 rounded-lg flex items-center" onclick="refreshTable()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="mr-2">
                         <path fill="white" d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
@@ -35,8 +50,8 @@
                     Atualizar
                 </button>
             </div>
-
         </div>
+
 
         <!-- Loader -->
         <div id="loader" class="text-center">
@@ -58,8 +73,7 @@
                         <th class="p-4 border-b text-gray-600">Perfil</th>
                         <th class="p-4 border-b text-gray-600">Email</th>
                         <th class="p-4 border-b text-gray-600">Conta Verificada</th>
-                        <th class="p-4 border-b text-gray-600">Último Login</th>
-                        <th class="p-4 border-b text-gray-600">Ultimo Update</th>
+                        <th class="p-4 border-b text-gray-600">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,11 +86,39 @@
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $user['id'] }}</td>
                             <td class="p-4 text-gray-600 user-name">{{ $user['name'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $user['profile'] }}</td>
+                            <td class="p-4 text-gray-600 user-profile">{{ $user['profile'] }}</td>
                             <td class="p-4 text-gray-600">{{ $user['email'] }}</td>
                             <td class="p-4 text-gray-600">{{ $user['account_is_verified'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $user['last_login'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $user['updated_at'] }}</td>
+                            <td class="p-4 text-gray-600">
+                                <div class="flex space-x-2 justify-center">
+                                
+                                    <!-- Botão Ver -->
+                                    <a onclick="viewModal({{ $user['id'] }}, '{{ $user['name'] }}', '{{ $user['email'] }}',  '{{ $user['profile'] }}', '{{ $user['account_is_verified'] }}', '{{ $user['last_login'] }}', '{{ $user['created_at'] }}', '{{ $user['updated_at'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                            <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                                        </svg>
+                                    </a>
+    
+                                    <!-- Botão Update -->
+                                    <button type="button" onclick="updateModal({{ $user['id'] }}, '{{ $user['name'] }}', '{{ $user['email'] }}', '{{ $user['profile'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                            <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
+                                        </svg>
+                                    </button>
+    
+                                    <!-- Botão Apagar -->
+                                    <form id="deleteForm{{ $user['id'] }}" action="{{ route('admin.users.destroy', $user['id']) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="openDeleteModal({{ $user['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+    
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 @endif
@@ -85,24 +127,127 @@
         </div>
     </div>
 
+    <!-- Modal de Visualizacao -->
+    <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg relative w-auto">
+            <div class="modal-content">
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $user['name'] }}</h2>
+                <div class="modal-body flex text-base px-5">
+                    <div class="ml-4">
+                        <p>ID:</strong> {{ $user['id'] }}</p>
+                        <p><strong>Email:</strong> {{ $user['email'] }}</p>
+                        <p><strong>Perfil:</strong> {{ $user['profile'] }}</p>
+                        <p><strong>Conta Verificada:</strong> {{ $user['account_is_verified'] }}</p>
+                        <p><strong>Último Login:</strong> {{ $user['last_login'] }}</p>
+                        <p><strong>Data de Criação:</strong> {{ $user['created_at'] }}</p>
+                        <p><strong>Última Atualização:</strong> {{ $user['updated_at'] }}</p>
+                    </div>
+                </div>
+
+                <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
+                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Update -->
+    <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Utilizador</h2>
+
+            <!-- Form -->
+            <form id="updateForm" action="{{ route('admin.users.update', $user['id']) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                        <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="profile" class="block text-gray-600 mb-1">Perfil</label>
+                        <select id="update_profile" name="profile" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                            <option value="Administrador">Administrador</option>
+                            <option value="Aluno">Aluno</option>
+                            <option value="Coordenador da Unidade Curricular">Coordenador de U.C</option>
+                            <option value="Empresa">Empresa</option>
+                            <option value="Instituição">Instituição</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-gray-600 mb-1">Email</label>
+                        <input type="email" id="update_email" name="email" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-gray-600 mb-1">Password</label>
+                        <input type="password" id="update_password" name="password" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" placeholder="Nova Password">
+                    </div>
+
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+                </div>
+
+            </form>
+        </div> 
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg w-1/3">
+
+            <h2 class="text-md font-smibold py-10 text-center text-gray-500">Tem a certeza que deseja apagar este utilizador?</h2>
+
+            <div class="flex justify-center space-x-5">
+                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2.5 font-bold rounded" onclick="closeModal('deleteModal')">Cancelar</button>
+                <button id="confirmDeleteButton" class="bg-red-500 hover:bg-red-600 text-white p-2.5 font-bold rounded">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
 <script>
-    //Barra de Pesquisa
+    
+    // Pesquisar por user
     function searchUser() {
-            const searchValue = document.getElementById('search').value.toLowerCase();
+        const searchUser = document.getElementById('search-user').value.toLowerCase();
+        const searchProfile = document.getElementById('search-profile').value;
 
-            // Seleciona todas as linhas da tabela
-            const rows = document.querySelectorAll("#userTable tbody tr");
+        const rows = document.querySelectorAll("#userTable tbody tr");
 
-            rows.forEach(row => {
-                const userName = row.querySelector(".user-name").textContent.toLowerCase();
+        rows.forEach(row => {
+            const userName = row.querySelector(".user-name").textContent.toLowerCase();
+            const userProfile = row.querySelector(".user-profile").textContent;
 
-                if (userName.includes(searchValue)) {
-                    row.style.display = "";  // Mostra a linha
+            const matchName = userName.includes(searchUser);
+            const matchProfile = userProfile === searchProfile;
+
+            if (searchProfile && searchUser) {
+                if (matchProfile && matchName) {
+                    row.style.display = ""; 
                 } else {
-                    row.style.display = "none";  // Esconde a linha
+                    row.style.display = "none"; 
                 }
-            });
-        }
+            } else if (searchProfile) {
+                if (matchProfile) {
+                    row.style.display = ""; 
+                } else {
+                    row.style.display = "none"; 
+                }
+            } else {
+                if (matchName) {
+                    row.style.display = ""; 
+                } else {
+                    row.style.display = "none"; 
+                }
+            }
+        });
+    }
 
     // Atualiza a pagina
     function refreshTable() {
@@ -110,17 +255,71 @@
     }
 
      // Loader
-    document.addEventListener('DOMContentLoaded', function () {
-            const loader = document.getElementById('loader');
-            const table = document.getElementById('userTable');
+    document.addEventListener('DOMContentLoaded', 
+    function () {
+        const loader = document.getElementById('loader');
+        const table = document.getElementById('userTable');
 
-            setTimeout(() => {
-                loader.classList.add('hidden'); 
-                table.classList.remove('hidden'); 
-            }, 2000);
-        });
+        setTimeout(() => {
+            loader.classList.add('hidden'); 
+            table.classList.remove('hidden'); 
+        }, 2000);
+    });
 
-        
+    // Funcao para abrir o modal
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+    }
+
+    // Funcao  para fechar o modal
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+    
+    // Modal para visualizar informacao douser
+    function viewModal(id, name, email, profile, accountIsVerified, lastLogin, createdAt, updatedAt) {
+        document.querySelector('#viewModal .modal-content h2').textContent = name;
+        document.querySelector('#viewModal .modal-body').innerHTML = `
+            <div class="ml-4 flex flex-col gap-5">
+                <p><strong>ID:</strong> ${id}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Perfil:</strong> ${profile}</p>
+                <p><strong>Conta Verificada:</strong> ${accountIsVerified}</p>
+                <p><strong>Último Login:</strong> ${lastLogin}</p>
+                <p><strong>Data de Criação:</strong> ${createdAt}</p>
+                <p><strong>Última Atualização:</strong> ${updatedAt}</p>
+            </div>
+        `;
+        document.querySelector("#update_profile")
+        openModal('viewModal');
+    }
+
+    // Modal para dar update a um user
+    function updateModal(id, name, email, profile, password) {
+        openModal('updateModal');  
+
+        document.getElementById('update_name').value = name;
+        document.getElementById('update_profile').value = profile;
+        document.getElementById('update_email').value = email;
+
+        const updateForm = document.getElementById('updateForm');
+        updateForm.action = `/admin/users/${id}`; 
+    }
+
+    // Abrir Modal para apagar um user
+    function openDeleteModal(id) {
+        openModal('deleteModal');  
+
+        const deleteForm = document.querySelector('#deleteForm' + id);
+        const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+        confirmDeleteButton.onclick = function () {
+            deleteForm.submit(); 
+        };
+    }
 </script>
 
 @endsection
