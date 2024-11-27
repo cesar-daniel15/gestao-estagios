@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User; // Import do Model User
-use App\Http\Resources\UserResource; // Import do Resource
-use Illuminate\Support\Facades\Validator; // Import do Validator
+use App\Models\User; 
+use App\Http\Resources\UserResource; 
+use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Hash;
 
