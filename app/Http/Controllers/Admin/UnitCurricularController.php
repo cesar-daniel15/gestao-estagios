@@ -1,17 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
+use App\Models\UnitCurricular;
+use App\Models\Course;
+
 
 use Illuminate\Http\Request;
 
-class UnitsCurricularesController extends Controller
+class UnitCurricularController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use HttpResponses;
+
     public function index()
     {
-        //
+        $unitsCurriculares = UnitCurricular::with('courses')->get();
+
+        $courses = Course::all();
+        //return view('admin.units-curriculars', ['unitsCurriculares' => $unitsCurriculares, 'courses' => $courses]);
+        return view('admin.units-curriculars' , compact('units-curriculars'));
+        
     }
 
     /**

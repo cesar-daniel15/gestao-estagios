@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\InstitutionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\UnitCurricularController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
@@ -28,7 +29,14 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::get('/courses/{course}', [CourseController::class, 'show'])->name('admin.courses.show'); 
     Route::put('/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update'); 
     Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
-    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.destroy'); 
+    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
+    
+    Route::get('/units', [UnitCurricularController::class, 'index'])->name('admin.units.index');
+    Route::get('/units/{unit}', [UnitCurricularController::class, 'show'])->name('admin.units.show');
+    Route::post('/units', [UnitCurricularController::class, 'store'])->name('admin.units.store');
+    Route::put('/units/{unit}', [UnitCurricularController::class, 'update'])->name('admin.units.update');
+    Route::delete('/units/{unit}', [UnitCurricularController::class, 'destroy'])->name('admin.units.destroy');
+
 
     Route::get('/dashboard', function () {
         return view('admin.dashboard');

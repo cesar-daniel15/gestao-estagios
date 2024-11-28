@@ -66,7 +66,7 @@
                      </li>
                      <!-- Submenu para Unidades Curriculares -->
                      <li>
-                        <a href="{{ url('/admin/institutions/units-curriculars') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                        <a href="{{ url('/admin/units-curriculars') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
                            <span class="ms-5 text-sm">Unidades Curriculares</span>
                         </a>
                      </li>
