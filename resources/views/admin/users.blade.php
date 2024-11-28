@@ -131,16 +131,12 @@
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg relative w-auto">
             <div class="modal-content">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">{{ $user['name'] }}</h2>
+                <!-- H2 para o titulo -->
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center"></h2>
                 <div class="modal-body flex text-base px-5">
+                    <!-- Div para os dados -->
                     <div class="ml-4">
-                        <p>ID:</strong> {{ $user['id'] }}</p>
-                        <p><strong>Email:</strong> {{ $user['email'] }}</p>
-                        <p><strong>Perfil:</strong> {{ $user['profile'] }}</p>
-                        <p><strong>Conta Verificada:</strong> {{ $user['account_is_verified'] }}</p>
-                        <p><strong>Último Login:</strong> {{ $user['last_login'] }}</p>
-                        <p><strong>Data de Criação:</strong> {{ $user['created_at'] }}</p>
-                        <p><strong>Última Atualização:</strong> {{ $user['updated_at'] }}</p>
+    
                     </div>
                 </div>
 
