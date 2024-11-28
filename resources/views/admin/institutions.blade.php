@@ -32,7 +32,6 @@
                 </svg>
                 Registrar Instituição
             </button>
-
         </div>
     
         <!-- Loader -->
