@@ -31,11 +31,11 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
     Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
     
-    Route::get('/units', [UnitCurricularController::class, 'index'])->name('admin.units.index');
-    Route::get('/units/{unit}', [UnitCurricularController::class, 'show'])->name('admin.units.show');
-    Route::post('/units', [UnitCurricularController::class, 'store'])->name('admin.units.store');
-    Route::put('/units/{unit}', [UnitCurricularController::class, 'update'])->name('admin.units.update');
-    Route::delete('/units/{unit}', [UnitCurricularController::class, 'destroy'])->name('admin.units.destroy');
+    Route::get('/units-curriculars', [UnitCurricularController::class, 'index'])->name('admin.units.index');
+    Route::get('/units-curriculars/{unit-curriculars}', [UnitCurricularController::class, 'show'])->name('admin.units.show');
+    Route::post('/units-curriculars', [UnitCurricularController::class, 'store'])->name('admin.units.store');
+    Route::put('/units-curriculars/{unit-curriculars}', [UnitCurricularController::class, 'update'])->name('admin.units.update');
+    Route::delete('/units-curriculars/{unit-curriculars}', [UnitCurricularController::class, 'destroy'])->name('admin.units.destroy');
 
 
     Route::get('/dashboard', function () {

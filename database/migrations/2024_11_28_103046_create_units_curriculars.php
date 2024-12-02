@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('units_curriculars', function (Blueprint $table) {
-            $table->id(); // Chave primária
+            $table->string('id')->primary();
             $table->unsignedBigInteger('course_id'); // Chave estrangeira para 'courses'
             $table->string('name'); // Nome da unidade curricular
             $table->string('acronym'); // Acrônimo da unidade curricular

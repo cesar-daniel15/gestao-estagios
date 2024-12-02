@@ -90,7 +90,7 @@
                                 </button>
 
                                 <!-- Botão Apagar -->
-                                <form id="deleteForm{{ $unit['id'] }}" action="{{ route('admin.unitCurricular.destroy', $unit['id']) }}" method="POST">
+                                <form id="deleteForm{{ $unit['id'] }}" action="{{ route('admin.units.destroy', $unit['id']) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" onclick="openDeleteModal({{ $unit['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
@@ -115,7 +115,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Unidade Curricular</h2>
 
             <!-- Form -->
-            <form action="{{ route('admin.unitCurricular.store') }}" method="POST">
+            <form action="{{ route('admin.units.store') }}" method="POST">
                 @csrf
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
