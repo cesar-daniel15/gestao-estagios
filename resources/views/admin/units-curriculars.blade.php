@@ -196,6 +196,10 @@
         document.getElementById('viewCourse').textContent = button.getAttribute('data-course');
         document.getElementById('viewSyllabus').textContent = button.getAttribute('data-syllabus');
     }
+    function openModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden');
+}
+
 
     // Exemplo de função para fechar o modal
     function closeModal(modalId) {
