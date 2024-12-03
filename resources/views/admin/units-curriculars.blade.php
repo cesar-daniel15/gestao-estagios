@@ -53,9 +53,8 @@
                 <tr class="bg-gray-100">
                     <th class="p-4 border-b text-gray-600">ID</th>
                     <th class="p-4 border-b text-gray-600">Nome</th>
-                    <th class="p-4 border-b text-gray-600">Código</th>
-                    <th class="p-4 border-b text-gray-600">Curso</th>
-                    <th class="p-4 border-b text-gray-600">Ementa</th>
+                    <th class="p-4 border-b text-gray-600">Acrónimo</th>
+                    <th class="p-4 border-b text-gray-600">Ects</th>
                     <th class="p-4 border-b text-gray-600">Ações</th>
                 </tr>
             </thead>
@@ -69,21 +68,20 @@
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4 text-gray-600">{{ $unit['id'] }}</td>
                         <td class="p-4 text-gray-600">{{ $unit['name'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['code'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['course']['name'] ?? 'Curso não disponível' }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['syllabus'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $unit['acronym'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $unit['ects'] }}</td>
                         <td class="p-4 text-gray-600">
                             <div class="flex space-x-2 justify-center">
 
                                 <!-- Botão Ver -->
-                                <a href="javascript:void(0)" onclick="openViewModal(this)" data-id="{{ $unit['id'] }}" data-name="{{ $unit['name'] }}" data-code="{{ $unit['code'] }}" data-course="{{ $unit['course']['name'] }}" data-syllabus="{{ $unit['syllabus'] }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <a href="javascript:void(0)" onclick="openViewModal(this)" data-id="{{ $unit['id'] }}" data-name="{{ $unit['name'] }}" data-code="{{ $unit['acronym'] }}" data-course="{{ $unit['ects'] }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                     </svg>
                                 </a>
 
                                 <!-- Botão Update -->
-                                <button type="button" onclick="updateModal({{ $unit['id'] }}, '{{ $unit['name'] }}', '{{ $unit['code'] }}', '{{ $unit['course']['name'] }}', '{{ $unit['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <button type="button" onclick="updateModal({{ $unit['id'] }}, '{{ $unit['name'] }}', '{{ $unit['acronym'] }}', '{{ $unit['ects']}}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                     </svg>
@@ -125,22 +123,13 @@
                     </div>
 
                     <div>
-                        <label for="code" class="block text-gray-600 mb-1">* Código</label>
-                        <input type="text" id="code" name="code" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <label for="acronym" class="block text-gray-600 mb-1">*Acrónimo</label>
+                        <input type="text" name="acronym" id="acronym" required class="form-input mt-1 block w-full border rounded-md py-2 px-4">
                     </div>
 
                     <div>
-                        <label for="course" class="block text-gray-600 mb-1">* Curso</label>
-                        <select name="course_id" id="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                            @foreach($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="syllabus" class="block text-gray-600 mb-1">Ementa</label>
-                        <textarea name="syllabus" id="syllabus" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2"></textarea>
+                        <label for="etcs" class="block text-gray-600 mb-1">*Etcs</label>
+                        <input type="number" name="etcs" id="etcs" required class="form-input mt-1 block w-full border rounded-md py-2 px-4">
                     </div>
                 </div>
 
@@ -154,55 +143,163 @@
         </div>
     </div>
 
-    <!-- Modal Visualizar Unidade Curricular -->
-    <div id="viewModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Visualizar Unidade Curricular</h2>
 
-            <div>
-                <label class="block text-gray-600 mb-1">Nome</label>
-                <p id="viewName" class="text-gray-700"></p>
-            </div>
+    if(!empty($unit))
 
-            <div>
-                <label class="block text-gray-600 mb-1">Código</label>
-                <p id="viewCode" class="text-gray-700"></p>
-            </div>
+    <!-- Modal de Visualizacao -->
+    <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg relative">
+            <div class="modal-content">
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Visualizar Unidade Curricular</h2>
+                <div class="modal-body flex text-base px-5">
 
-            <div>
-                <label class="block text-gray-600 mb-1">Curso</label>
-                <p id="viewCourse" class="text-gray-700"></p>
-            </div>
+                    <!-- Lado com as informacoes -->
+                    <div class="ml-4 w-1/2">
+                        <p><strong>Acrónimo:</strong> {{ $unit['acronym'] }}</p>
+                        <p><strong>Etcs:</strong> {{ $unit['etcs'] }}</p>
+                        <p><strong>Último Login:</strong> {{ $unit['user']['last_login'] }}</p>
+                        <p><strong>Data de Criação:</strong> {{ $unit['created_at'] }}</p>
+                    </div>
+                </div>
 
-            <div>
-                <label class="block text-gray-600 mb-1">Ementa</label>
-                <p id="viewSyllabus" class="text-gray-700"></p>
-            </div>
-
-            <div class="flex justify-center mt-4">
-                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded" onclick="closeModal('viewModal')">Fechar</button>
+                <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
+                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
+                </div>
             </div>
         </div>
     </div>
 
-@endsection
+
+    <!-- Modal de Update -->
+    <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Unidade Curricular</h2>
+
+            <!-- Form -->
+            <form id="updateForm" action="{{ route('admin.units.update', $unit['id']) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="name" class="block text-gray-600 mb-1">Nome</label>
+                        <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                        <input type="text" id="update_acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="etcs" class="block text-gray-600 mb-1">Etcs</label>
+                        <input type="number" id="update_etcs" name="ects" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+                </div>
+            </form>
+        </div> 
+    </div>
+
+
+    <!-- Modal de Confirmação -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg w-1/3">
+
+            <h2 class="text-md font-smibold py-10 text-center text-gray-500">Tem a certeza que deseja apagar a unidade curricular?</h2>
+
+            <div class="flex justify-center space-x-5">
+                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2.5 font-bold rounded" onclick="closeModal('deleteModal')">Cancelar</button>
+                <button id="confirmDeleteButton" class="bg-red-500 hover:bg-red-600 text-white p-2.5 font-bold rounded">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+ endif
+
 
 <script>
-    // Exemplo de função para abrir o modal de visualização
-    function openViewModal(button) {
-        document.getElementById('viewModal').classList.remove('hidden');
-        document.getElementById('viewName').textContent = button.getAttribute('data-name');
-        document.getElementById('viewCode').textContent = button.getAttribute('data-code');
-        document.getElementById('viewCourse').textContent = button.getAttribute('data-course');
-        document.getElementById('viewSyllabus').textContent = button.getAttribute('data-syllabus');
-    }
+    // Funcao para abrir o modal
     function openModal(modalId) {
-    document.getElementById(modalId).classList.remove('hidden');
-}
-
-
-    // Exemplo de função para fechar o modal
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
     }
+
+    // Funcao  para fechar o modal
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+
+
+
+
+
+        // Abrir Modal para visualizar uma Unidade Curricular
+        function openViewModal(element) {
+            openModal('viewModal');  
+
+            const viewModal = document.getElementById('viewModal');
+
+            viewModal.querySelector('h2').textContent = element.dataset.name;
+            viewModal.querySelector('img').src = element.dataset.logo || 'path/to/default/logo.png';
+            viewModal.querySelector('p:nth-child(1)').innerHTML = `<strong>Acrónimo:</strong> ${element.dataset.acronym}`;
+            viewModal.querySelector('p:nth-child(2)').innerHTML = `<strong>Etcs:</strong> ${element.dataset.etcs}`;
+            viewModal.querySelector('p:nth-child(7)').innerHTML = `<strong>Último Login:</strong> ${element.dataset.lastlogin}`;
+            viewModal.querySelector('p:nth-child(8)').innerHTML = `<strong>Data de Criação:</strong> ${element.dataset.createdat}`;
+        }
+
+    // Abrir Modal para apagar uma Unidade Curricular
+    function openDeleteModal(id) {
+            openModal('deleteModal');  
+
+            const deleteForm = document.querySelector('#deleteForm' + id);
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            confirmDeleteButton.onclick = function () {
+                deleteForm.submit(); // Submete o Form 
+            };
+        }
+
+        // Abrir Modal para fazer uma atualizacao de uma Unidade Curricular
+        function updateModal(id, name, acronym, email, phone, address, website) {
+            openModal('updateModal');  
+
+            document.getElementById('update_name').value = name;
+            document.getElementById('update_acronym').value = acronym;
+            document.getElementById('update_etcs').value = etcs;
+
+
+            const updateForm = document.getElementById('updateForm');
+            updateForm.action = `/admin/units/${id}`; 
+        }
+
+        // Funcao de pesquisa de Unidade Curricular
+        function searchUnit() {
+            const searchValue = document.getElementById('search').value.toLowerCase();
+            const rows = document.querySelectorAll("#unitTable tbody tr");
+
+            rows.forEach(row => {
+                const unitName = row.querySelector(".unit-name").textContent.toLowerCase();
+                row.style.display = unitName.includes(searchValue) ? "" : "none";
+            });
+        }
+
+        // Loader
+        document.addEventListener('DOMContentLoaded', function () {
+            const loader = document.getElementById('loader');
+            const table = document.getElementById('unitTable');
+
+            setTimeout(() => {
+                loader.classList.add('hidden'); 
+                table.classList.remove('hidden'); 
+            }, 2000);
+        });
+
 </script>
+
+@endsection
