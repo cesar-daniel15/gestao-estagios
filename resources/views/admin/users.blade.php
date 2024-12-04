@@ -177,11 +177,11 @@
                         <label for="account_is_verified" class="block text-gray-600 mb-1">Conta Verificada</label>
                         <div class="flex gap-4">
                             <div class="flex items-center">
-                                <input type="radio" id="account_is_verified_yes" name="account_is_verified" value="1" class="form-radio text-blue-500">
+                                <input type="radio" id="account_is_verified_yes" name="account_is_verified" value="1" class="form-radio text-blue-500" checked>
                                 <label for="account_is_verified_yes" class="ml-2 text-gray-600">Sim</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="radio" id="account_is_verified_no" name="account_is_verified" value="0" class="form-radio text-blue-500" checked>
+                                <input type="radio" id="account_is_verified_no" name="account_is_verified" value="0" class="form-radio text-blue-500">
                                 <label for="account_is_verified_no" class="ml-2 text-gray-600">Não</label>
                             </div>
                         </div>
@@ -381,6 +381,8 @@
         if (profileMap[profile]) {
             document.getElementById('update_profile').value = profileMap[profile];
         }
+
+        document.getElementById('updateForm').action = "{{ route('admin.users.update', '') }}/" + id;
 
         openModal('updateModal');
     }
