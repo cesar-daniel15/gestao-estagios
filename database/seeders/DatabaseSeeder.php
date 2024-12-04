@@ -16,19 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Cria o usuário Admin específico
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'), // Ajuste a senha conforme necessário
-            'profile' => 'Admin',
-            'account_is_verified' => true, // Verifica o e-mail
-        ]);
-
-        // Criar 2 instituicoes ficticias
-        Institution::factory()->count(2)->create();
-
-        // Criar 3 cursos ficticiois
-        Course::factory()->count(3)->create();
+        User::factory()->create();
     }
 }
