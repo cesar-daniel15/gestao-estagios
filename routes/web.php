@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ResponsibleController;
+use App\Http\Controllers\CompanyController;
+
 
 Route::get('/', function () { 
     return view('index'); 
@@ -45,17 +49,17 @@ Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class])-
 
 // Rotas para perfil de aluno
 Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
-    Route::get('/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
 });
 
 // Rotas para perfil de responsaveis pela uc
 Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
-    Route::get('/dashboard', [ResponsibleController::class, 'dashboard'])->name('responsible.dashboard');
+    Route::get('/dashboard', [ResponsibleController::class, 'index'])->name('responsible.dashboard');
 });
 
-// Rotas para perfil de emoresa
+// Rotas para perfil de empresa
 Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
-    Route::get('/dashboard', [CompanyController::class, 'dashboard'])->name('company.dashboard');
+    Route::get('/dashboard', [CompanyController::class, 'index'])->name('company.dashboard');
 });
 
 // Rotas de auth
