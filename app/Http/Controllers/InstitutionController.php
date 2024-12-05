@@ -21,7 +21,7 @@ class InstitutionController extends Controller
     public function index()
     {
         if (Auth::user()->profile !== 'Institution') {
-            return redirect()->back()->with('error', 'Você não tem permissão para acessar esta página.');
+            return redirect()->back()->with('error', 'Você não tem permissão para eceder a esta página.');
         }
 
         $user = Auth::user();

@@ -18,12 +18,11 @@ class AdminCourseController extends Controller
     public function index()
     {   
         $courses = Course::with('institution')->get();
-        
         $institutions = Institution::all(); 
-    
-        return view('admin.courses', ['courses' => $courses, 'institutions' => $institutions]);
-
+        
+        return view('admin.courses', ['courses' => CourseResource::collection($courses), 'institutions' => $institutions]);
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -54,20 +53,15 @@ class AdminCourseController extends Controller
             // Para requisições normais
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
-        // Verifica se o nome do curso ja existe
-        if (Course::where('name', $request->name)->exists()) {
-            return $this->error('Course already exists', 409);
-        }
-
+        
         // Cria o novo recurso
         $created = Course::create($validator->validated());
 
         if($created){
-            return $this->response('Course created', 201, new CourseResource($created->load('institution')));
+            return redirect()->route('admin.courses.index')->with('success', 'Curso criado com sucesso!');
         }
         else{
-            return $this->error('Course not create', 400);
+            return redirect()->route('admin.courses.index')->with('error', 'Erro ao criar curso');
         }
     }
 
@@ -126,19 +120,15 @@ class AdminCourseController extends Controller
     public function destroy(string $id)
     {
         // Remove um curso da db
-
-        // Verifica se a requisição vem do Postman
-        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
-        
         // Deleta o curso
         $deleted = $course->delete();
     
         // Verifica se foi deletado com sucesso
         if ($deleted) {    
             // Redireciona com mensagem de sucesso
-            return redirect()->route('admin.courses.index')->with('success', 'Curso excluído com sucesso!');
+            return redirect()->route('admin.courses.index')->with('success', 'Curso apagado com sucesso!');
         }
     
-        return redirect()->route('admin.courses.index')->with('error', 'Erro ao excluir o curso');
+        return redirect()->route('admin.courses.index')->with('error', 'Erro ao apagar o curso');
     }
 }
