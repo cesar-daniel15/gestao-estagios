@@ -57,7 +57,7 @@ class AdminUnitsCurricularsController extends Controller
         $data = $validator->validated();
 
         // Cria a nova unidade curricular
-        $unitCurricular = UnitsCurricular::create($data);
+        $unitCurricular = UnitCurricular::create($data);
     
         if ($unitCurricular) {
             // Redireciona para a página das unidades curriculares com mensagem de sucesso
