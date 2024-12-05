@@ -37,6 +37,12 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/courses', [AdminCourseController::class, 'store'])->name('admin.courses.store');
     Route::delete('/courses/{course}', [AdminCourseController::class, 'destroy'])->name('admin.courses.destroy'); 
 
+    Route::get('/units-curriculars', [AdminUnitsCurricularsController::class, 'index'])->name('admin.units.index');
+    Route::get('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'show'])->name('admin.units.show');
+    Route::put('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'update'])->name('admin.units.update');
+    Route::post('/units-curriculars', [AdminUnitsCurricularsController::class, 'store'])->name('admin.units.store');
+    Route::delete('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'destroy'])->name('admin.units.destroy');
+
     Route::get('/dashboard', function () {return view('admin.dashboard');})->name('admin.dashboard');
 });
 

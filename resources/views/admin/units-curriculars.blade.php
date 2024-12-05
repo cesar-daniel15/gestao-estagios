@@ -15,14 +15,12 @@
         <div class="flex flex-col gap-5 md:flex-row justify-between items-center my-5">
             
             <!-- Barra de pesquisa -->
-            <div class="flex">
-                <div class="relative w-full">
-                    <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" 
-                        placeholder="Procurar por Instituição" oninput="searchUnitCurricular()" />
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
-                        <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
-                    </svg>
-                </div>
+            <div class="relative w-full md:w-auto mb-4 md:mb-0">
+                <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" 
+                    placeholder="Procurar por Instituição" oninput="searchInstitution()" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                    <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
+                </svg>
             </div>
 
             <!-- Botão para criar Unidade Curricular -->
@@ -33,6 +31,16 @@
                 Registrar Unidade Curricular
             </button>
         </div>
+
+            <!-- Botão de Atualizar -->
+            <div class="mt-4 md:mt-0 hidden md:flex">
+                <button id="refreshButton" class="bg-info text-white font-bold p-2.5 rounde bg-teal-600 hover:bg-teal-500 rounded-lg flex items-center" onclick="refreshTable()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="mr-2">
+                        <path fill="white" d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
+                    </svg>
+                    Atualizar
+                </button>
+            </div>
     
         <!-- Loader -->
         <div id="loader" class="text-center">
@@ -53,9 +61,8 @@
                 <tr class="bg-gray-100">
                     <th class="p-4 border-b text-gray-600">ID</th>
                     <th class="p-4 border-b text-gray-600">Nome</th>
-                    <th class="p-4 border-b text-gray-600">Código</th>
-                    <th class="p-4 border-b text-gray-600">Curso</th>
-                    <th class="p-4 border-b text-gray-600">Ementa</th>
+                    <th class="p-4 border-b text-gray-600">Acrónimo</th>
+                    <th class="p-4 border-b text-gray-600">Etcs</th>
                     <th class="p-4 border-b text-gray-600">Ações</th>
                 </tr>
             </thead>
@@ -69,21 +76,21 @@
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4 text-gray-600">{{ $unit['id'] }}</td>
                         <td class="p-4 text-gray-600">{{ $unit['name'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['code'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['course']['name'] ?? 'Curso não disponível' }}</td>
+                        <td class="p-4 text-gray-600">{{ $unit['acronym'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $unit['ects']' }}</td>
                         <td class="p-4 text-gray-600">{{ $unit['syllabus'] }}</td>
                         <td class="p-4 text-gray-600">
                             <div class="flex space-x-2 justify-center">
 
                                 <!-- Botão Ver -->
-                                <a href="javascript:void(0)" onclick="openViewModal(this)" data-id="{{ $unit['id'] }}" data-name="{{ $unit['name'] }}" data-code="{{ $unit['code'] }}" data-course="{{ $unit['course']['name'] }}" data-syllabus="{{ $unit['syllabus'] }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <a onclick="viewModal({{ $unit['id'] }},'{{ $unit['name'] }}','{{ $unit['acronym'] }}', '{{ $unit['ects'] }}' , $institution['created_at'] }} )" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                     </svg>
                                 </a>
 
                                 <!-- Botão Update -->
-                                <button type="button" onclick="updateModal({{ $unit['id'] }}, '{{ $unit['name'] }}', '{{ $unit['code'] }}', '{{ $unit['course']['name'] }}', '{{ $unit['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <button type="button" onclick="updateModal({{ $unit['id'] }}, '{{ $unit['name'] }}', '{{ $unit['acronym'] }}', '{{ $unit['etcs'] }}', '{{ $unit['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                     </svg>
@@ -115,7 +122,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Unidade Curricular</h2>
 
             <!-- Form -->
-            <form action="{{ route('admin.units.store') }}" method="POST">
+            <form action="{{ route('admin.units.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
@@ -125,22 +132,13 @@
                     </div>
 
                     <div>
-                        <label for="code" class="block text-gray-600 mb-1">* Código</label>
-                        <input type="text" id="code" name="code" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <label for="acronym" class="block text-gray-600 mb-1">*Acrónimo</label>
+                        <input type="text" id="acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
-                        <label for="course" class="block text-gray-600 mb-1">* Curso</label>
-                        <select name="course_id" id="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                            @foreach($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="syllabus" class="block text-gray-600 mb-1">Ementa</label>
-                        <textarea name="syllabus" id="syllabus" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2"></textarea>
+                        <label for="etcs" class="block text-gray-600 mb-1">*Etcs</label>
+                        <input type="number" id="etcs" name="etcs" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
                 </div>
 
@@ -154,30 +152,20 @@
         </div>
     </div>
 
+    @if (!empty($unitCurricular))
+
     <!-- Modal Visualizar Unidade Curricular -->
     <div id="viewModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Visualizar Unidade Curricular</h2>
 
-            <div>
-                <label class="block text-gray-600 mb-1">Nome</label>
-                <p id="viewName" class="text-gray-700"></p>
-            </div>
-
-            <div>
-                <label class="block text-gray-600 mb-1">Código</label>
-                <p id="viewCode" class="text-gray-700"></p>
-            </div>
-
-            <div>
-                <label class="block text-gray-600 mb-1">Curso</label>
-                <p id="viewCourse" class="text-gray-700"></p>
-            </div>
-
-            <div>
-                <label class="block text-gray-600 mb-1">Ementa</label>
-                <p id="viewSyllabus" class="text-gray-700"></p>
-            </div>
+            <div class="w-full md:w-1/2 p-4 flex flex-col data-content">
+                        <p><strong>ID:</strong> <span id="modal-id"></span> </p>
+                        <p><strong>Nome:</strong> <span id="modal-name"></span> </p>
+                        <p><strong>Acrónimo:</strong> <span id="modal-acronym"></span> </p>
+                        <p><strong>Etcs:</strong> <span id="modal-etcs"></span> </p>
+                        <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span> </p>
+                    </div>
 
             <div class="flex justify-center mt-4">
                 <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded" onclick="closeModal('viewModal')">Fechar</button>
@@ -185,20 +173,156 @@
         </div>
     </div>
 
-@endsection
+
+    <!-- Modal de Update -->
+    <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Unidade Curricular</h2>
+
+            <!-- Form -->
+            <form id="updateForm" action="{{ route('admin.units.update', $unit['id']) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+
+                    <div>
+                        <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                        <input type="text" id="update_acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="etcs" class="block text-gray-600 mb-1">Etcs</label>
+                        <input type="number" id="update_etcs" name="etcs" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+                </div>
+
+            </form>
+        </div> 
+    </div>
+
+
+        <!-- Modal de Confirmação -->
+        <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg w-1/3">
+
+            <h2 class="text-md font-smibold py-10 text-center text-gray-500">Tem a certeza que deseja apagar a unidade curricular?</h2>
+
+            <div class="flex justify-center space-x-5">
+                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2.5 font-bold rounded" onclick="closeModal('deleteModal')">Cancelar</button>
+                <button id="confirmDeleteButton" class="bg-red-500 hover:bg-red-600 text-white p-2.5 font-bold rounded">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+@endif
 
 <script>
-    // Exemplo de função para abrir o modal de visualização
-    function openViewModal(button) {
-        document.getElementById('viewModal').classList.remove('hidden');
-        document.getElementById('viewName').textContent = button.getAttribute('data-name');
-        document.getElementById('viewCode').textContent = button.getAttribute('data-code');
-        document.getElementById('viewCourse').textContent = button.getAttribute('data-course');
-        document.getElementById('viewSyllabus').textContent = button.getAttribute('data-syllabus');
+
+    // Atualiza a pagina
+    function refreshTable() {
+        location.reload();
     }
 
-    // Exemplo de função para fechar o modal
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
+    // Loader
+    document.addEventListener('DOMContentLoaded', 
+    function () {
+        const loader = document.getElementById('loader');
+        const table = document.getElementById('userTable');
+
+        setTimeout(() => {
+            loader.classList.add('hidden'); 
+            table.classList.remove('hidden'); 
+        }, 2000);
+    });
+
+    
+    // Funcao para abrir o modal
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
     }
+
+    // Funcao  para fechar o modal
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }    
+
+
+
+        // Funcao para modal de view das unidades curriculares
+        function viewModal(id, name, acronym, ects, createdAt) {
+            document.querySelector('#viewModal .modal-content h2').textContent = name;
+
+            document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
+                <div class="ml-4 flex flex-col gap-5">
+                    <p><strong>ID:</strong> ${id}</p>
+                    <p><strong>Nome:</strong> ${name}</p>
+                    <p><strong>Acrónimo:</strong> ${acronym}</p>
+                    <p><strong>Etcs:</strong> ${etcs}</p>
+                    <p><strong>Data de Criação:</strong> ${createdAt}</p>
+                </div>
+            `;
+
+            openModal('viewModal');
+        }
+
+        // Abrir Modal para apagar uma Unidade Curricular
+        function openDeleteModal(id) {
+            openModal('deleteModal');  
+
+            const deleteForm = document.querySelector('#deleteForm' + id);
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            confirmDeleteButton.onclick = function () {
+                deleteForm.submit(); // Submete o Form 
+            };
+        }
+
+        // Abrir Modal para fazer uma atualizacao de uma Unidade Curricular
+        function updateModal(id, acronym, etcs) {
+            openModal('updateModal');  
+
+            document.getElementById('update_acronym').value = acronym;
+            document.getElementById('update_etcs').value = etcs;
+
+            const updateForm = document.getElementById('updateForm');
+            updateForm.action = `/admin/units/${id}`; 
+        }
+
+            // Funcao de pesquisa de Instituicoes
+            function searchUnit() {
+                const searchValue = document.getElementById('search').value.toLowerCase();
+                const rows = document.querySelectorAll("#UnitTable tbody tr");
+
+            rows.forEach(row => {
+                const unitName = row.querySelector(".unit-name").textContent.toLowerCase();
+                row.style.display = unitName.includes(searchValue) ? "" : "none";
+
+                const acronymName = row.querySelector(".acronym-name").textContent.toLowerCase();
+                row.style.display = acronymName.includes(searchValue) ? "" : "none";
+            });
+        }
+
+                // Loader
+                document.addEventListener('DOMContentLoaded', function () {
+            const loader = document.getElementById('loader');
+            const table = document.getElementById('unitTable');
+
+            setTimeout(() => {
+                loader.classList.add('hidden'); 
+                table.classList.remove('hidden'); 
+            }, 2000);
+        });
+
+
 </script>
+
+
+@endsection
