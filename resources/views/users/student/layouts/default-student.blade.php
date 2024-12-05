@@ -19,13 +19,13 @@
     <body class="bg-gray-100">  
         <!-- Sidebar -->
         @if ($showSidebar ?? true)
-            @include('student.layouts.components.sidebar')
+            @include('users.student.layouts.components.sidebar')
         @endif   
         <!-- Conteudo -->
         <main class="m-7 mt-[80px] md:m-10 md:ps-10 md:ml-64">
             <!-- Navbar -->
             @if ($showNavbar ?? true)
-                @include('student.layouts.components.navbar')
+                @include('users.student.layouts.components.navbar')
             @endif 
             
             @yield('content')

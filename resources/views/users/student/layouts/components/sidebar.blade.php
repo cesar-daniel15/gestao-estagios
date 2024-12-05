@@ -19,7 +19,7 @@
          <ul class="space-y-4 mt-5 xl:mt-10 xl:space-y-6">
             <!-- Home -->
             <li>
-               <a href="{{ url('/student') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
+               <a href="{{ url('/student/dashboard') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"  width="1.6em" height="1.6em" stroke="currentColor" class="ms-2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                </svg>
@@ -49,7 +49,6 @@
                </a>
             </li>
 
-
             <!-- Relatório -->
             <li>
                <a href="{{ url('/student/report') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
@@ -59,27 +58,29 @@
                   <span class="ms-5 text-base">Relatório</span>
                </a>
             </li>
+         
+      </ul>
+   </div>
 
-
-         <div id="navbar-default" class="flex flex-col px-3 justify-end mt-auto">
-         <ul class="space-y-2 xl:space-y-4">
-         <li>
-               <a href="{{ url('/student/auth') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
-               <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 24 24"  class="ms-2">
-                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1m7 5a2 2 0 1 1-4 0a2 2 0 0 1 4 0"/>
-                  </svg>
-                  <span class="ms-5 text-base">Perfil</span>
-               </a>
-            </li>
-
+   <div id="navbar-default" class="flex flex-col px-3 justify-end xl:justify-center h-full"> 
+         <ul class="space-y-2 mt-4 xl:mt-auto xl:space-y-4 "> 
             <li>
-               <a href="{{ url('/') }}"  target="_blank" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-red-500 group">
-               <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 24 24" class="ms-2">
-                  <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/>
-               </svg>
-                  <span class="ms-5">Logout</span>
-               </a>
+                  <a href="" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-yellow-400 group">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 24 24" class="ms-2">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1m7 5a2 2 0 1 1-4 0a2 2 0 0 1 4 0"/>
+                     </svg>
+                     <span class="ms-5">Perfil</span>
+                  </a>
             </li>
+               <form action="{{ route('logout') }}" method="POST" class="w-full">
+                  @csrf
+                  <button type="submit" class="flex items-center w-full p-2 text-gray-500 hover:text-white rounded-lg hover:bg-red-400 group">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 24 24" class="ms-2">
+                           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8m4-9l-4-4m4 4l-4 4m4-4H9"/>
+                     </svg>
+                     <span class="ms-5">Sair</span>
+                  </button>
+               </form>
          </ul>
       </div>
 
