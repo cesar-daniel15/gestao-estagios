@@ -19,19 +19,19 @@
 
 @section('content')
 
+    <!-- Seção Sobre -->
     <section id="section1">
-        <!-- Block 1 -->
         <div class="w-full h-auto p-10 bg-gradient-to-r from-sky-400 to-blue-600 flex flex-col justify-center items-center text-center">
             <div class="text-2xl md:text-3xl font-extrabold text-white mb-4 my-5">Estágios descomplicados,<br>carreiras impulsionadas</div>
             <p class="text-white max-w-2xl text-center">
                 <span class="text-base md:font-semibold">Gestão de Estágios</span> é uma aplicação web que simplifica o processo de atribuição, acompanhamento e avaliação de estágios. Facilita a interação entre alunos, coordenadores, empresas e responsáveis, garantindo transparência e acesso à informação em tempo real, reduzindo o uso de papel e automatizando tarefas essenciais.
             </p>
-            <a href="{{ url('/login') }}" class="bg-white font-bold text-sky-400 p-2 rounded-xl px-10 mt-5 transition-transform transform hover:scale-105 duration-300 ease-in-out">Começar Agora</a>
+            <a href="#section2" class="bg-white font-bold text-sky-400 p-2 rounded-xl px-10 mt-5 transition-transform transform hover:scale-105 duration-300 ease-in-out">Começar Agora</a>
         </div>
     </section>
 
+    <!-- Seção Utilizadores -->
     <section id="section2">
-        <!-- Block 2 -->
         <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-12">
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-4">Tipos de Utilizadores</div>
             <p class="text-gray-400 font-bold max-w-2xl text-center mb-6 mx-auto">
@@ -66,8 +66,8 @@
         </div>
     </section>
 
+    <!-- Seção Vantagens -->
     <section id="section3">
-        <!-- Block 3 -->
         <div class="w-full h-auto p-10 bg-gray-100 flex flex-col justify-center text-center my-12">
             <div class="text-2xl md:text-3xl font-extrabold text-sky-400 mb-8">Vantagens</div>
 

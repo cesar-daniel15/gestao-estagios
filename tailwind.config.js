@@ -12,7 +12,21 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Open Sans"', 'sans-serif'],
+                sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans],
+            },
+            animation: {
+                'slide-in-out': 'slideIn 0.5s ease-out, slideOut 0.5s ease-in 3s forwards',
+            },
+            keyframes: {
+                slideOut: {
+                    '0%': { transform: 'translateX(0)', opacity: '1' },
+                    '90%': { transform: 'translateX(0)', opacity: '1' }, 
+                    '100%': { transform: 'translateX(100%)', opacity: '0' }, 
+                },
+                slideIn: {
+                    '0%': { transform: 'translateX(100%)', opacity: '0' },
+                    '100%': { transform: 'translateX(0)', opacity: '1' },   
+                },
             },
         },
     },

@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Institution; // Import do Model Institution
+use App\Models\Institution; 
+use App\Models\User; 
 use Illuminate\Support\Str; 
+use App\Http\Resources\InstitutionResource; 
+use Illuminate\Support\Facades\Validator; 
+use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class InstitutionController extends Controller
 {
@@ -13,17 +19,23 @@ class InstitutionController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
-        $institutions = Institution::all();
-        return response()->json($institutions);
+    {
+        if (Auth::user()->profile !== 'Institution') {
+            return redirect()->back()->with('error', 'Você não tem permissão para eceder a esta página.');
+        }
+
+        $user = Auth::user();
+
+        return view('users.institution.dashboard', compact('user'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // Retorna um form para criar um novo recurso
+        //
     }
 
     /**
@@ -31,36 +43,66 @@ class InstitutionController extends Controller
      */
     public function store(Request $request)
     {
-        // Armazena um novo recurso na db
-        // Validacao dos dados recebidos 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'acronym' => 'required|string|max:10',
-            'email' => 'required|email|unique:institutions',
-            'password' => 'required|string|min:8',
-            'phone' => 'required|string|max:20',
+        $user = Auth::user();
+        $institution = $user->institution; 
+    
+        // Validação
+        $validator = Validator::make($request->all(), [
+            'acronym' => 'required|string|max:10|unique:institutions,acronym' . ($institution ? ',' . $institution->id : ''),
+            'phone' => 'required|string|max:11|unique:institutions,phone' . ($institution ? ',' . $institution->id : ''),
             'address' => 'required|string|max:255',
+            'website' => 'nullable|url|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
-        // Gera um token
-        $validatedData['token'] = Str::random(5);
-
-        // Cria uma nova instituicao
-        $institution = Institution::create($validatedData);
-
-        return response()->json($institutions, 201);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        $data = $validator->validated();
+    
+        if ($institution) {
+            // Se a instituicao ja existir faz update 
+            $institution->update($data);
+    
+            // Verifica se o logo foi enviado e faz o upload
+            if ($request->hasFile('logo')) {
+                // Apaga o logo antigo
+                if ($institution->logo && Storage::exists($institution->logo)) {
+                    Storage::delete($institution->logo);
+                }
+                $path = $request->file('logo')->store('images/uploads', 'public');
+                $institution->update(['logo' => $path]);
+            }
+    
+            return redirect()->route('institution.profile')->with('success', 'Perfil atualizado com sucesso!');
+        } else {
+            // Cria uma nova instituicao
+            $institution = Institution::create($data);
+    
+            // Associar a instituicao ao user logado
+            $user->id_institution = $institution->id;
+            $user->save();
+    
+            // Verifica se o logo foi enviado e faz o upload
+            if ($request->hasFile('logo')) {
+                $path = $request->file('logo')->store('images/uploads', 'public');
+                $institution->update(['logo' => $path]);
+            }
+    
+            return redirect()->route('institution.profile')->with('success', 'Perfil concluído com sucesso!');
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        // Retorna um recurso específico pelo ID
-        $institution = Institution::find($id);
+        $user = Auth::user();
+        $institution = $user->institution ?? null;
 
-        // Return da instituicao
-        return response()->json($institution);
+        return view('users.institution.profile', compact('user', 'institution'));
     }
 
     /**
@@ -68,7 +110,7 @@ class InstitutionController extends Controller
      */
     public function edit(string $id)
     {
-        // Retorna um form para editar um recurso
+        //
     }
 
     /**
@@ -76,45 +118,77 @@ class InstitutionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Atualiza um recurso existente
-         // Validação dos dados recebidos 
-        $validatedData = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'acronym' => 'nullable|string|max:10',
-            'email' => 'nullable|email|unique:institutions,email,' . $id,
-            'password' => 'nullable|string|min:8',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'acronym' => 'required|string|max:10',  
+            'phone' => 'required|string|max:11|unique:institutions,phone,' . $institution->id,
+            'address' => 'required|string|max:255',
+            'website' => 'url|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
-        // Procura pelo ID
-        $institution = Institution::find($id);
+        // Verifica se a validacao falhou
+        if ($validator->fails()) {
 
-        // Verifica se existe
-        if (!$institution) {
-            return response()->json(['message' => 'Institution not found'], 404);
+            // Passa os erros para a session
+            session()->flash('error', 'Erro de validação!');
+            session()->flash('validation_errors', $validator->errors()->all());
+    
+            // Redireciona de volta com os erros armazenados na session
+            return redirect()->back()->withInput();
+        }
+    
+        // Dados validados
+        $validated = $validator->validated();
+    
+        // Prepara os dados para atualizar
+        $dataToUpdate = [];
+    
+        // Verifica se cada campo foi alterado e se sim adiciona os ao array de atualizacao
+    
+        if ($validated['acronym'] != $institution->acronym) {
+            $dataToUpdate['acronym'] = $validated['acronym'];
+        }
+    
+        if ($validated['phone'] != $institution->phone) {
+            $dataToUpdate['phone'] = $validated['phone'];
+        }
+    
+        if ($validated['address'] != $institution->address) {
+            $dataToUpdate['address'] = $validated['address'];
+        }
+    
+        if ($validated['website'] != $institution->website) {
+            $dataToUpdate['website'] = $validated['website'];
+        }
+    
+        if ($request->hasFile('logo')) {
+            // Apaga o logo antigo
+            if ($institution->logo && Storage::exists($institution->logo)) {
+                Storage::delete($institution->logo);
+            }
+            
+            // Faz update do logo
+            $path = $request->file('logo')->store('images/uploads', 'public');
+            $institution->logo = $path;
         }
 
-        // Atualiza os campos
-        $institution->update(array_filter($validatedData)); // Remove campos nulos
+        // Faz a atualizacao
+        $update = $institution->update($dataToUpdate);
+    
+        // Verifica se a atualizacao ocorreu
+        if ($update) {
+            return redirect()->route('institutions.profile')->with('success', 'Perfil atualizado com sucesso!');
 
-        // Retorna a instituição atualizada
-        return response()->json();
+        } else {
+            return redirect()->route('institutions.profile')->with('error', 'Erro ao atualizar perfiç');
+        }
     }
 
     /**
-     * Remove the specified resource from storage
+     * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        // Remove um recurso da db
-        // Procura a instituicao pelo ID
-        $institution = Institution::find($id);
-
-        // Remove a instituicao da db
-        $institution->delete();
-
-        // Return da mensagem
-        return response()->json();        
+        //
     }
 }
