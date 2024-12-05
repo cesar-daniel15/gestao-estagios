@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UnitsCurricular extends Model
+class UnitCurricular extends Model
 {
     use HasFactory;
+
+    protected $table = 'units_curriculars';
 
     // Definição dos atributos da tabela
     protected $fillable = [

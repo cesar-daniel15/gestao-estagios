@@ -77,7 +77,7 @@
                         <td class="p-4 text-gray-600">{{ $unit['id'] }}</td>
                         <td class="p-4 text-gray-600">{{ $unit['name'] }}</td>
                         <td class="p-4 text-gray-600">{{ $unit['acronym'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['ects']' }}</td>
+                        <td class="p-4 text-gray-600">{{ $unit['ects'] }}</td>
                         <td class="p-4 text-gray-600">{{ $unit['syllabus'] }}</td>
                         <td class="p-4 text-gray-600">
                             <div class="flex space-x-2 justify-center">

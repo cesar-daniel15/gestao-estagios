@@ -18,10 +18,10 @@ class AdminUnitsCurricularsController extends Controller
     public function index()
     {
         // Obtenha as unidades curriculares
-        $unitsCurriculars = UnitsCurricular::all(); //pode fa
+        $unitsCurriculars = UnitCurricular::all(); //pode fa
     
         // Retorna para view com as unidades curriculares
-        return view('admin.units_curriculars.index', [
+        return view('admin.units-curriculars', [
             'unitsCurriculars' => $unitsCurriculars
         ]);
     }
