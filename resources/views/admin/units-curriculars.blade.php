@@ -14,15 +14,15 @@
         </div>
         <div class="flex flex-col gap-5 md:flex-row justify-between items-center my-5">
             
-            <!-- Barra de pesquisa -->
-            <div class="relative w-full md:w-auto mb-4 md:mb-0">
-                <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" 
-                    placeholder="Procurar por Instituição" oninput="searchInstitution()" />
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
-                    <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
-                </svg>
-            </div>
+        <!-- Barra de pesquisa -->
+        <div class="relative w-full md:w-auto mb-4 md:mb-0">
+            <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" placeholder="Procurar por Curso" oninput="searchCourse()" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
+            </svg>
+        </div>
 
+        <div class="flex space-x-4">
             <!-- Botão para criar Unidade Curricular -->
             <button onclick="openModal('createModal')" class="bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl p-2.5 flex text-sm items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 mr-2" fill="white">
@@ -30,7 +30,6 @@
                 </svg>
                 Registrar Unidade Curricular
             </button>
-        </div>
 
             <!-- Botão de Atualizar -->
             <div class="mt-4 md:mt-0 hidden md:flex">
@@ -41,7 +40,9 @@
                     Atualizar
                 </button>
             </div>
-    
+        </div>
+    </div>
+
         <!-- Loader -->
         <div id="loader" class="text-center">
             <div role="status">
@@ -106,7 +107,6 @@
                                         </svg>
                                     </button>
                                 </form>
-
                             </div>
                         </td>
                     </tr>
@@ -115,6 +115,8 @@
             </tbody>
         </table>
     </div>
+    </div>
+
 
     <!-- Modal Criar Nova Unidade Curricular -->
     <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
@@ -122,7 +124,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Unidade Curricular</h2>
 
             <!-- Form -->
-            <form action="{{ route('admin.units.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.units.store') }}" method="POST">
                 @csrf
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
@@ -155,20 +157,25 @@
     @if (!empty($unitCurricular))
 
     <!-- Modal Visualizar Unidade Curricular -->
-    <div id="viewModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Visualizar Unidade Curricular</h2>
+    <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg relative">
+            <div class="modal-content">
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center mx-5" id="modal-name"></h2>
+                <div class="modal-body flex text-base px-5">
 
-            <div class="w-full md:w-1/2 p-4 flex flex-col data-content">
+                <!-- Lado com as informações -->
+                <div class="ml-4 space-y-4 flex flex-col data-content">
                         <p><strong>ID:</strong> <span id="modal-id"></span> </p>
                         <p><strong>Nome:</strong> <span id="modal-name"></span> </p>
                         <p><strong>Acrónimo:</strong> <span id="modal-acronym"></span> </p>
                         <p><strong>Etcs:</strong> <span id="modal-etcs"></span> </p>
                         <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span> </p>
                     </div>
+                </div>
+            </div>
 
-            <div class="flex justify-center mt-4">
-                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded" onclick="closeModal('viewModal')">Fechar</button>
+            <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
+                <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
             </div>
         </div>
     </div>
@@ -321,8 +328,6 @@
             }, 2000);
         });
 
-
 </script>
-
 
 @endsection
