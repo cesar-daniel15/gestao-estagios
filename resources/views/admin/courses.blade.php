@@ -76,7 +76,7 @@
                 @foreach ($courses as $course)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4 text-gray-600">{{ $course['id'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $course['institution']['name'] ?? 'Nome não disponível'  }}</td> 
+                        <td class="p-4 text-gray-600">{{ $course['institution']['id'] ?? 'Nome não disponível'  }}</td> 
                         <td class="p-4 text-gray-600 course-name">{{ $course['name'] }}</td>
                         <td class="p-4 text-gray-600">{{ $course['acronym'] }}</td>
                         <td class="p-4 te xt-gray-600">
@@ -84,7 +84,7 @@
     
     
                             <!-- Botão Ver -->
-                            <a  onclick="viewModal({{ $course['id'] }}, '{{ $course['institution']['name'] }}','{{ $course['name'] }}', '{{ $course['acronym'] }}', '{{ $course['created_at'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                            <a  onclick="viewModal({{ $course['id'] }},'{{ $course['name'] }}', '{{ $course['acronym'] }}', '{{ $course['institution']['id'] }}', '{{ $course['created_at'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                     <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                 </svg>
@@ -117,7 +117,7 @@
         </div>
     </div>
     
-    <!-- Modal para registro -->
+    <!-- Modal para criar novo curso -->
     <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Novo Curso</h2>
@@ -132,7 +132,7 @@
                         <select id="institution_id" name="institution_id" required class="form-input mt-1 block w-full border rounded-md py-2 px-4">
                             <option value="" selected disabled>Selecione uma instituição</option>
                             @foreach($institutions as $institution)
-                                <option value="{{ $institution['id'] }}">{{ $institution['name'] }}</option>
+                                <option value="{{ $institution['id'] }}">{{ $institution['id'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -162,7 +162,7 @@
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg relative">
             <div class="modal-content">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center" id="modal-name"></h2>
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center mx-5" id="modal-name"></h2>
                 <div class="modal-body flex text-base px-5">
 
                     <!-- Lado com as informações -->
@@ -170,6 +170,7 @@
                         <p><strong>ID:</strong> <span id="modal-id"></span> </p>
                         <p><strong>Instituição:</strong>  <span id="modal-institution"></span> </p>
                         <p><strong>Acrónimo:</strong>  <span id="modal-acronym"></span></p>
+                        <p><strong>Data de criacao:</strong>  <span id="modal-created_at"></span></p>
                     </div>
                 </div>
             </div>
@@ -263,7 +264,7 @@
         }
 
         // Abrir Modal para visualizar um Curso
-        function viewModal(id,name, acronym, institution_id) {
+        function viewModal(id,name, acronym, institution_id, created_at) {
 
             document.querySelector('#viewModal .modal-content #modal-name').textContent = name;
 
@@ -272,6 +273,7 @@
                     <p><strong>ID:</strong> ${id}</p>
                     <p><strong>Acrónimo:</strong> ${acronym}</p>
                     <p><strong>Insituição:</strong> ${institution_id}</p>
+                    <p><strong>Data de criação:</strong> ${created_at}</p>
                 </div>
             `;
 
