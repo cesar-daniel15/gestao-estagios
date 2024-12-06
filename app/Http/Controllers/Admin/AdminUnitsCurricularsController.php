@@ -31,8 +31,7 @@ class AdminUnitsCurricularsController extends Controller
      */
     public function create()
     {
-        // Retorna a view de criação
-        return view('admin.units_curriculars.create');
+
     }
 
     /**
@@ -57,14 +56,14 @@ class AdminUnitsCurricularsController extends Controller
         $data = $validator->validated();
 
         // Cria a nova unidade curricular
-        $unitCurricular = UnitCurricular::create($data);
+        $unitsCurriculars = UnitCurricular::create($data);
     
         if ($unitCurricular) {
             // Redireciona para a página das unidades curriculares com mensagem de sucesso
-            return redirect()->route('admin.units_curriculars.index')->with('success', 'Unidade Curricular criada com sucesso!');
+            return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular criada com sucesso!');
         } else {
             // Redireciona com mensagem de erro
-            return redirect()->route('admin.units_curriculars.index')->with('error', 'Erro ao criar Unidade Curricular');
+            return redirect()->route('admin.units.index')->with('error', 'Erro ao criar Unidade Curricular');
         }
     }
 
@@ -138,14 +137,14 @@ class AdminUnitsCurricularsController extends Controller
             $update = $unitCurricular->update($dataToUpdate);
 
             if ($update) {
-                return redirect()->route('admin.units_curriculars.index')->with('success', 'Unidade Curricular atualizada com sucesso!');
+                return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular atualizada com sucesso!');
             } else {
-                return redirect()->route('admin.units_curriculars.index')->with('error', 'Erro ao atualizar Unidade Curricular');
+                return redirect()->route('admin.units.index')->with('error', 'Erro ao atualizar Unidade Curricular');
             }
         }
 
         // Nenhuma alteração detectada
-        return redirect()->route('admin.units_curriculars.index')->with('info', 'Nenhuma alteração foi feita.');
+        return redirect()->route('admin.units.index')->with('info', 'Nenhuma alteração foi feita.');
         }
 
     /**
@@ -157,9 +156,9 @@ class AdminUnitsCurricularsController extends Controller
         $deleted = $unitCurricular->delete();
 
         if ($deleted) {
-            return redirect()->route('admin.units_curriculars.index')->with('success', 'Unidade Curricular excluída com sucesso!');
+            return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular excluída com sucesso!');
         } else {
-            return redirect()->route('admin.units_curriculars.index')->with('error', 'Erro ao excluir Unidade Curricular');
+            return redirect()->route('admin.units.index')->with('error', 'Erro ao excluir Unidade Curricular');
         }
     }
 }
