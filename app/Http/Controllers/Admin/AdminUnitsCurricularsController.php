@@ -45,6 +45,8 @@ class AdminUnitsCurricularsController extends Controller
      */
     public function store(Request $request)
     {    
+        //dd($request->all()); // Adicione esta linha para depuração
+
         // Validação dos dados 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

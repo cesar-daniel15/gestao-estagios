@@ -16,6 +16,7 @@ class UnitCurricular extends Model
         'name',
         'acronym',
         'ects',
+        'course-id'
     ];
 
     /**
