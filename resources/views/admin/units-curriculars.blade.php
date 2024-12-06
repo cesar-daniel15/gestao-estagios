@@ -63,7 +63,7 @@
                     <th class="p-4 border-b text-gray-600">ID</th>
                     <th class="p-4 border-b text-gray-600">Nome</th>
                     <th class="p-4 border-b text-gray-600">Acrónimo</th>
-                    <th class="p-4 border-b text-gray-600">Etcs</th>
+                    <th class="p-4 border-b text-gray-600">Ects</th>
                     <th class="p-4 border-b text-gray-600">Ações</th>
                 </tr>
             </thead>
@@ -91,7 +91,7 @@
                                 </a>
 
                                 <!-- Botão Update -->
-                                <button type="button" onclick="updateModal({{ $unit['id'] }}, '{{ $unit['name'] }}', '{{ $unit['acronym'] }}', '{{ $unit['etcs'] }}', '{{ $unit['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <button type="button" onclick="updateModal({{ $unit['id'] }}, '{{ $unit['name'] }}', '{{ $unit['acronym'] }}', '{{ $unit['ects'] }}', '{{ $unit['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                     </svg>
@@ -139,8 +139,18 @@
                     </div>
 
                     <div>
-                        <label for="etcs" class="block text-gray-600 mb-1">*Etcs</label>
-                        <input type="number" id="etcs" name="etcs" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <label for="ects" class="block text-gray-600 mb-1">*Ects</label>
+                        <input type="number" id="etcs" name="ects" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    </div>
+
+                    <div>
+                        <label for="course_id" class="block text-gray-600 mb-1">* Curso</label>
+                        <select id="course_id" name="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                            <option value="">Selecione um curso</option>
+                            @foreach($courses as $course) <!-- Supondo que você tenha uma lista de cursos -->
+                                <option value="{{ $course->id }}">{{ $course->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
@@ -168,7 +178,7 @@
                         <p><strong>ID:</strong> <span id="modal-id"></span> </p>
                         <p><strong>Nome:</strong> <span id="modal-name"></span> </p>
                         <p><strong>Acrónimo:</strong> <span id="modal-acronym"></span> </p>
-                        <p><strong>Etcs:</strong> <span id="modal-etcs"></span> </p>
+                        <p><strong>Ects:</strong> <span id="modal-ects"></span> </p>
                         <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span> </p>
                     </div>
                 </div>
@@ -198,8 +208,8 @@
                     </div>
 
                     <div>
-                        <label for="etcs" class="block text-gray-600 mb-1">Etcs</label>
-                        <input type="number" id="update_etcs" name="etcs" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <label for="ects" class="block text-gray-600 mb-1">Ects</label>
+                        <input type="number" id="update_ects" name="ects" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
                 </div>
 
@@ -273,7 +283,7 @@
                     <p><strong>ID:</strong> ${id}</p>
                     <p><strong>Nome:</strong> ${name}</p>
                     <p><strong>Acrónimo:</strong> ${acronym}</p>
-                    <p><strong>Etcs:</strong> ${etcs}</p>
+                    <p><strong>Ects:</strong> ${ects}</p>
                     <p><strong>Data de Criação:</strong> ${createdAt}</p>
                 </div>
             `;
@@ -297,7 +307,7 @@
             openModal('updateModal');  
 
             document.getElementById('update_acronym').value = acronym;
-            document.getElementById('update_etcs').value = etcs;
+            document.getElementById('update_ects').value = ects;
 
             const updateForm = document.getElementById('updateForm');
             updateForm.action = `/admin/units/${id}`; 

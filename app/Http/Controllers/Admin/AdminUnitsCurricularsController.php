@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Course;  
+
 
 class AdminUnitsCurricularsController extends Controller
 { 
@@ -18,11 +20,15 @@ class AdminUnitsCurricularsController extends Controller
     public function index()
     {
         // Obtenha as unidades curriculares
-        $unitsCurriculars = UnitCurricular::all(); //pode fa
+        $unitsCurriculars = UnitCurricular::all(); // Pode fazer uma consulta mais específica se necessário
     
-        // Retorna para view com as unidades curriculares
+        // Obtenha todos os cursos
+        $courses = Course::all();
+    
+        // Retorna para a view com as unidades curriculares e cursos
         return view('admin.units-curriculars', [
-            'unitsCurriculars' => $unitsCurriculars
+            'unitsCurriculars' => $unitsCurriculars,
+            'courses' => $courses // Adicione a variável courses aqui
         ]);
     }
     
@@ -44,8 +50,11 @@ class AdminUnitsCurricularsController extends Controller
             'name' => 'required|string|max:255',
             'acronym' => 'required|string|max:10|unique:units_curriculars,acronym',
             'ects' => 'required|integer|min:1',
+            'course_id' => 'required|exists:courses,id', // Adicione esta linha
         ], [
             'acronym.unique' => 'O acrônimo da unidade curricular já está em uso.',
+            'course_id.required' => 'O campo curso é obrigatório.',
+            'course_id.exists' => 'O curso selecionado não é válido.',
         ]);
         
         // Se a validação falhar
@@ -54,15 +63,13 @@ class AdminUnitsCurricularsController extends Controller
         }
         
         $data = $validator->validated();
-
-        // Cria a nova unidade curricular
-        $unitsCurriculars = UnitCurricular::create($data);
     
+        // Cria a nova unidade curricular
+        $unitCurricular = UnitCurricular::create($data);
+        
         if ($unitCurricular) {
-            // Redireciona para a página das unidades curriculares com mensagem de sucesso
             return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular criada com sucesso!');
         } else {
-            // Redireciona com mensagem de erro
             return redirect()->route('admin.units.index')->with('error', 'Erro ao criar Unidade Curricular');
         }
     }
