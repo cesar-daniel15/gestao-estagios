@@ -68,40 +68,40 @@
                 </tr>
             </thead>
             <tbody>
-            @if (empty($unitCurricular))
+            @if (empty($unitsCurriculars))
                 <tr>
                     <td colspan="6" class="p-4 text-gray-600 text-center">Ainda não existem unidades curriculares registadas.</td>
                 </tr>
             @else
-                @foreach($unitCurricular as $unit)
+                @foreach($unitsCurriculars as $UnitCurricular)
                     <tr class="border-b hover:bg-gray-50">
-                        <td class="p-4 text-gray-600">{{ $unit['id'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['name'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['acronym'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['ects'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $unit['syllabus'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $UnitCurricular['id'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $UnitCurricular['name'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $UnitCurricular['acronym'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $UnitCurricular['ects'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $UnitCurricular['syllabus'] }}</td>
                         <td class="p-4 text-gray-600">
                             <div class="flex space-x-2 justify-center">
 
                                 <!-- Botão Ver -->
-                                <a onclick="viewModal({{ $unit['id'] }},'{{ $unit['name'] }}','{{ $unit['acronym'] }}', '{{ $unit['ects'] }}' , $institution['created_at'] }} )" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <a onclick="viewModal({{ $UnitCurricular['id'] }},'{{ $UnitCurricular['name'] }}','{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects'] }}' }} )" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                     </svg>
                                 </a>
 
                                 <!-- Botão Update -->
-                                <button type="button" onclick="updateModal({{ $unit['id'] }}, '{{ $unit['name'] }}', '{{ $unit['acronym'] }}', '{{ $unit['ects'] }}', '{{ $unit['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <button type="button" onclick="updateModal({{ $UnitCurricular['id'] }}, '{{ $UnitCurricular['name'] }}', '{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects'] }}', '{{ $UnitCurricular['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                     </svg>
                                 </button>
 
                                 <!-- Botão Apagar -->
-                                <form id="deleteForm{{ $unit['id'] }}" action="{{ route('admin.units.destroy', $unit['id']) }}" method="POST">
+                                <form id="deleteForm{{ $UnitCurricular['id'] }}" action="{{ route('admin.units.destroy', $UnitCurricular['id']) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" onclick="openDeleteModal({{ $unit['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <button type="button" onclick="openDeleteModal({{ $UnitCurricular['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
                                         </svg>
@@ -140,7 +140,7 @@
 
                     <div>
                         <label for="ects" class="block text-gray-600 mb-1">*Ects</label>
-                        <input type="number" id="etcs" name="ects" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <input type="number" id="ects" name="ects" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <div>
@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    @if (!empty($unitCurricular))
+    @if (!empty($unitsCurriculars))
 
     <!-- Modal Visualizar Unidade Curricular -->
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
@@ -197,7 +197,7 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Unidade Curricular</h2>
 
             <!-- Form -->
-            <form id="updateForm" action="{{ route('admin.units.update', $unit['id']) }}" method="POST" enctype="multipart/form-data">
+            <form id="updateForm" action="{{ route('admin.units.update', $UnitCurricular['id']) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -235,6 +235,7 @@
             </div>
         </div>
     </div>
+</div>
 
 @endif
 
@@ -246,16 +247,16 @@
     }
 
     // Loader
-    document.addEventListener('DOMContentLoaded', 
-    function () {
-        const loader = document.getElementById('loader');
-        const table = document.getElementById('userTable');
+// Loader
+document.addEventListener('DOMContentLoaded', function () {
+    const loader = document.getElementById('loader');
+    const table = document.getElementById('unitCurricularTable'); // Corrigido para o ID correto
 
-        setTimeout(() => {
-            loader.classList.add('hidden'); 
-            table.classList.remove('hidden'); 
-        }, 2000);
-    });
+    setTimeout(() => {
+        loader.classList.add('hidden'); 
+        table.classList.remove('hidden'); // Remove a classe hidden da tabela
+    }, 2000);
+});
 
     
     // Funcao para abrir o modal
@@ -303,14 +304,13 @@
         }
 
         // Abrir Modal para fazer uma atualizacao de uma Unidade Curricular
-        function updateModal(id, acronym, etcs) {
+        function updateModal(id, acronym, ects) {
             openModal('updateModal');  
-
             document.getElementById('update_acronym').value = acronym;
             document.getElementById('update_ects').value = ects;
 
             const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/admin/units/${id}`; 
+            updateForm.action = `/admin/units/${id}`; // Certifique-se de que a URL está correta
         }
 
             // Funcao de pesquisa de Instituicoes
