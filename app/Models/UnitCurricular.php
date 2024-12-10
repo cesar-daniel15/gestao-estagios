@@ -16,7 +16,7 @@ class UnitCurricular extends Model
         'name',
         'acronym',
         'ects',
-        'course-id'
+        'course_id'
     ];
 
     /**
@@ -25,6 +25,6 @@ class UnitCurricular extends Model
      */
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Course::class);
     }
 }
