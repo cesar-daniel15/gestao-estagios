@@ -101,10 +101,10 @@ class AdminUnitsCurricularsController extends Controller
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'course_id' => 'required|exists:courses,id',
-            'name' => 'required|string|max:255',
-            'acronym' => 'required|string|max:10|unique:units_curriculars,acronym,' . $unitCurricular->id,
-            'ects' => 'required|integer|min:1',
+            'course_id' => 'exists:courses,id',
+            'name' => 'string|max:255',
+            'acronym' => 'string|max:10|unique:units_curriculars,acronym,' . $unitCurricular->id,
+            'ects' => 'integer|min:1',
         ]);
 
         

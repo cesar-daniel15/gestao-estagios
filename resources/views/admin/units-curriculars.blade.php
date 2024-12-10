@@ -15,8 +15,8 @@
         <div class="flex flex-col gap-5 md:flex-row justify-between items-center my-5">
             
         <!-- Barra de pesquisa -->
-        <div class="relative w-full md:w-auto mb-4 md:mb-0">
-            <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" placeholder="Procurar por Unidade Curricular" oninput="searchUnitCurricular()" />
+        <div class="relative w-full lg:w-72 mb-4 md:mb-0">
+            <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" placeholder="Procurar por Unidade Curricular" oninput="searchUnit()" />
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
                 <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
             </svg>
@@ -57,7 +57,7 @@
 
     <!-- Tabela Unidades Curriculares -->
     <div class="overflow-x-auto">
-        <table class="table-auto w-full border-collapse text-center text-sm overflow-hidden rounded-xl hidden" id="unitCurricularTable">
+        <table class="table-auto w-full border-collapse text-center text-sm overflow-hidden rounded-xl hidden" id="unitTable">
             <thead>
                 <tr class="bg-gray-100">
                     <th class="p-4 border-b text-gray-600">ID</th>
@@ -76,22 +76,21 @@
                 @foreach($unitsCurriculars as $UnitCurricular)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['id'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $UnitCurricular['name'] }}</td>
+                        <td class="p-4 text-gray-600 unit-name">{{ $UnitCurricular['name'] }}</td>
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['acronym'] }}</td>
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['ects'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $UnitCurricular['syllabus'] }}</td>
                         <td class="p-4 text-gray-600">
                             <div class="flex space-x-2 justify-center">
 
                                 <!-- Botão Ver -->
-                                <a onclick="viewModal({{ $UnitCurricular['id'] }},'{{ $UnitCurricular['name'] }}','{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects'] }}' }} )" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <a onclick="viewModal({{ $UnitCurricular['id'] }},'{{ $UnitCurricular['name'] }}','{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects'] }}', '{{ $UnitCurricular['course_id'] }}' }} )" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                     </svg>
                                 </a>
 
                                 <!-- Botão Update -->
-                                <button type="button" onclick="updateModal({{ $UnitCurricular['id'] }}, '{{ $UnitCurricular['name'] }}', '{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects'] }}', '{{ $UnitCurricular['syllabus'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <button type="button" onclick="updateModal({{ $UnitCurricular['id'] }}, '{{ $UnitCurricular['name'] }}', '{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects']}}', '{{ $UnitCurricular['course_id'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                     </svg>
@@ -179,7 +178,6 @@
                         <p><strong>Nome:</strong> <span id="modal-name"></span> </p>
                         <p><strong>Acrónimo:</strong> <span id="modal-acronym"></span> </p>
                         <p><strong>Ects:</strong> <span id="modal-ects"></span> </p>
-                        <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span> </p>
                     </div>
                 </div>
             </div>
@@ -197,28 +195,42 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Unidade Curricular</h2>
 
             <!-- Form -->
-            <form id="updateForm" action="{{ route('admin.units.update', $UnitCurricular['id']) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <form id="updateForm" action="{{ route('admin.units.update', $UnitCurricular['id']) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
-                    <div>
-                        <label for="acronym" class="block text-gray-600 mb-1">Acrónimo</label>
-                        <input type="text" id="update_acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
-                        <label for="ects" class="block text-gray-600 mb-1">Ects</label>
-                        <input type="number" id="update_ects" name="ects" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
+                <div>
+                    <label for="update_name" class="block text-gray-600 mb-1">Nome</label>
+                    <input type="text" id="update_name" name="name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                 </div>
 
-                <div class="flex justify-end">
-                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+                <div>
+                    <label for="update_acronym" class="block text-gray-600 mb-1">Acrónimo</label>
+                    <input type="text" id="update_acronym" name="acronym" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                 </div>
 
-            </form>
+                <div>
+                    <label for="update_ects" class="block text-gray-600 mb-1">Ects</label>
+                    <input type="number" id="update_ects" name="ects" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                </div>
+
+                <div>
+                    <label for="update_course_id" class="block text-gray-600 mb-1">Curso</label>
+                    <select id="update_course_id" name="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <option value="">Selecione um curso</option>
+                        @foreach($courses as $course) <!-- Supondo que você tenha uma lista de cursos -->
+                            <option value="{{ $course->id }}">{{ $course->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+            </div>
+        </form>
         </div> 
     </div>
 
@@ -247,16 +259,15 @@
     }
 
     // Loader
-// Loader
-document.addEventListener('DOMContentLoaded', function () {
-    const loader = document.getElementById('loader');
-    const table = document.getElementById('unitCurricularTable'); // Corrigido para o ID correto
+    document.addEventListener('DOMContentLoaded', function () {
+        const loader = document.getElementById('loader');
+        const table = document.getElementById('unitCurricularTable'); // Corrigido para o ID correto
 
-    setTimeout(() => {
-        loader.classList.add('hidden'); 
-        table.classList.remove('hidden'); // Remove a classe hidden da tabela
-    }, 2000);
-});
+        setTimeout(() => {
+            loader.classList.add('hidden'); 
+            table.classList.remove('hidden'); // Remove a classe hidden da tabela
+        }, 2000);
+    });
 
     
     // Funcao para abrir o modal
@@ -276,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         // Funcao para modal de view das unidades curriculares
-        function viewModal(id, name, acronym, ects, createdAt) {
+        function viewModal(id, name, acronym, ects) {
             document.querySelector('#viewModal .modal-content h2').textContent = name;
 
             document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
@@ -285,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Nome:</strong> ${name}</p>
                     <p><strong>Acrónimo:</strong> ${acronym}</p>
                     <p><strong>Ects:</strong> ${ects}</p>
-                    <p><strong>Data de Criação:</strong> ${createdAt}</p>
                 </div>
             `;
 
@@ -306,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Abrir Modal para fazer uma atualizacao de uma Unidade Curricular
         function updateModal(id, acronym, ects) {
             openModal('updateModal');  
+            document.getElementById('update_name').value = unit.name; // Use 'name'
             document.getElementById('update_acronym').value = acronym;
             document.getElementById('update_ects').value = ects;
 
@@ -313,30 +324,27 @@ document.addEventListener('DOMContentLoaded', function () {
             updateForm.action = `/admin/units/${id}`; // Certifique-se de que a URL está correta
         }
 
-            // Funcao de pesquisa de Instituicoes
+            // Funcao de pesquisa de Unidades Curriculares
             function searchUnit() {
                 const searchValue = document.getElementById('search').value.toLowerCase();
-                const rows = document.querySelectorAll("#UnitTable tbody tr");
+                const rows = document.querySelectorAll("#unitTable tbody tr");
 
             rows.forEach(row => {
                 const unitName = row.querySelector(".unit-name").textContent.toLowerCase();
                 row.style.display = unitName.includes(searchValue) ? "" : "none";
-
-                const acronymName = row.querySelector(".acronym-name").textContent.toLowerCase();
-                row.style.display = acronymName.includes(searchValue) ? "" : "none";
             });
         }
 
-                // Loader
-                document.addEventListener('DOMContentLoaded', function () {
-            const loader = document.getElementById('loader');
-            const table = document.getElementById('unitTable');
+         // Loader
+        document.addEventListener('DOMContentLoaded', function () {
+        const loader = document.getElementById('loader');
+        const table = document.getElementById('unitTable');
 
-            setTimeout(() => {
-                loader.classList.add('hidden'); 
-                table.classList.remove('hidden'); 
-            }, 2000);
-        });
+        setTimeout(() => {
+            loader.classList.add('hidden'); 
+            table.classList.remove('hidden'); 
+        }, 2000);
+    });
 
 </script>
 
