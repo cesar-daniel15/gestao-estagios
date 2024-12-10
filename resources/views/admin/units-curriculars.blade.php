@@ -13,6 +13,9 @@
             Unidades Curriculares Existentes
         </div>
         <div class="flex flex-col gap-5 md:flex-row justify-between items-center my-5">
+
+
+        <div class="flex flex-col md:flex-row">
             
         <!-- Barra de pesquisa -->
         <div class="relative w-full lg:w-72 mb-4 md:mb-0">
@@ -21,6 +24,23 @@
                 <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
             </svg>
         </div>
+
+        <!-- Filtro de Unidade Curricular -->
+<!-- Filtro de Unidade Curricular -->
+<div class="relative w-auto md:ms-5 mt-4 md:mt-0">
+    <select id="search-unit-curricular" class="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" onchange="searchUnit()">
+        <option value="" disabled selected>Procurar por Unidade Curricular</option>
+        @foreach($unitsCurriculars as $UnitCurricular)
+        <option value="{{ $UnitCurricular['id'] }}">{{ $UnitCurricular['name'] }}</option>
+        @endforeach
+    </select>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+        <path fill="#9c9c9c" d="M2 8a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2z"/>
+    </svg>
+</div>
+
+    </div>
+
 
         <div class="flex space-x-4">
             <!-- Botão para criar Unidade Curricular -->
@@ -328,16 +348,34 @@
             updateForm.action = `/admin/units/${id}`; // Certifique-se de que a URL está correta
         }
 
-            // Funcao de pesquisa de Unidades Curriculares
-            function searchUnit() {
-                const searchValue = document.getElementById('search').value.toLowerCase();
-                const rows = document.querySelectorAll("#unitTable tbody tr");
+        // Pesquisar por Unidade Curricular
+        function searchUnit() {
+    const searchUnit = document.getElementById('search').value.toLowerCase();
+    const searchCourse = document.getElementById('search-unit-curricular').value;
 
-            rows.forEach(row => {
-                const unitName = row.querySelector(".unit-name").textContent.toLowerCase();
-                row.style.display = unitName.includes(searchValue) ? "" : "none";
-            });
+    console.log("Search Unit:", searchUnit);
+    console.log("Selected Course:", searchCourse);
+
+    const rows = document.querySelectorAll("#unitTable tbody tr");
+
+    rows.forEach(row => {
+        const unitName = row.querySelector(".unit-name").textContent.toLowerCase();
+        const unitCourse = row.querySelector("td:nth-child(2)").textContent;
+
+        console.log("Unit Name:", unitName, "Unit Course:", unitCourse);
+
+        const matchName = unitName.includes(searchUnit);
+        const matchCourse = searchCourse ? unitCourse === searchCourse : true;
+
+        console.log("Match Name:", matchName, "Match Course:", matchCourse);
+
+        if (matchName && matchCourse) {
+            row.style.display = ""; // Exibe a linha
+        } else {
+            row.style.display = "none"; // Oculta a linha
         }
+    });
+}
 
          // Loader
         document.addEventListener('DOMContentLoaded', function () {
