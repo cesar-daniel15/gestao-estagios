@@ -6,7 +6,7 @@
 
 @section('content')
 
-@extends('admin.layouts.components.alert')
+@include('admin.layouts.components.alert')
 
     <div class="mt-10 bg-white drop-shadow-md rounded-xl p-10">
         <div class="text-lg font-bold text-gray-600 mb-6">
@@ -61,6 +61,7 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="p-4 border-b text-gray-600">ID</th>
+                    <th class="p-4 border-b text-gray-600">Curso</th>
                     <th class="p-4 border-b text-gray-600">Nome</th>
                     <th class="p-4 border-b text-gray-600">Acrónimo</th>
                     <th class="p-4 border-b text-gray-600">Ects</th>
@@ -76,6 +77,7 @@
                 @foreach($unitsCurriculars as $UnitCurricular)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['id'] }}</td>
+                        <td class="p-4 text-gray-600">{{ $UnitCurricular['course']['name'] }}</td>
                         <td class="p-4 text-gray-600 unit-name">{{ $UnitCurricular['name'] }}</td>
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['acronym'] }}</td>
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['ects'] }}</td>
@@ -83,14 +85,14 @@
                             <div class="flex space-x-2 justify-center">
 
                                 <!-- Botão Ver -->
-                                <a onclick="viewModal({{ $UnitCurricular['id'] }},'{{ $UnitCurricular['name'] }}','{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects'] }}', '{{ $UnitCurricular['course_id'] }}' }} )" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                <a onclick="viewModal({{ $UnitCurricular['id'] }}, '{{ $UnitCurricular['course']['name'] }}', '{{ $UnitCurricular['name'] }}','{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                     </svg>
                                 </a>
 
                                 <!-- Botão Update -->
-                                <button type="button" onclick="updateModal({{ $UnitCurricular['id'] }}, '{{ $UnitCurricular['name'] }}', '{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects']}}', '{{ $UnitCurricular['course_id'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                <button type="button" onclick="updateModal({{ $UnitCurricular['id'] }}, '{{ $UnitCurricular['name'] }}', '{{ $UnitCurricular['acronym'] }}', '{{ $UnitCurricular['ects']}}', '{{ $UnitCurricular['course'] ['name']}}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                         <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                     </svg>
@@ -143,11 +145,11 @@
                     </div>
 
                     <div>
-                        <label for="course_id" class="block text-gray-600 mb-1">* Curso</label>
+                        <label for="course_id" class="block text-gray-600 mb-1">*Curso</label>
                         <select id="course_id" name="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                             <option value="">Selecione um curso</option>
-                            @foreach($courses as $course) <!-- Supondo que você tenha uma lista de cursos -->
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
+                            @foreach($courses as $course)
+                                <option value="{{ $course['id'] }}">{{ $course['name'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -175,6 +177,7 @@
                 <!-- Lado com as informações -->
                 <div class="ml-4 space-y-4 flex flex-col data-content">
                         <p><strong>ID:</strong> <span id="modal-id"></span> </p>
+                        <p><strong>Curso:</strong> <span id="modal-curso"></span> </p>
                         <p><strong>Nome:</strong> <span id="modal-name"></span> </p>
                         <p><strong>Acrónimo:</strong> <span id="modal-acronym"></span> </p>
                         <p><strong>Ects:</strong> <span id="modal-ects"></span> </p>
@@ -220,7 +223,7 @@
                     <select id="update_course_id" name="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                         <option value="">Selecione um curso</option>
                         @foreach($courses as $course) <!-- Supondo que você tenha uma lista de cursos -->
-                            <option value="{{ $course->id }}">{{ $course->name }}</option>
+                            <option value="{{ $course['id']}}">{{ $course['name'] }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -287,12 +290,13 @@
 
 
         // Funcao para modal de view das unidades curriculares
-        function viewModal(id, name, acronym, ects) {
+        function viewModal(id, curso_id, name, acronym, ects) {
             document.querySelector('#viewModal .modal-content h2').textContent = name;
 
             document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
                 <div class="ml-4 flex flex-col gap-5">
                     <p><strong>ID:</strong> ${id}</p>
+                    <p><strong>Curso:</strong> ${curso_id}</p>
                     <p><strong>Nome:</strong> ${name}</p>
                     <p><strong>Acrónimo:</strong> ${acronym}</p>
                     <p><strong>Ects:</strong> ${ects}</p>

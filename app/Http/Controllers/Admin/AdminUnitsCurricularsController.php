@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Course;  
+use App\Http\Resources\UnitResource;
+use App\Http\Resources\CourseResource;
 
 
 class AdminUnitsCurricularsController extends Controller
@@ -24,11 +26,14 @@ class AdminUnitsCurricularsController extends Controller
     
         // Obtenha todos os cursos
         $courses = Course::all();
+        $coursesResource = CourseResource::collection($courses)->resolve();
     
+        $unitsCurricularResource = UnitResource::collection($unitsCurriculars)->resolve();
+
         // Retorna para a view com as unidades curriculares e cursos
         return view('admin.units-curriculars', [
-            'unitsCurriculars' => $unitsCurriculars,
-            'courses' => $courses // Adicione a variável courses aqui
+            'unitsCurriculars' => $unitsCurricularResource,
+            'courses' => $coursesResource // Adicione a variável courses aqui
         ]);
     }
     
@@ -52,7 +57,7 @@ class AdminUnitsCurricularsController extends Controller
             'name' => 'required|string|max:255',
             'acronym' => 'required|string|max:10|unique:units_curriculars,acronym',
             'ects' => 'required|integer|min:1',
-            'course_id' => 'required|exists:courses,id', // Adicione esta linha
+            'course_id' => 'required|exists:courses,id', // A validação para garantir que o curso existe
         ], [
             'acronym.unique' => 'O acrônimo da unidade curricular já está em uso.',
             'course_id.required' => 'O campo curso é obrigatório.',
@@ -63,11 +68,9 @@ class AdminUnitsCurricularsController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
-        $data = $validator->validated();
-    
+            
         // Cria a nova unidade curricular
-        $unitCurricular = UnitCurricular::create($data);
+        $unitCurricular = UnitCurricular::create($validator->validated());
         
         if ($unitCurricular) {
             return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular criada com sucesso!');
