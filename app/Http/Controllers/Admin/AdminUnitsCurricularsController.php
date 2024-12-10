@@ -79,7 +79,7 @@ class AdminUnitsCurricularsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UnitsCurricular $unitCurricular)
+    public function show(UnitCurricular $unitCurricular)
     {
         // Retorna para a view de detalhes da unidade curricular
         return view('admin.units_curriculars.show', compact('unitCurricular'));
@@ -88,7 +88,7 @@ class AdminUnitsCurricularsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UnitsCurricular $unitCurricular)
+    public function edit(UnitCurricular $unitCurricular)
     {
         // Retorna para a view de edição
         return view('admin.units_curriculars.edit', compact('unitCurricular'));
@@ -97,7 +97,7 @@ class AdminUnitsCurricularsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UnitsCurricular $unitCurricular)
+    public function update(Request $request, UnitCurricular $unitCurricular)
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
@@ -159,7 +159,7 @@ class AdminUnitsCurricularsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UnitsCurricular $unitCurricular)
+    public function destroy(UnitCurricular $unitCurricular)
     {
         // Remove uma unidade curricular
         $deleted = $unitCurricular->delete();
