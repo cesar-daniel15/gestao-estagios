@@ -19,25 +19,41 @@
             
         <!-- Barra de pesquisa -->
         <div class="relative w-full lg:w-72 mb-4 md:mb-0">
-            <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" placeholder="Procurar por Unidade Curricular" oninput="searchUnit()" />
+            <input type="text" id="search-unit" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2.5 text-start" placeholder="Procurar por Unidade Curricular" oninput="searchUnit()" />
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
                 <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
             </svg>
         </div>
 
+
+        <!-- Filtro de Instituição -->
+        <div class="relative w-auto md:ms-5 mt-4 md:mt-0">
+            <select id="search-institution" class="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" onchange="searchUnit()">
+                <option value="" disabled selected>Filtrar por Instituição</option>
+                @foreach($institutions as $institution)
+                    <!-- Acessar as chaves dentro de 'user' -->
+                    <option value="{{ $institution['id'] }}">{{ $institution['acronym'] }}</option>
+                @endforeach
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                <path fill="#9c9c9c" d="M2 8a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2z"/>
+            </svg>
+        </div>
+
+
         <!-- Filtro de Unidade Curricular -->
-<!-- Filtro de Unidade Curricular -->
-<div class="relative w-auto md:ms-5 mt-4 md:mt-0">
-    <select id="search-unit-curricular" class="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" onchange="searchUnit()">
-        <option value="" disabled selected>Procurar por Unidade Curricular</option>
-        @foreach($unitsCurriculars as $UnitCurricular)
-        <option value="{{ $UnitCurricular['id'] }}">{{ $UnitCurricular['name'] }}</option>
-        @endforeach
-    </select>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
-        <path fill="#9c9c9c" d="M2 8a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2z"/>
-    </svg>
-</div>
+        <div class="relative w-auto md:ms-5 mt-4 md:mt-0">
+            <select id="search-course" class="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" onchange="searchUnit()">
+                <option value="" disabled selected>Procurar por Curso</option>
+                @foreach($courses as $course)
+                <option value="{{ $course['id'] }}">{{ $course['name'] }}</option>
+                @endforeach
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                <path fill="#9c9c9c" d="M2 8a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2z"/>
+            </svg>
+        </div>
+
 
     </div>
 
@@ -97,7 +113,7 @@
                 @foreach($unitsCurriculars as $UnitCurricular)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['id'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $UnitCurricular['course']['name'] }}</td>
+                        <td class="p-4 text-gray-600 unit-course">{{ $UnitCurricular['course']['name'] }}</td>
                         <td class="p-4 text-gray-600 unit-name">{{ $UnitCurricular['name'] }}</td>
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['acronym'] }}</td>
                         <td class="p-4 text-gray-600">{{ $UnitCurricular['ects'] }}</td>
@@ -350,32 +366,27 @@
 
         // Pesquisar por Unidade Curricular
         function searchUnit() {
-    const searchUnit = document.getElementById('search').value.toLowerCase();
-    const searchCourse = document.getElementById('search-unit-curricular').value;
+            const searchUnit = document.getElementById('search-unit').value.toLowerCase();
+            const searchInstitution = document.getElementById('search-institution').value;
+            const searchCourse = document.getElementById('search-course').value;
 
-    console.log("Search Unit:", searchUnit);
-    console.log("Selected Course:", searchCourse);
+            const rows = document.querySelectorAll("#unitTable tbody tr");
 
-    const rows = document.querySelectorAll("#unitTable tbody tr");
+            rows.forEach(row => {
+                const unitName = row.querySelector(".unit-name").textContent.toLowerCase();
+                const unitInstitution = row.querySelector(".unit-institution").textContent.toLowerCase();
+                const unitCourse = row.querySelector(".unit-course").textContent;
 
-    rows.forEach(row => {
-        const unitName = row.querySelector(".unit-name").textContent.toLowerCase();
-        const unitCourse = row.querySelector("td:nth-child(2)").textContent;
+                const matchName = unitName.includes(searchUnit);
+                const matchCourse = searchCourse ? unitCourse === searchCourse : true;
 
-        console.log("Unit Name:", unitName, "Unit Course:", unitCourse);
-
-        const matchName = unitName.includes(searchUnit);
-        const matchCourse = searchCourse ? unitCourse === searchCourse : true;
-
-        console.log("Match Name:", matchName, "Match Course:", matchCourse);
-
-        if (matchName && matchCourse) {
-            row.style.display = ""; // Exibe a linha
-        } else {
-            row.style.display = "none"; // Oculta a linha
+                if (matchName && matchCourse) {
+                    row.style.display = ""; // Exibe a linha
+                } else {
+                    row.style.display = "none"; // Oculta a linha
+                }
+            });
         }
-    });
-}
 
          // Loader
         document.addEventListener('DOMContentLoaded', function () {

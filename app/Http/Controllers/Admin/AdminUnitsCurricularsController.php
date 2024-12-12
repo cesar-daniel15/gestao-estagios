@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Course;  
 use App\Http\Resources\UnitResource;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\InstitutionResource;
+use App\Models\Institution;
 
 
 class AdminUnitsCurricularsController extends Controller
@@ -28,14 +30,21 @@ class AdminUnitsCurricularsController extends Controller
         $courses = Course::all();
         $coursesResource = CourseResource::collection($courses)->resolve();
     
+        // Obtenha todas as instituições
+        $institutions = Institution::all();
+        $institutionsResource = InstitutionResource::collection($institutions)->resolve();        
+    
+        // Transforme as unidades curriculares para o recurso apropriado
         $unitsCurricularResource = UnitResource::collection($unitsCurriculars)->resolve();
-
-        // Retorna para a view com as unidades curriculares e cursos
+    
+        // Retorna para a view com as unidades curriculares, cursos e instituições
         return view('admin.units-curriculars', [
             'unitsCurriculars' => $unitsCurricularResource,
-            'courses' => $coursesResource // Adicione a variável courses aqui
+            'courses' => $coursesResource, // Inclua os cursos
+            'institutions' => $institutionsResource // Inclua as instituições
         ]);
     }
+    
     
     /**
      * Show the form for creating a new resource.
