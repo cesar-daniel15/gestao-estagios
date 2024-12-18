@@ -10,7 +10,10 @@ class Institution extends Model
 {
     use HasFactory;
 
-    // Defenicao dos atributos da tabela 
+    // Nome da tabela
+    protected $table = 'institutions';
+    
+    // Campos
     protected $fillable = [
         'acronym',
         'phone',

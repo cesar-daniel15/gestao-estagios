@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class UcResponsible extends Model
 {
+    // Nome da tabela
     protected $table = 'uc_responsibles';
     
+    // Campos
     protected $fillable = [
         'phone',
         'picture',

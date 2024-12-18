@@ -9,7 +9,10 @@ class Course extends Model
 {
     use HasFactory;
 
-    // Definindo os campos que podem ser preenchidos em massa
+    // Nome da tabela
+    protected $table = 'courses';
+
+    // Campos
     protected $fillable = [
         'institution_id',
         'name',

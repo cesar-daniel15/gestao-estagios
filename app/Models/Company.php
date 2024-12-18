@@ -10,8 +10,10 @@ class Company extends Model
 {
     use HasFactory;
 
+    // Nome da tabela
     protected $table = 'companies';
 
+    // Campos
     protected $fillable = [
         'phone',
         'logo',
