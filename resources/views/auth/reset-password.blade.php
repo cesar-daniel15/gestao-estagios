@@ -39,7 +39,7 @@
 
         <!-- Nova Password -->
         <div class="mb-7">
-            <label for="password" class="sr-only">Nova Senha</label>
+            <label for="password" class="sr-only">Nova Password</label>
             <div class="flex items-center rounded-md border border-sky-400 bg-gray-100 p-2 shadow-sm">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.6em" height="1.6em" class="mx-5">
@@ -49,13 +49,13 @@
                     </g>
                 </svg>
 
-                <input type="password" id="password" name="password" placeholder="Nova Senha" class="block w-full border-0 bg-gray-100 text-sm focus:outline-none md:text-base" required>
+                <input type="password" id="password" name="password" placeholder="Nova Password" class="block w-full border-0 bg-gray-100 text-sm focus:outline-none md:text-base" required>
             </div>
         </div>
 
         <!-- Confirmar Nova Password -->
         <div class="mb-7">
-            <label for="password_confirmation" class="sr-only">Confirmar Nova Senha</label>
+            <label for="password_confirmation" class="sr-only">Confirmar Nova Password</label>
             <div class="flex items-center rounded-md border border-sky-400 bg-gray-100 p-2 shadow-sm">
                 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.6em" height="1.6em" class="mx-5">
