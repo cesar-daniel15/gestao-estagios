@@ -19,6 +19,7 @@ class Institution extends Model
         'website',
     ];
 
+    
     // Relacao com a tabela Users
     public function users()
     {
