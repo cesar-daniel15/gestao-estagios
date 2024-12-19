@@ -28,4 +28,10 @@ class Institution extends Model
     {
         return $this->hasMany(User::class, 'id_institution');
     }
+
+    // Relacao para tabela Internship Offers
+    public function internshipOffers()
+    {
+        return $this->hasMany(InternshipOffer::class, 'institution_id');
+    }
 }

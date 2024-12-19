@@ -19,10 +19,21 @@ class Course extends Model
         'acronym',
     ];
 
-    // Relacionamento com a instituição (Institution).
-    // Cada curso pertence a uma instituição
+    // Relacionamento com tabela Institution
     public function institution()
     {
         return $this->belongsTo(Institution::class);
+    }
+
+    // Relacao para tabela Internship Offers
+    public function internshipOffers()
+    {
+        return $this->hasMany(InternshipOffer::class, 'course_id'); 
+    }
+
+    // Relacao com Units Curriculars
+    public function unitsCurriculars()
+    {
+        return $this->hasMany(UnitCurricular::class, 'course_id');
     }
 }
