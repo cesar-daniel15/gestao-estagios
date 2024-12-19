@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UnitCurricular extends Model
 {
     use HasFactory;
 
-    protected $table = 'units_curriculars'; // Nome da tabela no banco de dados
+    // Nome da tabela
+    protected $table = 'units_curriculars';
+
+    // Campos
     protected $fillable = [
         'course_id',
         'name',
@@ -18,13 +20,22 @@ class UnitCurricular extends Model
         'ects',
     ];
 
+    // Relacao coma  a tabela Course
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Course::class, 'course_id'); 
     }
 
-    public function users()
+    // Relacao coma  a tabela UctoStudents
+    public function students()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(Student::class, 'uc_to_students', 'uc_id', 'student_id'); 
     }
+
+    // Relacao com a tabela UCtoResponsibles
+    public function responsibles()
+    {
+        return $this->belongsToMany(UCResponsible::class, 'uc_to_responsibles', 'uc_id', 'uc_responsible_id'); 
+    }
+
 }

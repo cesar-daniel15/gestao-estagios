@@ -1,24 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Models\Student; // Import do Model Student
+use App\Http\Resources\StudentResource; // Import do Student
+use Illuminate\Support\Facades\Validator; // Import do Validator
+use App\Traits\HttpResponses;
 
-class StudentController extends Controller
+
+class AdminStudentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Auth::user()->profile !== 'Student') {
-            return redirect()->back()->with('error', 'Você não tem permissão para eceder a esta página.');
+        // Verifica se a request vem do Postman
+        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
+        
+        // Ve for uma request do Postman retorna em JSON 
+        if ($isPostmanRequest || request()->wantsJson()) {
+            return StudentResource::collection(Student::all());
         }
+    
+        $students = StudentResource::collection(Student::all())->resolve();
 
-        $user = Auth::user();
-
-        return view('users.student.dashboard', compact('user'));
+        // Retorna para view com os alunos
+        // return view('admin.students', compact('students'));
     }
 
     /**

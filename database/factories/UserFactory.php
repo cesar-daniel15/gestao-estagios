@@ -18,15 +18,12 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $token = rand(10000, 99999);
-
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'account_is_verified' => true,
-            'password' => Hash::make('password'), // Senha padrão
-            'profile' => 'User', // Perfil padrão
-            'token' => $token,
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password'),
+            'profile' => 'Admin', 
+            'account_is_verified' => true, 
         ];
     }
 

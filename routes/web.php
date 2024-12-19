@@ -1,48 +1,70 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\InstitutionController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\CourseController;
-use App\Http\Controllers\Admin\UnitCurricularController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminInstitutionController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminCourseController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ResponsibleController;
+use App\Http\Controllers\CompanyController;
+
 
 Route::get('/', function () { 
     return view('index'); 
-});
+})->name('index');
 
+// Rotas de Admin
 Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
-    Route::get('/institutions', [InstitutionController::class, 'index'])->name('admin.institutions.index');
-    Route::get('/institutions/{institution}', [InstitutionController::class, 'show'])->name('admin.institutions.show');
-    Route::post('/institutions', [InstitutionController::class, 'store'])->name('admin.institutions.store');
-    Route::put('/institutions/{institution}', [InstitutionController::class, 'update'])->name('admin.institutions.update');
-    Route::delete('/institutions/{institution}', [InstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index'); 
-    Route::get('/courses/{course}', [CourseController::class, 'show'])->name('admin.courses.show'); 
-    Route::put('/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update'); 
-    Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
-    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
-    
-    Route::get('/units-curriculars', [UnitCurricularController::class, 'index'])->name('admin.units.index');
-    Route::get('/units-curriculars/{unit-curriculars}', [UnitCurricularController::class, 'show'])->name('admin.units.show');
-    Route::post('/units-curriculars', [UnitCurricularController::class, 'store'])->name('admin.units.store');
-    Route::put('/units-curriculars/{unit-curriculars}', [UnitCurricularController::class, 'update'])->name('admin.units.update');
-    Route::delete('/units-curriculars/{unit-curriculars}', [UnitCurricularController::class, 'destroy'])->name('admin.units.destroy');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('admin.users.show');
+    Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 
+    Route::get('/institutions', [AdminInstitutionController::class, 'index'])->name('admin.institutions.index');
+    Route::get('/institutions/{institution}', [AdminInstitutionController::class, 'show'])->name('admin.institutions.show');
+    Route::post('/institutions', [AdminInstitutionController::class, 'store'])->name('admin.institutions.store');
+    Route::put('/institutions/{institution}', [AdminInstitutionController::class, 'update'])->name('admin.institutions.update');
+    Route::delete('/institutions/{institution}', [AdminInstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/courses', [AdminCourseController::class, 'index'])->name('admin.courses.index'); 
+    Route::get('/courses/{course}', [AdminCourseController::class, 'show'])->name('admin.courses.show'); 
+    Route::put('/courses/{course}', [AdminCourseController::class, 'update'])->name('admin.courses.update'); 
+    Route::post('/courses', [AdminCourseController::class, 'store'])->name('admin.courses.store');
+    Route::delete('/courses/{course}', [AdminCourseController::class, 'destroy'])->name('admin.courses.destroy'); 
 });
 
+// Rotas para perfil de instituticao
+Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+    Route::get('/dashboard', [InstitutionController::class, 'index'])->name('institution.dashboard');
+    Route::get('/profile', [InstitutionController::class, 'show'])->name('institution.profile');
+    Route::post('/profile', [InstitutionController::class, 'store'])->name('institution.store');
+});
+
+// Rotas para perfil de aluno
+Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+    Route::get('/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+});
+
+// Rotas para perfil de responsaveis pela uc
+Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+    Route::get('/dashboard', [ResponsibleController::class, 'index'])->name('responsible.dashboard');
+});
+
+// Rotas para perfil de empresa
+Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+    Route::get('/dashboard', [CompanyController::class, 'index'])->name('company.dashboard');
+});
+
+// Rotas de auth
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
@@ -51,10 +73,6 @@ Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name(
 Route::get('reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
-
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard')->middleware(['auth']);
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -91,24 +109,3 @@ Route::get('/coordenadores', function () {
 Route::get('/aluno', function () {
     return view('aluno');
 });
-
-
-// Dashboard da instituição
-Route::get('/institution/dashboard', function () {
-    return view('institution.dashboard'); 
-})->name('institution.dashboard');
-
-// Dashboard do Student
-Route::get('/student/dashboard', function () {
-    return view('student.dashboard'); 
-})->name('student.dashboard');
-
-// Dashboard do Responsible
-Route::get('/responsible/dashboard', function () {
-    return view('responsible.dashboard'); 
-})->name('responsible.dashboard');
-
-// Dashboard do Company
-Route::get('/company/dashboard', function () {
-    return view('company.dashboard'); 
-})->name('company.dashboard');

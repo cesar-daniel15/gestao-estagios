@@ -17,7 +17,8 @@ class AuthController extends Controller
     use HttpResponses;
 
     public function register(Request $request)
-    {
+    {   
+        // Validacao dos dados
         try {
             $registerUserData = $request->validate([
                 'name' => 'required|string|unique:users,name',
@@ -43,74 +44,114 @@ class AuthController extends Controller
                 'last_login' => Carbon::now()
             ]);
 
+            // Evia email para verificar conta
             Mail::send('emails.verification', ['token' => $token], function ($message) use ($user) {
                 $message->to($user->email);
                 $message->subject('Verificação de E-mail');
             });
 
             return redirect()->route('verify-account')->with('success', 'Verifique o seu e-mail para confirmar o registo.');
+        
         } catch (\Illuminate\Validation\ValidationException $e) {
+
             $errors = $e->validator->errors()->all();
             return redirect()->route('register')->with('error', implode(' ', $errors))
             ->withInput();
+
         } catch (\Exception $e) {
+
             return redirect()->route('register')->with('error', 'Ocorreu um erro ao criar a conta. Por favor, tente novamente.')
             ->withInput();
         }
     }
 
     public function login(Request $request)
-    {
+    {   
+        // Validacao dos dados
         $loginUserData = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required||string|min:8',
         ]);
 
+        // Verifica se existe um user com esse email
         $user = User::where('email', $loginUserData['email'])->first();
         
+        // Se nao existir
         if (!$user) {
             return redirect()->route('login')->with('error', 'Algo deu errado, tente novamente.')
             ->withInput();
         }
 
+        // Verifica se a password esta correta
         if (!Hash::check($loginUserData['password'], $user->password)) {
             return redirect()->route('login')->with('error', 'Password incorreta, tente novamente.')
             ->withInput();
         }
 
-        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+        // Cria um token para o user
+        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken; 
+        // Update do campo last_login
         $user->update(['last_login' => Carbon::now()]);
 
+        // Faz login com o user
         Auth::login($user);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
+        // Redirect dependendo do profile de cada user
+        switch ($user->profile) {
+            case 'Admin':
+                return redirect()->route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
+            case 'Student':
+                return redirect()->route('student.dashboard')->with('success', 'Login realizado com sucesso!');
+            case 'Responsible':
+                return redirect()->route('responsible.dashboard')->with('success', 'Login realizado com sucesso!');
+            case 'Company':
+                return redirect()->route('company.dashboard')->with('success', 'Login realizado com sucesso!');
+            case 'Institution':
+                return redirect()->route('institution.dashboard')->with('success', 'Login realizado com sucesso!');
+        }
     }
 
     public function logout(Request $request)
     {
+        // Faz o logout e manda para a view de login
         Auth::logout(); 
         return redirect()->route('login'); 
     }
 
     public function verifyToken(Request $request)
     {
+        // Validacao do token enserido no input
         $request->validate([
             'token' => 'required|numeric|digits:5', 
         ]);
 
+        // Procura o user apartir do token
         $user = User::where('token', $request->token)->first();
 
+        // Se o token for invalido
         if (!$user) {
             return redirect()->route('verify-account')->with('error', 'Código de verificação inválido.');
         }
 
+        // Marca a conta como verificada
         $user->update([
             'account_is_verified' => true,
         ]);
 
+        // Faz login com o user
         Auth::login($user);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Conta verificada com sucesso!');
+        // Redereciona para a view para atualizar o perfil
+        switch ($user->profile) {
+            case 'Student':
+                return redirect()->route('student.profile')->with('success', 'Login realizado com sucesso!');
+            case 'Responsible':
+                return redirect()->route('responsible.profile')->with('success', 'Login realizado com sucesso!');
+            case 'Company':
+                return redirect()->route('company.profile')->with('success', 'Login realizado com sucesso!');
+            case 'Institution':
+                return redirect()->route('institution.profile')->with(['success' => 'Login realizado com sucesso!', 'info' => 'Atualize o seu perfil para concluir o processo!']);
+        }
     }
 
     public function forgotPassword(Request $request)

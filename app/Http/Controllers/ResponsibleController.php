@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class StudentController extends Controller
+class ResponsibleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Auth::user()->profile !== 'Student') {
+        if (Auth::user()->profile !== 'Responsible') {
             return redirect()->back()->with('error', 'Você não tem permissão para eceder a esta página.');
         }
 
         $user = Auth::user();
 
-        return view('users.student.dashboard', compact('user'));
+        return view('users.responsible.dashboard', compact('user'));
     }
 
     /**
