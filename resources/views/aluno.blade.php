@@ -163,4 +163,15 @@
         </div>
     </section>
     
+    <!-- Nota -->
+    <div class="max-w-3xl mx-4 md:mx-auto p-4 bg-blue-100 border-l-4 border-sky-400 text-sky-700 my-10 rounded-md" role="alert">
+        <p class="font-bold">* Nota</p>
+        <p>
+            Para garantir a segurança e a confiabilidade do sistema, o registo como este tipo de utilizador requer contato prévio com os nossos serviços administrativos. 
+            Além disso, utilizadores com o perfil <span class="font-bold">"Aluno"</span> devem ser registados diretamente pelos seus coordenadores. 
+            Essa prática assegura o funcionamento eficiente e confiável do sistema.
+        </p>
+    </div>
+
+
 @endsection

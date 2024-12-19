@@ -10,7 +10,10 @@ class Institution extends Model
 {
     use HasFactory;
 
-    // Defenicao dos atributos da tabela 
+    // Nome da tabela
+    protected $table = 'institutions';
+    
+    // Campos
     protected $fillable = [
         'acronym',
         'phone',
@@ -19,9 +22,16 @@ class Institution extends Model
         'website',
     ];
 
+    
     // Relacao com a tabela Users
     public function users()
     {
         return $this->hasMany(User::class, 'id_institution');
+    }
+
+    // Relacao para tabela Internship Offers
+    public function internshipOffers()
+    {
+        return $this->hasMany(InternshipOffer::class, 'institution_id');
     }
 }

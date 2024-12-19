@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminInstitutionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCourseController;
-use App\Http\Controllers\Admin\AdminUnitsCurricularsController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
@@ -20,6 +20,9 @@ Route::get('/', function () {
 
 // Rotas de Admin
 Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('admin.users.show');
     Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
@@ -37,14 +40,6 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::put('/courses/{course}', [AdminCourseController::class, 'update'])->name('admin.courses.update'); 
     Route::post('/courses', [AdminCourseController::class, 'store'])->name('admin.courses.store');
     Route::delete('/courses/{course}', [AdminCourseController::class, 'destroy'])->name('admin.courses.destroy'); 
-
-    Route::get('/units-curriculars', [AdminUnitsCurricularsController::class, 'index'])->name('admin.units.index');
-    Route::get('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'show'])->name('admin.units.show');
-    Route::put('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'update'])->name('admin.units.update');
-    Route::post('/units-curriculars', [AdminUnitsCurricularsController::class, 'store'])->name('admin.units.store');
-    Route::delete('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'destroy'])->name('admin.units.destroy');
-
-    Route::get('/dashboard', function () {return view('admin.dashboard');})->name('admin.dashboard');
 });
 
 // Rotas para perfil de instituticao

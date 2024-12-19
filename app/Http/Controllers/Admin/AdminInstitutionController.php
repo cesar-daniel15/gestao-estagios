@@ -21,8 +21,7 @@ class AdminInstitutionController extends Controller
     {
         // Obtenha as instituições
         $institutions = Institution::all();
-    
-        // Retorna para view com as instituicoes
+
         return view('admin.institutions', [
             'institutions' => InstitutionResource::collection($institutions)->resolve() ?? []
         ]);
@@ -104,13 +103,13 @@ class AdminInstitutionController extends Controller
     {
         
         $validator = Validator::make($request->all(), [
-            'acronym' => 'required|string|max:10',  
-            'phone' => 'required|string|max:11|unique:institutions,phone,' . $institution->id,
-            'address' => 'required|string|max:255',
+            'acronym' => 'string|max:10',
+            'phone' => 'string|max:11' . $institution->id,
+            'address' => 'string|max:255',
             'website' => 'url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
-
+        
         // Verifica se a validacao falhou
         if ($validator->fails()) {
 
@@ -121,44 +120,22 @@ class AdminInstitutionController extends Controller
             // Redireciona de volta com os erros armazenados na session
             return redirect()->back()->withInput();
         }
-    
-        // Dados validados
-        $validated = $validator->validated();
-    
-        // Prepara os dados para atualizar
-        $dataToUpdate = [];
-    
-        // Verifica se cada campo foi alterado e se sim adiciona os ao array de atualizacao
-    
-        if ($validated['acronym'] != $institution->acronym) {
-            $dataToUpdate['acronym'] = $validated['acronym'];
-        }
-    
-        if ($validated['phone'] != $institution->phone) {
-            $dataToUpdate['phone'] = $validated['phone'];
-        }
-    
-        if ($validated['address'] != $institution->address) {
-            $dataToUpdate['address'] = $validated['address'];
-        }
-    
-        if ($validated['website'] != $institution->website) {
-            $dataToUpdate['website'] = $validated['website'];
-        }
-    
+
+        $data = $validator->validated();
+
         if ($request->hasFile('logo')) {
             // Apaga o logo antigo
-            if ($institution->logo && Storage::exists($institution->logo)) {
-                Storage::delete($institution->logo);
+            if ($institution->logo && Storage::disk('public')->exists($institution->logo)) {
+                Storage::disk('public')->delete($institution->logo);
             }
-            
-            // Faz update do logo
+    
+            // Guarda o novo logo 
             $path = $request->file('logo')->store('images/uploads', 'public');
-            $institution->logo = $path;
+            $data['logo'] = $path; // Atualiza o caminho no array de dados
         }
 
         // Faz a atualizacao
-        $update = $institution->update($dataToUpdate);
+        $update = $institution->update($data);
     
         // Verifica se a atualizacao ocorreu
         if ($update) {
