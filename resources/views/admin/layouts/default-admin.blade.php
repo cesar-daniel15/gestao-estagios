@@ -16,7 +16,7 @@
 
     </head>
 
-    <body class="bg-gray-100 relative overflow-hidden">
+    <body class="bg-gray-100 relative overflow-auto">
         <!-- Contêiner para a animação -->
         <div id="background-animation" class="absolute inset-0 -z-10"></div>
 

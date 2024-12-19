@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Fk's
-            // $table->foreign('assigned_internship_id')->references('id')->on('internship_offers'); 
+            $table->foreign('assigned_internship_id')->references('id')->on('internship_offers'); 
 
         });
     }

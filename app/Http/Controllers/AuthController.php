@@ -204,7 +204,7 @@ class AuthController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('success', 'Sua senha foi redefinida com sucesso!')
+            ? redirect()->route('login')->with('success', 'Sua password foi redefinida com sucesso!')
             : back()->withErrors(['email' => [__($status)]]);
     }
 

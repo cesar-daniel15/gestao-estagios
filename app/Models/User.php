@@ -18,6 +18,10 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // Nome da tabela
+    protected $table = 'users';
+    
+    // Campos
     protected $fillable = [
         'name',
         'profile',

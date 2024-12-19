@@ -8,7 +8,7 @@
 
 @include('admin.layouts.components.alert')
 
-    <div class="mt-10 bg-white drop-shadow-md rounded-xl p-10">
+    <div class="mt-10 bg-white drop-shadow-md rounded-xl p-10 mb-10">
         <div class="text-lg font-bold text-gray-600 mb-6">
             Utilizadores Existentes
         </div>
@@ -43,7 +43,7 @@
             
             <div class="flex items-center mt-4 md:mt-0">
                 <!-- Botão Registar User -->
-                <button onclick="openModal('createModal')" class="bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg p-2.5 flex text-sm items-center">
+                <button onclick="openModal('createModal')" class="bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg p-2 flex text-sm items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 mr-2" fill="white">
                         <path d="M12 4.75c.69 0 1.25.56 1.25 1.25v4.75H18a1.25 1.25 0 1 1 0 2.5h-4.75V18a1.25 1.25 0 1 1-2.5 0v-4.75H6a1.25 1.25 0 1 1 0-2.5h4.75V6c0-.69.56-1.25 1.25-1.25"/>
                     </svg>
@@ -52,7 +52,7 @@
 
                 <!-- Botão de Atualizar -->
                 <div class="mt-4 md:mt-0 hidden md:flex md:ms-5">
-                    <button id="refreshButton" class="bg-info text-white font-bold p-2  bg-teal-600  hover:bg-teal-500 rounded-lg flex items-center" onclick="refreshTable()">
+                    <button id="refreshButton" class="bg-info text-white font-bold p-2  bg-teal-600  hover:bg-teal-500 rounded-lg text-sm flex items-center" onclick="refreshTable()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="mr-2">
                             <path fill="white" d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
                         </svg>

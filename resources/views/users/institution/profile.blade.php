@@ -22,12 +22,12 @@
                     
                     <div class="mb-4">
                         <label for="name" class="block text-gray-600 mb-1">Nome</label>
-                        <input type="text" id="name" name="name" value="{{ $user->name }}" class="border border-gray-300 rounded-lg w-full p-2" required>
+                        <input type="text" id="name" name="name" value="{{ $user->name }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
                         </div>
                     
                     <div class="mb-4">
                         <label for="email" class="block text-gray-600 mb-1">Email</label>
-                        <input type="email" id="email" name="email" value="{{ $user->email }}"  class="border border-gray-300 rounded-lg w-full p-2" required>
+                        <input type="email" id="email" name="email" value="{{ $user->email }}"  class="border border-gray-300 rounded-lg w-full p-2" readonly>
                     </div>
 
                     <div class="mb-4">

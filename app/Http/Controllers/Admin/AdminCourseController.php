@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Institution;  
 use App\Http\Resources\CourseResource; 
+use App\Http\Resources\InstitutionResource; 
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
-use App\Models\Institution;  
 
 class AdminCourseController extends Controller
 {
@@ -19,11 +20,16 @@ class AdminCourseController extends Controller
     {   
         $courses = Course::with('institution')->get();
         $institutions = Institution::all(); 
-        
-        return view('admin.courses', ['courses' => CourseResource::collection($courses), 'institutions' => $institutions]);
+    
+        $coursesResource = CourseResource::collection($courses)->resolve();
+        $institutionsResource = InstitutionResource::collection($institutions)->resolve();
+
+        return view('admin.courses', [
+            'courses' => $coursesResource, 
+            'institutions' => $institutionsResource
+        ]);
     }
     
-
     /**
      * Show the form for creating a new resource.
      */
@@ -94,24 +100,31 @@ class AdminCourseController extends Controller
         
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'acronym' => 'required|string|max:10',
-            'institution_id' => 'required|exists:institutions,id', // Verifica se a instituição existe
-            'description' => 'nullable|string|max:1000',
+            'name' => 'string|max:255',
+            'acronym' => 'string|max:10',
+            'institution_id' => 'exists:institutions,id',
         ]);
     
         // Se a validação falhar
         if ($validator->fails()) {
+
             session()->flash('error', 'Erro de validação!');
             session()->flash('validation_errors', $validator->errors()->all());
+            
             return redirect()->back()->withInput();
         }
     
         // Atualiza o curso com os dados válidos
-        $course->update($request->all());
-    
+        $update = $course->update($request->all());
+        
+        if ($update) {
+            return redirect()->route('admin.courses.index')->with('success', 'Curso atualizado com sucesso!');
+
+        } else {
+            return redirect()->route('admin.courses.index')->with('error', 'Curso atualizado com sucesso!');
+        }
+
         // Redireciona para a lista de cursos com uma mensagem de sucesso
-        return redirect()->route('admin.courses.index')->with('success', 'Curso atualizado com sucesso!');
     }
 
     /**
@@ -120,10 +133,10 @@ class AdminCourseController extends Controller
     public function destroy(string $id)
     {
         // Remove um curso da db
-        // Deleta o curso
+        $course = Course::findOrFail($id); 
         $deleted = $course->delete();
     
-        // Verifica se foi deletado com sucesso
+        // Verifica se foi apagado com sucesso
         if ($deleted) {    
             // Redireciona com mensagem de sucesso
             return redirect()->route('admin.courses.index')->with('success', 'Curso apagado com sucesso!');

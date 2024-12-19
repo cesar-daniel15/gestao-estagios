@@ -51,7 +51,7 @@ class InstitutionController extends Controller
             'acronym' => 'required|string|max:10|unique:institutions,acronym' . ($institution ? ',' . $institution->id : ''),
             'phone' => 'required|string|max:11|unique:institutions,phone' . ($institution ? ',' . $institution->id : ''),
             'address' => 'required|string|max:255',
-            'website' => 'nullable|url|max:255',
+            'website' => 'required|url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     
