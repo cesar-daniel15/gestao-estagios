@@ -74,10 +74,10 @@
                                 <!-- Select -->
                                 <select id="profile" name="profile" class="block w-full bg-gray-100 border-0 focus:outline-none text-gray-400 focus:text-black">
                                     <option value="" disabled selected class="text-gray-400">Selecione o seu perfil</option>
-                                    <option value="Institution" class="text-black">Instituição</option>
+                                    <!-- <option value="Institution" class="text-black">Instituição</option> -->
                                     <option value="Company" class="text-black">Empresa</option>
-                                    <option value="Responsible" class="text-black">Coordenador da Unidade Curricular</option>
-                                    <option value="Student" class="text-black">Aluno</option>
+                                    <!-- <option value="Responsible" class="text-black">Coordenador da Unidade Curricular</option> -->
+                                    <!-- <option value="Student" class="text-black">Aluno</option> -->
                                 </select>
 
                         </div>
