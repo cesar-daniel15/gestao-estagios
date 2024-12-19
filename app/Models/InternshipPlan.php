@@ -14,9 +14,13 @@ class InternshipPlan extends Model
 
     // Campos
     protected $fillable = [
-        'title',
-        'description',
-        'file',
+        'total_hours',        
+        'start_date',          
+        'end_date',           
+        'objectives',          
+        'planned_activities', 
+        'approved_by_uc',     
+        'status',      
     ];
 
     //  Relacao com a tabela Internship Offers
