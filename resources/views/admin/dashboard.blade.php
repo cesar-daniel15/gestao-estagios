@@ -10,7 +10,7 @@
 
     <div class="mt-10 bg-white drop-shadow-md rounded-xl p-10 mb-10">
         <div class="text-lg font-bold text-gray-600 mb-6">
-            Informações relevantes
+            Informações sobre Utilizadores
         </div>
 
         <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
