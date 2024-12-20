@@ -19,18 +19,11 @@ class AdminUcResponsibleController extends Controller
      */
     public function index()
     {
-        // Verifica se a request vem do Postman
-        $isPostmanRequest = str_contains(request()->header('User-Agent'), 'Postman');
+        // Buscando todos os responsáveis
+        $UcResponsibles = UcResponsible::all();
         
-        // Ve for uma request do Postman retorna em JSON 
-        if ($isPostmanRequest || request()->wantsJson()) {
-            return UcResponsibleResource::collection(UcResponsible::all());
-        }
-    
-        $uc_responsibles = UcResponsibleResource::collection(UcResponsible::all())->resolve();
-
-        // Retorna para view com os responsaveis da uc
-        // return view('admin.uc-responsibles', compact('uc_responsibles'));
+        // Passando as variáveis para a view
+        return view('admin.uc-responsibles',compact('UcResponsibles'));
     }
 
     /**

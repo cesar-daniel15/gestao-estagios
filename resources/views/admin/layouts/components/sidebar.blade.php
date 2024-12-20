@@ -91,7 +91,7 @@
                   <ul class="ml-7 mt-2 rounded-md space-y-2">
                      <!-- Submenu para Responsaveis UC -->
                      <li>
-                        <a href="{{ url('/admin/coordinators/uc-responsibles') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                        <a href="{{ url('/admin/uc-responsibles') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
                            <span class="ms-5 text-sm">Responsáveis U.C</span>
                         </a>
                      </li>

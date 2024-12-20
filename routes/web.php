@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminInstitutionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCourseController;
+use App\Http\Controllers\Admin\AdminUnitsCurricularsController;
+use App\Http\Controllers\Admin\AdminUcResponsibleController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
@@ -40,6 +42,18 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::put('/courses/{course}', [AdminCourseController::class, 'update'])->name('admin.courses.update'); 
     Route::post('/courses', [AdminCourseController::class, 'store'])->name('admin.courses.store');
     Route::delete('/courses/{course}', [AdminCourseController::class, 'destroy'])->name('admin.courses.destroy'); 
+
+    Route::get('/units-curriculars', [AdminUnitsCurricularsController::class, 'index'])->name('admin.units.index');
+    Route::get('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'show'])->name('admin.units.show');
+    Route::put('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'update'])->name('admin.units.update');
+    Route::post('/units-curriculars', [AdminUnitsCurricularsController::class, 'store'])->name('admin.units.store');
+    Route::delete('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'destroy'])->name('admin.units.destroy');
+
+    Route::get('/uc-responsibles', [AdminUcResponsibleController::class, 'index'])->name('admin.uc_responsibles.index');
+    Route::get('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'show'])->name('admin.uc_responsibles.show');
+    Route::put('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'update'])->name('admin.uc_responsibles.update');
+    Route::post('/uc-responsibles', [AdminUcResponsibleController::class, 'store'])->name('admin.uc_responsibles.store');
+    Route::delete('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'destroy'])->name('admin.uc_responsibles.destroy');
 });
 
 // Rotas para perfil de instituticao
