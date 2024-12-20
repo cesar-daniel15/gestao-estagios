@@ -24,13 +24,13 @@
             </div>
 
             <div class="flex gap-4">
-                <!-- Botão para criar Instituição -->
+                <!-- Botão para criar Instituição 
                 <button onclick="openModal('createModal')" class="bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg p-2 flex text-sm items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 mr-2" fill="white">
                         <path d="M12 4.75c.69 0 1.25.56 1.25 1.25v4.75H18a1.25 1.25 0 1 1 0 2.5h-4.75V18a1.25 1.25 0 1 1-2.5 0v-4.75H6a1.25 1.25 0 1 1 0-2.5h4.75V6c0-.69.56-1.25 1.25-1.25"/>
                     </svg>
                     Registrar Instituição
-                </button> 
+                </button> -->
 
                 <!-- Botão de Atualizar -->
                 <div class="mt-4 md:mt-0 hidden md:flex">
