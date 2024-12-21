@@ -81,7 +81,7 @@
                     <th class="p-4 border-b text-gray-600">Instituição</th>
                     <th class="p-4 border-b text-gray-600">Nome</th>
                     <th class="p-4 border-b text-gray-600">Acrónimo</th>
-                    <th class="p-4 border-b text-gray-600">Data de Criação</th>
+                    <!-- <th class="p-4 border-b text-gray-600">Data de Criação</th> -->
                     <th class="p-4 border-b text-gray-600">Ações</th>
                 </tr>
             </thead>
@@ -97,7 +97,7 @@
                         <td class="p-4 text-gray-600 course-institution">{{ $course['institution']['acronym'] ?? 'Nome não disponível' }}</td>
                         <td class="p-4 text-gray-600 course-name">{{ $course['name'] }}</td>
                         <td class="p-4 text-gray-600">{{ $course['acronym'] }}</td>
-                        <td class="p-4 text-gray-600">{{ $course['created_at'] }}</td>  
+                        <!-- <td class="p-4 text-gray-600">{{ $course['created_at'] }}</td> -->
                         <td class="p-4 te xt-gray-600">
                         <div class="flex space-x-2 justify-center">
                             

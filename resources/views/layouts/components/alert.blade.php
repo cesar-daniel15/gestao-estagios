@@ -11,8 +11,8 @@
         </div>
     @endif
 
-    <!-- Alerta de Erro -->
-    @if(session('error'))
+    <!-- Alerta de Erros -->
+    @if ($errors->any())
         <div class="fixed top-5 right-5 max-w-xs p-4 text-white bg-red-600 border-l-4 border-red-800 rounded-lg z-50 shadow-lg animate-fade-out opacity-100 transition-opacity animate-slide-in-out px-5">
             <div class="flex items-center">
                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -20,9 +20,14 @@
                 </svg>
                 <span class="font-semibold">Erro!</span>
             </div>
-            <p class="text-sm">{{ session('error') }}</p>
+            <ul class="text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
+
 
     <!-- Alerta de Informacao -->
     @if(session('info'))
