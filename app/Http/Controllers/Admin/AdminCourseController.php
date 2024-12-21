@@ -47,16 +47,16 @@ class AdminCourseController extends Controller
 
         // Validacao dos dados recebidos
         $validator = Validator::make($request->all(), [
-            'institution_id' => 'required|exists:institutions,id', // Validação do ID da instituição
-            'name' => 'required|string|max:255|unique:courses,name', // O nome tem que ser unico
-            'acronym' => 'required|string|max:10',
+            'institution_id' => 'required|exists:institutions,id', 
+            'name' => 'required|string|max:255|unique:courses,name', 
+            'acronym' => 'required|string|max:10|unique:courses,acronym',
         ], [
             'name.unique' => 'O nome do curso já está em uso.',
+            'acronym.unique' => 'O acronimo do curso já está em uso.',
         ]);
 
         // Se a valicao falhar
         if ($validator->fails()) {
-            // Para requisições normais
             return redirect()->back()->withErrors($validator)->withInput();
         }
         

@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UnitCurricular; 
+use App\Models\Course;  
+use App\Models\Institution;
 use Illuminate\Support\Str; 
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Course;  
 use App\Http\Resources\UnitResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\InstitutionResource;
-use App\Models\Institution;
 
 
 class AdminUnitsCurricularsController extends Controller
@@ -24,8 +24,9 @@ class AdminUnitsCurricularsController extends Controller
     public function index()
     {
         // Obtenha as unidades curriculares
-        $unitsCurriculars = UnitCurricular::all(); // Pode fazer uma consulta mais específica se necessário
-    
+        $unitsCurriculars = UnitCurricular::with('course.institution')->get();
+        $unitsCurricularResource = UnitResource::collection($unitsCurriculars)->resolve();
+
         // Obtenha todos os cursos
         $courses = Course::all();
         $coursesResource = CourseResource::collection($courses)->resolve();
@@ -33,15 +34,12 @@ class AdminUnitsCurricularsController extends Controller
         // Obtenha todas as instituições
         $institutions = Institution::all();
         $institutionsResource = InstitutionResource::collection($institutions)->resolve();        
-    
-        // Transforme as unidades curriculares para o recurso apropriado
-        $unitsCurricularResource = UnitResource::collection($unitsCurriculars)->resolve();
-    
+        
         // Retorna para a view com as unidades curriculares, cursos e instituições
         return view('admin.units-curriculars', [
             'unitsCurriculars' => $unitsCurricularResource,
-            'courses' => $coursesResource, // Inclua os cursos
-            'institutions' => $institutionsResource // Inclua as instituições
+            'courses' => $coursesResource, 
+            'institutions' => $institutionsResource 
         ]);
     }
     
@@ -64,24 +62,26 @@ class AdminUnitsCurricularsController extends Controller
         // Validação dos dados 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'acronym' => 'required|string|max:10|unique:units_curriculars,acronym',
+            'acronym' => 'required|string|max:10',
             'ects' => 'required|integer|min:1',
-            'course_id' => 'required|exists:courses,id', // A validação para garantir que o curso existe
+            'course_id' => 'required|exists:courses,id|unique:units_curriculars,course_id', 
         ], [
-            'acronym.unique' => 'O acrônimo da unidade curricular já está em uso.',
-            'course_id.required' => 'O campo curso é obrigatório.',
-            'course_id.exists' => 'O curso selecionado não é válido.',
+            'course_id.required' => 'O campo curso é obrigatório',
+            'course_id.unique' => 'Este curso já tem uma unidade curricular',
+            'course_id.exists' => 'O curso selecionado não é válido',
         ]);
         
         // Se a validação falhar
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-            
-        // Cria a nova unidade curricular
-        $unitCurricular = UnitCurricular::create($validator->validated());
         
-        if ($unitCurricular) {
+        $data = $validator->validated();
+
+        // Cria a nova unidade curricular
+        $created = UnitCurricular::create($data);
+        
+        if ($created) {
             return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular criada com sucesso!');
         } else {
             return redirect()->route('admin.units.index')->with('error', 'Erro ao criar Unidade Curricular');
@@ -102,8 +102,8 @@ class AdminUnitsCurricularsController extends Controller
      */
     public function edit(UnitCurricular $unitCurricular)
     {
-        // Retorna para a view de edição
-        return view('admin.units_curriculars.edit', compact('unitCurricular'));
+
+
     }
 
     /**
@@ -113,21 +113,19 @@ class AdminUnitsCurricularsController extends Controller
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'course_id' => 'exists:courses,id',
-            'name' => 'string|max:255',
-            'acronym' => 'string|max:10|unique:units_curriculars,acronym,' . $unitCurricular->id,
-            'ects' => 'integer|min:1',
+            'name' => 'string|max:255|required',
+            'acronym' => 'string|max:10|required',
+            'ects' => 'integer|min:1|required',
+        ] , [
+            'name.required' => 'O campo nome é obrigatório',
+            'acronym.unique' => 'O campo acronimoe é obrigatório.',
+            'ects.exists' => 'O campo ects é obrigatório.',
         ]);
 
         
         // Verifica se a validação falhou
         if ($validator->fails()) {
-            // Passa os erros para a sessão
-            session()->flash('error', 'Erro de validação!');
-            session()->flash('validation_errors', $validator->errors()->all());
-            
-            // Redireciona de volta com os erros armazenados na sessão
-            return redirect()->back()->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         // Dados validados
@@ -135,11 +133,6 @@ class AdminUnitsCurricularsController extends Controller
 
         // Prepara os dados para atualizar
         $dataToUpdate = [];
-
-        // Verifica se cada campo foi alterado e, se sim, adiciona ao array de atualização
-        if ($validated['course_id'] != $unitCurricular->course_id) {
-            $dataToUpdate['course_id'] = $validated['course_id'];
-        }
 
         if ($validated['name'] != $unitCurricular->name) {
             $dataToUpdate['name'] = $validated['name'];
@@ -153,20 +146,15 @@ class AdminUnitsCurricularsController extends Controller
             $dataToUpdate['ects'] = $validated['ects'];
         }
 
-        // Atualiza apenas se houver mudanças
-        if (!empty($dataToUpdate)) {
-            $update = $unitCurricular->update($dataToUpdate);
+        $update = $unitCurricular->update($dataToUpdate);
 
-            if ($update) {
-                return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular atualizada com sucesso!');
-            } else {
-                return redirect()->route('admin.units.index')->with('error', 'Erro ao atualizar Unidade Curricular');
-            }
+        if ($update) {
+            return redirect()->route('admin.units.index')->with('success', 'Unidade Curricular atualizada com sucesso!');
+        } else {
+            return redirect()->route('admin.units.index')->with('error', 'Erro ao atualizar Unidade Curricular');
         }
 
-        // Nenhuma alteração detectada
-        return redirect()->route('admin.units.index')->with('info', 'Nenhuma alteração foi feita.');
-        }
+    }
 
     /**
      * Remove the specified resource from storage.
