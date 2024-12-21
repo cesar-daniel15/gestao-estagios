@@ -19,12 +19,31 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            //
+        ];
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
-            'profile' => 'Admin', 
-            'account_is_verified' => true, 
-        ];
+            'profile' => 'Admin',
+            'account_is_verified' => true,
+        ]);
+    }
+
+    public function institution(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Escola Superior de Tecnologia e Gestão',
+            'email' => 'estg@estg.pt',
+            'password' => Hash::make('password'),
+            'profile' => 'Institution',
+            'account_is_verified' => true,
+            'id_institution' => 1,
+        ]);
     }
 
     /**
