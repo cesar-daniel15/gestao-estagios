@@ -20,11 +20,15 @@ class UnitResource extends JsonResource
             'name' => $this->name,
             'acronym' => $this->acronym,
             'ects' => $this->ects,
-            // Usar 'optional()' para acessar o curso sem erro se não existir
             'course' => [
-                'id' => $this->course->id ?? 'Não existe', // Protege contra o erro
-                'name' => $this->course->name ?? 'Não existe', // Protege contra o erro
-                'acronym' => $this->course->acronym ?? 'Não existe', // Protege contra o erro
+                'id' => $this->course->id ?? 'Não existe', 
+                'name' => $this->course->name ?? 'Não existe',
+                'acronym' => $this->course->acronym ?? 'Não existe', 
+                'institution_id' => $this->course->institution_id ?? 'Não existe',
+                'institution' => [
+                    'id' => $this->course->institution->id ?? 'Não existe',
+                    'acronym' => $this->course->institution->acronym ?? 'Não existe',
+                ],
             ],
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
