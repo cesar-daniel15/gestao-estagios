@@ -54,6 +54,12 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::put('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'update'])->name('admin.uc_responsibles.update');
     Route::post('/uc-responsibles', [AdminUcResponsibleController::class, 'store'])->name('admin.uc_responsibles.store');
     Route::delete('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'destroy'])->name('admin.uc_responsibles.destroy');
+
+    Route::get('/students', [AdminStudentController::class, 'index'])->name('admin.students.index');
+    Route::get('/students/{student}', [AdminStudentController::class, 'show'])->name('admin.students.show');
+    Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('admin.students.update');
+    Route::post('/students', [AdminStudentController::class, 'store'])->name('admin.students.store');
+    Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('admin.students.destroy');
 });
 
 // Rotas para perfil de instituticao
@@ -71,6 +77,8 @@ Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class])->gro
 // Rotas para perfil de responsaveis pela uc
 Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
     Route::get('/dashboard', [ResponsibleController::class, 'index'])->name('responsible.dashboard');
+    Route::get('/profile', [ResponsibleController::class, 'show'])->name('responsible.profile');
+    Route::post('/profile', [ResponsibleController::class, 'store'])->name('responsible.store');
 });
 
 // Rotas para perfil de empresa
