@@ -71,6 +71,8 @@ Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class])->gro
 // Rotas para perfil de responsaveis pela uc
 Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
     Route::get('/dashboard', [ResponsibleController::class, 'index'])->name('responsible.dashboard');
+    Route::get('/profile', [ResponsibleController::class, 'show'])->name('responsible.profile');
+    Route::post('/profile', [ResponsibleController::class, 'store'])->name('responsible.store');
 });
 
 // Rotas para perfil de empresa
