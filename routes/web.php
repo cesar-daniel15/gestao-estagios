@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminUnitsCurricularsController;
 use App\Http\Controllers\Admin\AdminUcResponsibleController;
+use App\Http\Controllers\Admin\AdminStudentController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
@@ -72,7 +73,10 @@ Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class])-
 // Rotas para perfil de aluno
 Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
     Route::get('/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+    Route::get('/profile', [StudentController::class, 'show'])->name('student.profile');
+    Route::post('/profile', [StudentController::class, 'store'])->name('student.store');
 });
+
 
 // Rotas para perfil de responsaveis pela uc
 Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
