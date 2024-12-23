@@ -265,7 +265,9 @@
                     <option>Selecione uma opcao</option>
                     @foreach($unitCurriculars as $unitCurricular)
                         <option value="{{ $unitCurricular['id'] }}">
-                            {{ $unitCurricular['course']['institution']['acronym'] }}   ➡️   {{ $unitCurricular['course']['name'] }}   ➡️   {{ $unitCurricular['name'] }}
+                            {{ $unitCurricular['course']['institution']['acronym'] }} /
+                            {{ $unitCurricular['course']['name'] }} /
+                            {{ $unitCurricular['name'] }} (UC)
                         </option>
                     @endforeach
                 </select>
@@ -414,6 +416,7 @@
             }
         });
     }
+
 </script>
 
 @endsection
