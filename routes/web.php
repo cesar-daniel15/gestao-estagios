@@ -63,6 +63,12 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/students', [AdminStudentController::class, 'store'])->name('admin.students.store');
     Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('admin.students.destroy');
 
+    Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('admin.notifications.index');
+    Route::get('/notifications/{notification}', [AdminNotificationController::class, 'show'])->name('admin.notifications.show');
+    Route::put('/notifications/{notification}', [AdminNotificationController::class, 'update'])->name('admin.notifications.update');
+    Route::post('/notifications', [AdminNotificationController::class, 'store'])->name('admin.notifications.store');
+    Route::delete('/notifications/{notification}', [AdminNotificationController::class, 'destroy'])->name('admin.notifications.destroy');
+
     Route::get('/companies', [AdminCompanyController::class, 'index'])->name('admin.companies.index');
     Route::get('/companies/{company}', [AdminCompanyController::class, 'show'])->name('admin.companies.show');
     Route::post('/companies', [AdminCompanyController::class, 'store'])->name('admin.companies.store');
