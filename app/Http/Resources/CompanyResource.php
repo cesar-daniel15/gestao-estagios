@@ -15,13 +15,20 @@ class CompanyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = $this->users->first();
+
         // return parent::toArray($request);
         return [
+            'user' => [
+                'name' => $user->name ?? 'Utilizador não disponível', 
+                'email' => $user->email ?? 'Email não disponível', 
+                'account_is_verified' => $user->account_is_verified ?? false, 
+            ],
             'id' => $this->id,
             'phone' => $this->phone,
             'logo' => $this->logo ? asset('storage/' . $this->logo) : asset('images/uploads/default-user.png'),
             'industry' => $this->industry,
-            'brief_description' => $this->brief_description,
+            'brief_description' => $this->brief_description ?? 'N/A',
             'address' => $this->address,
             'foundation_date' => $this->foundation_date ? Carbon::parse($this->foundation_date)->format('Y-m-d') : null,
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),

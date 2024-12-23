@@ -52,14 +52,9 @@ class AdminUserController extends Controller
             'email.unique' => 'O email de utilizador já se encontra em uso',
         ]);
         
-       // Se a valicao falhar
+        // Se a valicao falhar
         if ($validator->fails()) {
-            $errorMessages = $validator->errors();
-
-            return redirect()->route('admin.users.index')->with([
-                'error' => $errorMessages->first('name'), 
-                'error' => $errorMessages->first('email'),
-            ]);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         
         $data = $validator->validated();

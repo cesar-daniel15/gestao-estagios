@@ -48,11 +48,22 @@ class InstitutionController extends Controller
     
         // Validação
         $validator = Validator::make($request->all(), [
-            'acronym' => 'required|string|max:10|unique:institutions,acronym' . ($institution ? ',' . $institution->id : ''),
+            'acronym' => 'required|string|max:5|unique:institutions,acronym' . ($institution ? ',' . $institution->id : ''),
             'phone' => 'required|string|max:11|unique:institutions,phone' . ($institution ? ',' . $institution->id : ''),
             'address' => 'required|string|max:255',
             'website' => 'required|url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'acronym.required' => 'O campo acronimo é obrigatório',
+            'acronym.unique' => 'A acronimo já está em uso',
+            'phone.required' => 'O campo telefone é obrigatório',
+            'phone.unique' => 'O telefone já está em uso',
+            'address.required' => 'O campo morada é obrigatório',
+            'website.required' => 'O campo website é obrigatório',
+            'website.url' => 'O campo website deve ser uma URL válida',
+            'logo.image' => 'O arquivo deve ser uma imagem',
+            'logo.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif, svg',
+            'logo.max' => 'A imagem não pode ter mais de 2048 KB',
         ]);
     
         if ($validator->fails()) {
