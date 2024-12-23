@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminUnitsCurricularsController;
 use App\Http\Controllers\Admin\AdminUcResponsibleController;
+use App\Http\Controllers\Admin\AdminCompanyController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
@@ -61,6 +62,12 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('admin.students.update');
     Route::post('/students', [AdminStudentController::class, 'store'])->name('admin.students.store');
     Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('admin.students.destroy');
+
+    Route::get('/companies', [AdminCompanyController::class, 'index'])->name('admin.companies.index');
+    Route::get('/companies/{company}', [AdminCompanyController::class, 'show'])->name('admin.companies.show');
+    Route::post('/companies', [AdminCompanyController::class, 'store'])->name('admin.companies.store');
+    Route::put('/companies/{company}', [AdminCompanyController::class, 'update'])->name('admin.companies.update');
+    Route::delete('/companies/{company}', [AdminCompanyController::class, 'destroy'])->name('admin.companies.destroy');
 });
 
 // Rotas para perfil de instituticao
@@ -85,6 +92,8 @@ Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])-
 // Rotas para perfil de empresa
 Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
     Route::get('/dashboard', [CompanyController::class, 'index'])->name('company.dashboard');
+    Route::get('/profile', [CompanyController::class, 'show'])->name('company.profile');
+    Route::post('/profile', [CompanyController::class, 'store'])->name('company.store');
 });
 
 // Rotas de auth
