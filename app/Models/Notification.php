@@ -14,7 +14,7 @@ class Notification extends Model
 
     // Campos
     protected $fillable = [
-        'uc_responsible',
+        'uc_responsible_id',
         'student_num',
         'title',
         'content',

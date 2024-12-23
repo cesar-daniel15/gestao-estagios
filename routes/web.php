@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminUnitsCurricularsController;
 use App\Http\Controllers\Admin\AdminUcResponsibleController;
+use App\Http\Controllers\Admin\AdminNotificationController;
 use App\Http\Controllers\Admin\AdminStudentController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
@@ -55,6 +56,12 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::put('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'update'])->name('admin.uc_responsibles.update');
     Route::post('/uc-responsibles', [AdminUcResponsibleController::class, 'store'])->name('admin.uc_responsibles.store');
     Route::delete('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'destroy'])->name('admin.uc_responsibles.destroy');
+
+    Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('admin.notifications.index');
+    Route::get('/notifications/{notification}', [AdminNotificationController::class, 'show'])->name('admin.notifications.show');
+    Route::put('/notifications/{notification}', [AdminNotificationController::class, 'update'])->name('admin.notifications.update');
+    Route::post('/notifications', [AdminNotificationController::class, 'store'])->name('admin.notifications.store');
+    Route::delete('/notifications/{notification}', [AdminNotificationController::class, 'destroy'])->name('admin.notifications.destroy');
 
     Route::get('/students', [AdminStudentController::class, 'index'])->name('admin.students.index');
     Route::get('/students/{student}', [AdminStudentController::class, 'show'])->name('admin.students.show');

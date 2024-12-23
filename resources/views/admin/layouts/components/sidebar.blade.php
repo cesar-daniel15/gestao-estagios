@@ -97,7 +97,7 @@
                      </li>
                      <!-- Submenu para Notificacoes -->
                      <li>
-                        <a href="{{ url('/admin/coordinators/notifications') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                        <a href="{{ url('/admin/notifications') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
                            <span class="ms-5 text-sm">Notificações</span>
                         </a>
                      </li>

@@ -64,7 +64,7 @@ class StudentController extends Controller
     
         // Verifica se uma imagem foi enviada e faz o upload
         if ($request->hasFile('picture')) {
-            $path = $request->file('picture')->store('images/uploads', 'public'); // Salva em `storage/app/public/students`
+            $path = $request->file('picture')->store('images/uploads', 'public'); 
             $student->picture = $path; // Salva o caminho no banco de dados
         }
     
