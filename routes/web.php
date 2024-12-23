@@ -7,8 +7,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminUnitsCurricularsController;
 use App\Http\Controllers\Admin\AdminUcResponsibleController;
-use App\Http\Controllers\Admin\AdminNotificationController;
-use App\Http\Controllers\Admin\AdminStudentController;
+use App\Http\Controllers\Admin\AdminCompanyController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
@@ -52,10 +51,17 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::delete('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'destroy'])->name('admin.units.destroy');
 
     Route::get('/uc-responsibles', [AdminUcResponsibleController::class, 'index'])->name('admin.uc_responsibles.index');
-    Route::get('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'show'])->name('admin.uc_responsibles.show');
-    Route::put('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'update'])->name('admin.uc_responsibles.update');
+    Route::get('/uc-responsibles/{UcResponsible}', [AdminUcResponsibleController::class, 'show'])->name('admin.uc_responsibles.show');
+    Route::put('/uc-responsibles/{UcResponsible}', [AdminUcResponsibleController::class, 'update'])->name('admin.uc_responsibles.update');
     Route::post('/uc-responsibles', [AdminUcResponsibleController::class, 'store'])->name('admin.uc_responsibles.store');
-    Route::delete('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'destroy'])->name('admin.uc_responsibles.destroy');
+    Route::delete('/uc-responsibles/{UcResponsible}', [AdminUcResponsibleController::class, 'destroy'])->name('admin.uc_responsibles.destroy');
+    Route::post('/uc-responsibles/{UcResponsible}/associate-uc', [AdminUcResponsibleController::class, 'associateUc'])->name('admin.uc_responsibles.associate_uc');
+
+    Route::get('/students', [AdminStudentController::class, 'index'])->name('admin.students.index');
+    Route::get('/students/{student}', [AdminStudentController::class, 'show'])->name('admin.students.show');
+    Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('admin.students.update');
+    Route::post('/students', [AdminStudentController::class, 'store'])->name('admin.students.store');
+    Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('admin.students.destroy');
 
     Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('admin.notifications.index');
     Route::get('/notifications/{notification}', [AdminNotificationController::class, 'show'])->name('admin.notifications.show');
@@ -63,11 +69,11 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/notifications', [AdminNotificationController::class, 'store'])->name('admin.notifications.store');
     Route::delete('/notifications/{notification}', [AdminNotificationController::class, 'destroy'])->name('admin.notifications.destroy');
 
-    Route::get('/students', [AdminStudentController::class, 'index'])->name('admin.students.index');
-    Route::get('/students/{student}', [AdminStudentController::class, 'show'])->name('admin.students.show');
-    Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('admin.students.update');
-    Route::post('/students', [AdminStudentController::class, 'store'])->name('admin.students.store');
-    Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('admin.students.destroy');
+    Route::get('/companies', [AdminCompanyController::class, 'index'])->name('admin.companies.index');
+    Route::get('/companies/{company}', [AdminCompanyController::class, 'show'])->name('admin.companies.show');
+    Route::post('/companies', [AdminCompanyController::class, 'store'])->name('admin.companies.store');
+    Route::put('/companies/{company}', [AdminCompanyController::class, 'update'])->name('admin.companies.update');
+    Route::delete('/companies/{company}', [AdminCompanyController::class, 'destroy'])->name('admin.companies.destroy');
 });
 
 // Rotas para perfil de instituticao
@@ -80,10 +86,7 @@ Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class])-
 // Rotas para perfil de aluno
 Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
     Route::get('/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
-    Route::get('/profile', [StudentController::class, 'show'])->name('student.profile');
-    Route::post('/profile', [StudentController::class, 'store'])->name('student.store');
 });
-
 
 // Rotas para perfil de responsaveis pela uc
 Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
@@ -95,6 +98,8 @@ Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])-
 // Rotas para perfil de empresa
 Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
     Route::get('/dashboard', [CompanyController::class, 'index'])->name('company.dashboard');
+    Route::get('/profile', [CompanyController::class, 'show'])->name('company.profile');
+    Route::post('/profile', [CompanyController::class, 'store'])->name('company.store');
 });
 
 // Rotas de auth
