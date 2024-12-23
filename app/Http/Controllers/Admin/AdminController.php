@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User; 
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -14,6 +15,12 @@ class AdminController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->profile !== 'Admin') {
+            return redirect()->back()->with('error', 'Você não tem permissão para eceder a esta página.');
+        }
+
+        $user = Auth::user();
+
         $totalUsers = User::count();
 
         $mostCommonProfile = User::select('profile', DB::raw('count(*) as count'))
@@ -30,6 +37,7 @@ class AdminController extends Controller
             'totalUsers' => $totalUsers,
             'mostCommonProfile' => $mostCommonProfile,
             'userRegistration' => $userRegistration,
+            'user' => $user, 
         ]);
     }
 

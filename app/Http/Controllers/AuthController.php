@@ -120,28 +120,42 @@ class AuthController extends Controller
 
     public function verifyToken(Request $request)
     {
-        // Validacao do token enserido no input
+        // Validação do token inserido no input
         $request->validate([
             'token' => 'required|numeric|digits:5', 
         ]);
-
-        // Procura o user apartir do token
+    
+        // Procura o user a partir do token
         $user = User::where('token', $request->token)->first();
-
-        // Se o token for invalido
+    
+        // Se o token for inválido
         if (!$user) {
+            // Se o usuário não tiver um token, gera um novo
+            if (is_null($user->token)) {
+                $newToken = rand(10000, 99999);
+                $user->update(['token' => $newToken]);
+    
+                // Envia o e-mail de verificação
+                Mail::send('emails.verification', ['token' => $newToken], function ($message) use ($user) {
+                    $message->to($user->email);
+                    $message->subject('Verificação de E-mail');
+                });
+    
+                return redirect()->route('verify-account')->with('success', 'Um novo código de verificação foi enviado para o seu e-mail.');
+            }
+    
             return redirect()->route('verify-account')->with('error', 'Código de verificação inválido.');
         }
-
+    
         // Marca a conta como verificada
         $user->update([
             'account_is_verified' => true,
         ]);
-
+    
         // Faz login com o user
         Auth::login($user);
-
-        // Redereciona para a view para atualizar o perfil
+    
+        // Redireciona para a view para atualizar o perfil
         switch ($user->profile) {
             case 'Student':
                 return redirect()->route('student.profile')->with('success', 'Login realizado com sucesso!');

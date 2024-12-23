@@ -16,6 +16,7 @@ use App\Http\Resources\UnitResource; // Import do UnitResource
 use Illuminate\Support\Facades\Validator; // Import do Validator
 use App\Traits\HttpResponses; // Import do trait HttpResponses
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class AdminUcResponsibleController extends Controller
 
@@ -191,7 +192,12 @@ class AdminUcResponsibleController extends Controller
 
         // Verificar se o responsável já tem alguma unidade curricular associada
         if ($responsible->ucs()->count() > 0) {
-            return redirect()->back()->withErrors(['uc_id' => 'Este responsável já está associado a uma Unidade Curricular.'])->withInput();
+            return redirect()->back()->withErrors(['uc_id' => 'Este responsável já está associado a uma Unidade Curricular'])->withInput();
+        }
+
+        // Verificar se a unidade já tem algum responsável associado
+        if (DB::table('uc_to_responsibles')->where('uc_id', $request->uc_id)->exists()) {
+            return redirect()->back()->withErrors(['uc_id' => 'Esta Unidade Curricular já possui um responsável associado'])->withInput();
         }
 
         // Associar a unidade curricular ao responsável

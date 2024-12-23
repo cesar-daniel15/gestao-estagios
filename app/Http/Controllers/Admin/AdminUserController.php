@@ -9,6 +9,8 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+
 
 class AdminUserController extends Controller
 {
@@ -67,7 +69,20 @@ class AdminUserController extends Controller
         // Cria a novo utilizador
         $user = User::create($data);
     
-        if ($user) {
+
+    if ($user) {
+        // Se a conta não estiver verificada, gera um token e envia o e-mail de verificação
+        if (!$data['account_is_verified']) {
+            $token = rand(10000, 99999); 
+            $user->update(['token' => $token]);
+
+            // Envia o e-mail de verificação
+            Mail::send('emails.verification', ['token' => $token], function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject('Verificação de E-mail');
+            });
+        }
+
             // Da returna para a pagina dos users com uma mensagem de success
             return redirect()->route('admin.users.index')->with('success', 'Utilizador criado com sucesso!');
         } else {
