@@ -21,7 +21,7 @@ class UcToResponsible extends Model
     // Relacionamento com o modelo UCResponsible
     public function ucResponsible()
     {
-        return $this->belongsTo(UCResponsible::class, 'uc_responsible_id');
+        return $this->belongsTo(UcResponsible::class, 'uc_responsible_id');
     }
 
     // Relacionamento com o modelo UnitCurricular

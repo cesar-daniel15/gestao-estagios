@@ -19,37 +19,20 @@ class UcResponsible extends Model
         'picture',
     ];
 
-    /**
-     * Relacionamento com o modelo User.
-     * Cada responsável da UC pertence a um único usuário.
-     */
+
+    // Relacao com a tabela Users
     public function users()
     {
-        return $this->hasMany(User::class, 'user_id'); // Relacionamento com o usuário responsável
+        return $this->hasMany(User::class, 'id_responsible'); 
     }
 
-    /**
-     * Relacionamento com a tabela Institution.
-     * Cada responsável da UC pertence a uma instituição.
-     */
-    public function institution()
-    {
-        return $this->belongsTo(Institution::class, 'institution_id'); // Relacionamento com a instituição
-    }
-
-    /**
-     * Relacionamento com a tabela UC_to_Responsibles.
-     * Um responsável pode estar associado a várias unidades curriculares (Ucs).
-     */
+    // Relacao com a tabela UCS
     public function ucs()
     {
         return $this->belongsToMany(UnitCurricular::class, 'uc_to_responsibles', 'uc_responsible_id', 'uc_id'); 
     }
 
-    /**
-     * Relacionamento com a tabela Notifications.
-     * Um responsável pode ter várias notificações.
-     */
+    // Relacao com a tabela Notifications
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'uc_responsible');

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('uc_id'); // FK para Units_Curriculars
             $table->unsignedBigInteger('student_num'); // FK para Students
             $table->string('lective_year'); // Ano letivo
-            $table->timestamps();
+            //$table->timestamps();
 
             $table->primary(['uc_id', 'student_num']);
 

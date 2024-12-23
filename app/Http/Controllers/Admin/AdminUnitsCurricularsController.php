@@ -62,10 +62,11 @@ class AdminUnitsCurricularsController extends Controller
         // Validação dos dados 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'acronym' => 'required|string|max:10',
+            'acronym' => 'string|max:5',
             'ects' => 'required|integer|min:1',
             'course_id' => 'required|exists:courses,id|unique:units_curriculars,course_id', 
         ], [
+            'acronym.max' => 'O acronimo não pode ter mais de 5 caracteres.',
             'course_id.required' => 'O campo curso é obrigatório',
             'course_id.unique' => 'Este curso já tem uma unidade curricular',
             'course_id.exists' => 'O curso selecionado não é válido',
@@ -114,9 +115,10 @@ class AdminUnitsCurricularsController extends Controller
         // Validação dos dados
         $validator = Validator::make($request->all(), [
             'name' => 'string|max:255|required',
-            'acronym' => 'string|max:10|required',
+            'acronym' => 'string|max:5|required',
             'ects' => 'integer|min:1|required',
         ] , [
+            'acronym.max' => 'O acronimo não pode ter mais de 5 caracteres.',
             'name.required' => 'O campo nome é obrigatório',
             'acronym.unique' => 'O campo acronimoe é obrigatório.',
             'ects.exists' => 'O campo ects é obrigatório.',

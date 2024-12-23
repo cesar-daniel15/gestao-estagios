@@ -35,7 +35,7 @@ class UnitCurricular extends Model
     // Relacao com a tabela UCtoResponsibles
     public function responsibles()
     {
-        return $this->belongsToMany(UCResponsible::class, 'uc_to_responsibles', 'uc_id', 'uc_responsible_id'); 
+        return $this->belongsToMany(UcResponsible::class, 'uc_to_responsibles', 'uc_id', 'uc_responsible_id');
     }
 
 }

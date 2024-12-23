@@ -75,7 +75,7 @@ class User extends Authenticatable
     // Relacao com os Responsaveis
     public function responsible()
     {
-        return $this->belongsTo(UCResponsible::class, 'id_responsible');
+        return $this->belongsTo(UcResponsible::class, 'id_responsible');
     }
 
     // Relacao com os Students

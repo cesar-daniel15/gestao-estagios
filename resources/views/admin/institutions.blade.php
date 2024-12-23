@@ -230,8 +230,8 @@
                     </div>
 
                     <div>
-                        <label for="logo" class="block text-gray-600 mb-1">Logo</label>
-                        <input type="file" id="logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <label for="current_logo" class="block text-gray-600 mb-1">Logo</label>
+                        <input type="file" id="current_logo" name="logo" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
                     
                 </div>

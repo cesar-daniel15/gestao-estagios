@@ -103,22 +103,24 @@ class AdminInstitutionController extends Controller
     {
         
         $validator = Validator::make($request->all(), [
-            'acronym' => 'string|max:10',
-            'phone' => 'string|max:11' . $institution->id,
+            'acronym' => 'string|max:5',
+            'phone' => 'nullable|string|size:9|unique:institutions,phone,' . $institution->id,
             'address' => 'string|max:255',
             'website' => 'url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+        ], [
+            'acronym.max' => 'O acronimo não pode ter mais de 5 caracteres.',
+            'phone.size' => 'O número de telefone deve ter exatamente 9 caracteres.',
+            'phone.unique' => 'Já existe uma instituição com esse número de telefone.',
+            'website.url' => 'O endereço do website deve ser uma URL válida.',
+            'logo.image' => 'O arquivo da logo deve ser uma imagem.',
+            'logo.mimes' => 'A logo deve ser um arquivo de tipo jpeg, png, jpg, gif ou svg.',
+            'logo.max' => 'O arquivo da logo não pode ser maior que 2MB.',
         ]);
         
         // Verifica se a validacao falhou
         if ($validator->fails()) {
-
-            // Passa os erros para a session
-            session()->flash('error', 'Erro de validação!');
-            session()->flash('validation_errors', $validator->errors()->all());
-    
-            // Redireciona de volta com os erros armazenados na session
-            return redirect()->back()->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $data = $validator->validated();

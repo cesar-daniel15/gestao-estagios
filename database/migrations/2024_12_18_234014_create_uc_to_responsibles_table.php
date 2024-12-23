@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('uc_responsible_id'); // FK para Uc_Responsibles
             $table->unsignedBigInteger('uc_id'); // FK para a tabela de Unidades Curriculares 
-            $table->timestamps();
+            //$table->timestamps();
 
             // Chaves estrangeiras
             $table->foreign('uc_responsible_id')->references('id')->on('uc_responsibles')->onDelete('cascade');

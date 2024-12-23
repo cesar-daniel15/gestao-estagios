@@ -50,10 +50,11 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::delete('/units-curriculars/{unitCurricular}', [AdminUnitsCurricularsController::class, 'destroy'])->name('admin.units.destroy');
 
     Route::get('/uc-responsibles', [AdminUcResponsibleController::class, 'index'])->name('admin.uc_responsibles.index');
-    Route::get('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'show'])->name('admin.uc_responsibles.show');
-    Route::put('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'update'])->name('admin.uc_responsibles.update');
+    Route::get('/uc-responsibles/{UcResponsible}', [AdminUcResponsibleController::class, 'show'])->name('admin.uc_responsibles.show');
+    Route::put('/uc-responsibles/{UcResponsible}', [AdminUcResponsibleController::class, 'update'])->name('admin.uc_responsibles.update');
     Route::post('/uc-responsibles', [AdminUcResponsibleController::class, 'store'])->name('admin.uc_responsibles.store');
-    Route::delete('/uc-responsibles/{ucResponsible}', [AdminUcResponsibleController::class, 'destroy'])->name('admin.uc_responsibles.destroy');
+    Route::delete('/uc-responsibles/{UcResponsible}', [AdminUcResponsibleController::class, 'destroy'])->name('admin.uc_responsibles.destroy');
+    Route::post('/uc-responsibles/{UcResponsible}/associate-uc', [AdminUcResponsibleController::class, 'associateUc'])->name('admin.uc_responsibles.associate_uc');
 
     Route::get('/students', [AdminStudentController::class, 'index'])->name('admin.students.index');
     Route::get('/students/{student}', [AdminStudentController::class, 'show'])->name('admin.students.show');

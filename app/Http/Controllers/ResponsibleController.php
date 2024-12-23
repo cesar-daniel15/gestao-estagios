@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\UnitCurricular;
 use App\Models\UcResponsible; 
 use App\Models\User; 
 use Illuminate\Support\Str; 
@@ -47,7 +48,7 @@ class ResponsibleController extends Controller
 
         // Validação
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|max:15|unique:responsibles,phone' . ($responsible ? ',' . $responsible->id : ''),
+            'phone' => 'required|string|max:15|unique:uc_responsibles,phone' . ($responsible ? ',' . $responsible->id : ''),
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -70,12 +71,12 @@ class ResponsibleController extends Controller
                 $responsible->update(['picture' => $path]);
             }
 
-            return redirect()->route('responsibles.profile')->with('success', 'Perfil atualizado com sucesso!');
+            return redirect()->route('responsible.profile')->with('success', 'Perfil atualizado com sucesso!');
         } else {
             // Cria um novo registro
-            $responsible = Responsible::create($data);
+            $responsible = UcResponsible::create($data);
 
-            // Associa o responsável ao usuário logado
+            // Associa o responsável ao utilizador logado
             $user->id_responsible = $responsible->id;
             $user->save();
 
@@ -84,7 +85,7 @@ class ResponsibleController extends Controller
                 $responsible->update(['picture' => $path]);
             }
 
-            return redirect()->route('responsibles.profile')->with('success', 'Perfil criado com sucesso!');
+            return redirect()->route('responsible.profile')->with('success', 'Perfil criado com sucesso!');
         }
     }
 
@@ -95,8 +96,9 @@ class ResponsibleController extends Controller
     {
         $user = Auth::user();
         $responsible = $user->responsible ?? null;
+        $unitsCurricular = UnitCurricular::all(); 
 
-        return view('users.responsible.profile', compact('user', 'responsible'));
+        return view('users.responsible.profile', compact('user', 'responsible', 'unitsCurricular'));
     }
 
     /**

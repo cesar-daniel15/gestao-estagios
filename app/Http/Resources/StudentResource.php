@@ -18,10 +18,16 @@ class StudentResource extends JsonResource
        // return parent::toArray($request);
 
         return [
+            'user' => [
+                'id' => $this->id,
+                'name' => $user->name ?? 'Utilizador não disponível', 
+                'email' => $user->email ?? 'Email não disponível', 
+                'account_is_verified' => $user->account_is_verified ?? false, 
+            ],
             'id' => $this->id,
             'phone' => $this->phone,
             'picture' => $this->picture ? asset('storage/' . $this->picture) : asset('images/uploads/default-user.png'),
-            'assigned_internship_id' => $this->assigned_internship_id, // Ainda nao esta em FK
+            'assigned_internship_id' => $this->assigned_internship_id, 
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
         ];

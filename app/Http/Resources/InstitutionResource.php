@@ -19,7 +19,6 @@ class InstitutionResource extends JsonResource
 
         return [
             'user' => [
-                'id' => $user->id ?? 'N/A', 
                 'name' => $user->name ?? 'Utilizador não disponível', 
                 'email' => $user->email ?? 'Email não disponível', 
                 'account_is_verified' => $user->account_is_verified ?? false, 

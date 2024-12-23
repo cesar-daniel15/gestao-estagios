@@ -4,9 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Institution; // Import do Model Institution
+use App\Models\Course; // Import do Model Course
+use App\Models\UnitCurricular; // Import do Model UnitCurricular
 use App\Models\UcResponsible; // Import do Model UcResponsible
 use Illuminate\Support\Str; 
+use App\Http\Resources\InstitutionResource;
+use App\Http\Resources\CourseResource;
 use App\Http\Resources\UcResponsibleResource; // Import do UcResponsibleResource
+use App\Http\Resources\UnitResource; // Import do UnitResource
 use Illuminate\Support\Facades\Validator; // Import do Validator
 use App\Traits\HttpResponses; // Import do trait HttpResponses
 use Illuminate\Support\Facades\Storage;
@@ -23,11 +29,17 @@ class AdminUcResponsibleController extends Controller
     {
 
         $UcResponsibles = UcResponsible::all();
-        
-            return view('admin.uc-responsibles', [
-                'UcResponsibles' =>UcResponsibleResource::collection($UcResponsibles)->resolve() ?? []
-            ]);
-        }
+        $unitCurriculars = UnitCurricular::all();
+        $institutions = Institution::all();
+        $courses = Course::all();
+
+        return view('admin.uc-responsibles', [
+            'UcResponsibles' =>UcResponsibleResource::collection($UcResponsibles)->resolve() ?? [],
+            'unitCurriculars' => UnitResource::collection($unitCurriculars)->resolve() ?? [],
+            'institutions' => InstitutionResource::collection($institutions)->resolve() ?? [],
+            'courses' => CourseResource::collection($courses)->resolve() ?? []
+        ]);
+    }
     
         
 
@@ -38,7 +50,6 @@ class AdminUcResponsibleController extends Controller
     {
 
     }
-
     
     /**
      * Store a newly created resource in storage.
@@ -47,7 +58,7 @@ class AdminUcResponsibleController extends Controller
     {
         // Validação dos dados enviados via POST
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|max:20',  // Apenas validação para o campo phone
+            'phone' => 'required|string|max:9|unique:uc_responsibles,phone,' . $UcResponsible->id,
             'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validação para a imagem (se for enviada)
         ]);
     
@@ -83,7 +94,7 @@ class AdminUcResponsibleController extends Controller
     public function show(string $id)
     {
         // Encontra o responsável da UC pelo ID
-        $ucResponsible = UcResponsible::findOrFail($id);
+        $UcResponsible =UcResponsible::with(['ucs.course.institution', 'users'])->findOrFail($id);
         
         // Retorna a resposta com os dados do responsável da UC
         return view('admin.uc_responsibles.index', compact('UcResponsible'));
@@ -103,52 +114,55 @@ class AdminUcResponsibleController extends Controller
     public function update(Request $request, UcResponsible $UcResponsible)
     {
 
-        // Validação dos dados enviados via PUT/PATCH
+        // Validação dos dados enviados via PUT
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'uc_id' => 'required|exists:uc,id', // Verifica se o id da UC existe
+            'phone' => 'required|string|max:9',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'phone.required' => 'O campo telefone é obrigatório.',
+            'phone.max' => 'O telefone não pode ter mais de 9 caracteres.',
+            'picture.image' => 'A imagem do perfil deve ser uma imagem válida.',
+            'picture.mimes' => 'A imagem deve ser dos tipos: jpeg, png, jpg, gif.',
+            'picture.max' => 'A imagem não pode ter mais de 2MB.',
         ]);
-
+    
         // Se a validação falhar, retorna os erros
         if ($validator->fails()) {
-
-            // Passa os erros para a session
-            session()->flash('error', 'Erro de validação!');
-            session()->flash('validation_errors', $validator->errors()->all());
-
-            return redirect()->back()->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-
+    
         $data = $validator->validated();
-
-        // Atualiza os dados do responsável da UC
-        $ucResponsible->update([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'picture' => $request->picture,
-            'uc_id' => $request->uc_id,
-        ]);
-
-        // Faz a atualizacao
-        $update = $institution->update($data);
-
-        // Verifica se a criação foi bem-sucedida
-        if ($uc_responsible) {
-            return redirect()->route('admin.uc_responsibles.index')->with('success', 'Responsável da UC criado com sucesso!');
+    
+        if ($request->hasFile('picture')) {
+            // Apaga a picture antiga
+            if ($UcResponsible->picture && Storage::disk('public')->exists($UcResponsible->picture)) {
+                Storage::disk('public')->delete($UcResponsible->picture);
+            }
+        
+            // Guarda o novo logo 
+            $path = $request->file('picture')->store('images/uploads', 'public');
+            $data['picture'] = $path; // Atualiza o caminho no array de dados
+        }
+    
+        // Faz a atualização
+        $update = $UcResponsible->update($data);
+    
+        // Verifica se a atualização foi bem-sucedida
+        if ($update) {
+            return redirect()->route('admin.uc_responsibles.index')->with('success', 'Responsável da UC atualizado com sucesso!');
         } else {
             return redirect()->route('admin.uc_responsibles.index')->with('error', 'Erro ao atualizar o responsável da UC.');
         }
     }
-
+    
+    
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UcResponsible $ucResponsible)
+    public function destroy(UcResponsible $UcResponsible)
     {
         // Remove o responsável da UC
-        $delete = $ucResponsible->delete();
+        $delete = $UcResponsible->delete();
 
         // Retorna uma resposta de sucesso
         if ($delete) {  // Verifica se o delete foi bem-sucedido
@@ -158,4 +172,31 @@ class AdminUcResponsibleController extends Controller
         }
     }
 
+    // Associar responsável a uma unidade curricular
+    public function associateUc(Request $request, $UcResponsible)
+    {
+        // Validação simples
+        $validator = Validator::make($request->all(), [
+            'uc_id' => 'exists:units_curriculars,id',
+        ], [
+            'uc_id.exists' => 'A Unidade Curricular informada não existe.',
+        ]);
+
+        // Se a validação falhar
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $responsible = UcResponsible::findOrFail($UcResponsible);
+
+        // Verificar se o responsável já tem alguma unidade curricular associada
+        if ($responsible->ucs()->count() > 0) {
+            return redirect()->back()->withErrors(['uc_id' => 'Este responsável já está associado a uma Unidade Curricular.'])->withInput();
+        }
+
+        // Associar a unidade curricular ao responsável
+        $responsible->ucs()->attach($request->uc_id);
+
+        return redirect()->route('admin.uc_responsibles.index')->with('success', 'Unidade Curricular associada com sucesso');
+    }
 }
