@@ -41,7 +41,7 @@ class Student extends Model
     // Relacao com a tabela uc_to_students
     public function ucs()
     {
-        return $this->belongsToMany(UnitCurricular::class, 'uc_to_students', 'student_num', 'uc_id');
+        return $this->belongsToMany(UnitCurricular::class, 'uc_to_students', 'student_num', 'uc_id')->withPivot('lective_year'); 
     }
 
 }

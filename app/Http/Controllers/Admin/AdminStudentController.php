@@ -10,7 +10,12 @@ use App\Http\Resources\StudentResource; // Import do Student
 use Illuminate\Support\Facades\Validator; // Import do Validator
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Institution; // Import do Model Institution
+use App\Models\Course; // Import do Model Course
+use App\Models\UnitCurricular; // Import do Model UnitCurricular
+use App\Http\Resources\UnitResource; // Import do UnitResource
+use App\Http\Resources\InstitutionResource;
+use App\Http\Resources\CourseResource;
 
 class AdminStudentController extends Controller
 {
@@ -19,11 +24,19 @@ class AdminStudentController extends Controller
      */
     public function index()
     {
-        // Obtenha as instituições
-        $students = Student::all();
+        $students = Student::with(['ucs' => function ($query) {
+            $query->withPivot('lective_year'); 
+        }, 'ucs.course.institution'])->get();
+
+        $unitCurriculars = UnitCurricular::all();
+        $institutions = Institution::all();
+        $courses = Course::all();
 
         return view('admin.students', [
-            'students' => StudentResource::collection($students)->resolve() ?? []
+            'students' => StudentResource::collection($students)->resolve() ?? [],
+            'unitCurriculars' => UnitResource::collection($unitCurriculars)->resolve() ?? [],
+            'institutions' => InstitutionResource::collection($institutions)->resolve() ?? [],
+            'courses' => CourseResource::collection($courses)->resolve() ?? []
         ]);
 
         // Retorna para view com os alunos
@@ -46,12 +59,18 @@ class AdminStudentController extends Controller
         // Validação dos dados
         $validator = Validator::make($request->all(), [
             'name' => '|string|max:255',
-            'phone' => 'required|string|max:11|unique:students,phone',
+            'phone' => 'required|string|max:9|unique:students,phone'. ($student ? ',' . $student->id : ''),
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'assigned_internship_id' => 'nullable|exists:internships,id', // A validação do estágio
+            'assigned_internship_id' => 'nullable|exists:internships,id', 
         ], [
-            'phone.unique' => 'O telefone do estudante já está em uso.',
-            'assigned_internship_id.exists' => 'O estágio atribuído não existe.',
+            'name.string' => 'O nome deve ser uma string',
+            'phone.required' => 'O campo telefone é obrigatório',
+            'phone.max' => 'O telefone não pode ter mais de 9 valores',
+            'phone.unique' => 'O telefone já está em uso',
+            'picture.image' => 'O arquivo deve ser uma imagem',
+            'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif, svg',
+            'picture.max' => 'A imagem não pode ter mais de 2048 KB',
+            'assigned_internship_id.exists' => 'O estágio atribuído não existe',
         ]);
 
         // Se a validação falhar, retorna com erros
@@ -107,22 +126,23 @@ class AdminStudentController extends Controller
         // Validação dos dados 
         $validator = Validator::make($request->all(), [
             'name' => 'string|max:255',
-            'phone' => 'string|max:11|unique:students,phone,' . $student->id, // Para garantir que o telefone do estudante não seja único, exceto para o próprio estudante
+            'phone' => 'string|max:9|unique:students,phone,' . $student->id, 
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'assigned_internship_id' => 'nullable|exists:internships,id', // Se houver um estágio a ser atribuído ao estudante
+            'assigned_internship_id' => 'nullable|exists:internships,id',
         ], [
-            'phone.unique' => 'O telefone do estudante já está em uso.',
-            'assigned_internship_id.exists' => 'O estágio atribuído não existe.',
+            'name.string' => 'O nome deve ser uma string',
+            'phone.string' => 'O telefone deve ser uma string',
+            'phone.max' => 'O telefone não pode ter mais de 9 valores',
+            'phone.unique' => 'O telefone do responsável já está em uso',
+            'picture.image' => 'O arquivo deve ser uma imagem',
+            'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif, svg',
+            'picture.max' => 'A imagem não pode ter mais de 2048 KB',
+            'assigned_internship_id.exists' => 'O estágio atribuído não existe',
         ]);
     
-        // Se a validação falhar
+        // Se a validação falhar, retorna com erros
         if ($validator->fails()) {
-            // Passa os erros para a session
-            session()->flash('error', 'Erro de validação!');
-            session()->flash('validation_errors', $validator->errors()->all());
-    
-            // Redireciona de volta com os erros armazenados na session
-            return redirect()->back()->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
     
         $data = $validator->validated();
@@ -144,9 +164,9 @@ class AdminStudentController extends Controller
     
         // Verifica se a atualização ocorreu com sucesso
         if ($update) {
-            return redirect()->route('admin.students.index')->with('success', 'Estudante atualizado com sucesso!');
+            return redirect()->route('admin.students.index')->with('success', 'Aluno atualizado com sucesso!');
         } else {
-            return redirect()->route('admin.students.index')->with('error', 'Erro ao atualizar o estudante');
+            return redirect()->route('admin.students.index')->with('error', 'Erro ao atualizar o aluno');
         }
     }
     
@@ -168,5 +188,36 @@ class AdminStudentController extends Controller
         {
             return redirect()->route('admin.students.index')->with('error', 'Erro ao excluir o aluno');
         }
+    }
+
+    public function associateStudentToUc(Request $request, $studentId)
+    {
+        // Validação
+        $validator = Validator::make($request->all(), [
+            'uc_id' => 'required|exists:units_curriculars,id', 
+            'lective_year' => 'required|string', 
+        ], [
+            'uc_id.required' => 'O campo unidade curricular é obrigatório.',
+            'uc_id.exists' => 'A unidade curricular informada não existe.',
+            'lective_year.required' => 'O campo ano letivo é obrigatório.',
+        ]);
+    
+        // Se a validação falhar
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        // Encontrar o aluno
+        $student = Student::findOrFail($studentId);
+    
+        // Verificar se o aluno já está associado à unidade curricular
+        if ($student->ucs()->where('uc_id', $request->uc_id)->exists()) {
+            return redirect()->back()->withErrors(['uc_id' => 'Este aluno já está associado a esta unidade curricular'])->withInput();
+        }
+    
+        // Associar a unidade curricular ao aluno com o ano letivo
+        $student->ucs()->attach($request->uc_id, ['lective_year' => $request->lective_year]);
+    
+        return redirect()->route('admin.students.index')->with('success', 'Unidade Curricular associada com sucesso ao aluno');
     }
 }

@@ -21,7 +21,7 @@ class StudentController extends Controller
     public function index()
     {
         if (Auth::user()->profile !== 'Student') {
-            return redirect()->back()->with('error', 'Você não tem permissão para acessar esta página.');
+            return redirect()->back()->with('error', 'Você não tem permissão para eceder esta página.');
         }
 
         $user = Auth::user();
@@ -47,8 +47,15 @@ class StudentController extends Controller
     
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|max:15|unique:students,phone',
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validação da imagem
+            'phone' => 'required|string|max:9|unique:students,phone'. ($student ? ',' . $student->id : ''),
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'phone.required' => 'O campo telefone é obrigatório',
+            'phone.max' => 'O telefone não pode ter mais de 9 valores',
+            'phone.unique' => 'O telefone já está em uso',
+            'picture.image' => 'O arquivo deve ser uma imagem',
+            'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif, svg',
+            'picture.max' => 'A imagem não pode ter mais de 2048 KB',
         ]);
     
         if ($validator->fails()) {
@@ -56,21 +63,37 @@ class StudentController extends Controller
         }
     
         $data = $validator->validated();
-    
-        // Criação do estudante
-        $student = new Student();
-        $student->phone = $data['phone'];
-        //$student->id_student = $user->id_student; // Associa o estudante à instituição do usuário
-    
-        // Verifica se uma imagem foi enviada e faz o upload
-        if ($request->hasFile('picture')) {
-            $path = $request->file('picture')->store('images/uploads', 'public'); 
-            $student->picture = $path; // Salva o caminho no banco de dados
+        
+        if ($student) {
+            // Atualiza o registro existente
+            $student->update($data);
+
+            // Verifica se a imagem foi enviada e faz o upload
+            if ($request->hasFile('picture')) {
+                if ($student->picture && Storage::exists($student->picture)) {
+                    Storage::delete($student->picture);
+                }
+                $path = $request->file('picture')->store('images/uploads', 'public');
+                $student->update(['picture' => $path]);
+            }
+
+            return redirect()->route('student.profile')->with('success', 'Perfil atualizado com sucesso!');
+        } else {
+            // Cria um novo registro
+            $student = Student::create($data);
+
+            // Associa o student ao utilizador logado
+            $user->id_student = $student->id;
+            $user->save();
+
+            if ($request->hasFile('picture')) {
+                $path = $request->file('picture')->store('images/uploads', 'public');
+                $student->update(['picture' => $path]);
+            }
+
+            return redirect()->route('student.profile')->with('success', 'Perfil criado com sucesso!');
         }
-    
-        $student->save();
-    
-        return redirect()->route('student.profile')->with('success', 'Estudante cadastrado com sucesso!');
+
     }
     
 

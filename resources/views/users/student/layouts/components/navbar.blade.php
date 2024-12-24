@@ -12,8 +12,8 @@
     <!-- User Info -->
     <div class="hidden md:flex items-center bg-white drop-shadow-md rounded-xl w-auto">
 
-        @if ($student && $student->logo) 
-            <img src="{{ asset('storage/' . $student->logo) }}" alt="User Logo" class="w-12 h-12 rounded-full mx-5 my-2">
+        @if ($student && $student->picture) 
+            <img src="{{ asset('storage/' . $student->picture) }}" alt="User Logo" class="w-12 h-12 rounded-full mx-5 my-2">
         @else
             <img src="{{ asset('images/uploads/default-user.png') }}" alt="Default User Image" class="w-12 h-12 rounded-full mx-5 my-2">
         @endif

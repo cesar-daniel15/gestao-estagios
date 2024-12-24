@@ -65,6 +65,7 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('admin.students.update');
     Route::post('/students', [AdminStudentController::class, 'store'])->name('admin.students.store');
     Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('admin.students.destroy');
+    Route::post('/students/{student}/associate-uc', [AdminStudentController::class, 'associateStudentToUc'])->name('admin.students.associateStudentToUc');
 
     Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('admin.notifications.index');
     Route::get('/notifications/{notification}', [AdminNotificationController::class, 'show'])->name('admin.notifications.show');
