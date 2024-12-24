@@ -29,6 +29,7 @@
                         <label for="email" class="block text-gray-600 mb-1">Email</label>
                         <input type="text" id="email" name="email" value="{{ $user->email }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
                     </div>
+                    
                     <div class="mb-4">
                         <label for="institution" class="block text-gray-600 mb-1">Instituição</label>
                         <input type="text" id="institution" name="institution" value="{{ $responsible && $responsible->ucs->isNotEmpty() ? $responsible->ucs->first()->course->institution->acronym : 'Não disponível' }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>

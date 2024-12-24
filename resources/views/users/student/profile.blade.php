@@ -31,6 +31,16 @@
                     </div>
 
                     <div class="mb-4">
+                        <label for="institution" class="block text-gray-600 mb-1">Instituição</label>
+                        <input type="text" id="institution" name="institution" value="{{ $student && $student->ucs->isNotEmpty() ? $student->ucs->first()->course->institution->acronym : 'Não disponível' }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="course" class="block text-gray-600 mb-1">Curso</label>
+                        <input type="text" id="course" name="course" value="{{ $student && $student->ucs->isNotEmpty() ? $student->ucs->first()->course->name : 'Não disponível' }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
+                    </div>
+                    
+                    <div class="mb-4">
                         <label for="phone" class="block text-gray-600 mb-1">Contato</label>
                         <input type="text" id="phone" name="phone" value="{{ $student->phone ?? ' ' }}"  class="border border-gray-300 rounded-lg w-full p-2">
                     </div>

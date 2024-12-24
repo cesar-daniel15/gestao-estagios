@@ -77,28 +77,50 @@
                     @foreach($notifications as $notification)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $notification['id'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $notification['uc_responsible'] ? $notification->ucResponsible->name : 'Responsável não disponível' }}</td>
-                            <td class="p-4 text-gray-600">{{ $notification['student_num'] ? $notification->student->name : 'Aluno não disponível' }}</td>
-                            <td class="p-4 text-gray-600">{{ $notification['title'] }}</td>
                             <td class="p-4 text-gray-600">
-                                @if ($notification['status_visualization'] == 1)
-                                    <span class="text-green-500">Visualizada</span>
+                                @if (isset($notification['uc_responsible']['user']) && !empty($notification['uc_responsible']['user']))
+                                    {{ $notification['uc_responsible']['user']['name'] ?? 'Não disponível' }}
                                 @else
-                                    <span class="text-red-500">Não Visualizada</span>
+                                    'Responsável não disponível'
+                                @endif
+                            </td>
+                            <td class="p-4 text-gray-600">
+                                @if (isset($notification['student']['user']) && !empty($notification['student']['user']))
+                                    {{ $notification['student']['user']['name'] ?? 'Não disponível' }}
+                                @else
+                                    'Estudante não disponível'
+                                @endif
+                            </td>
+                            <td class="p-4 text-gray-600 notification-title">{{ $notification['title'] }}</td>
+                            <td class="p-4 text-gray-600 text-center">
+                                @if ($notification['status_visualization'] == 1)
+                                    <span class="flex items-center justify-center text-green-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Visualizada
+                                    </span>
+                                @else
+                                    <span class="flex items-center justify-center text-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        Não Visualizada
+                                    </span>
                                 @endif
                             </td>
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
                                     <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}', '{{ $notification['uc_responsible'] }}', '{{ $notification['student_num'] }}', '{{ $notification['status_visualization'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a onclick="viewModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}', '{{ $notification['uc_responsible']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['student']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['status_visualization'] }}', '{{ $notification['created_at'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
                                     </a>
 
-                                    <!-- Botão Editar -->
-                                    <button type="button" onclick="updateModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}', '{{ $notification['uc_responsible'] }}', '{{ $notification['student_num'] }}', '{{ $notification['status_visualization'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <!-- Botão Update -->
+                                    <button type="button" onclick="updateModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}', '{{ $notification['uc_responsible']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['student']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['status_visualization'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -123,69 +145,70 @@
             </tbody>
         </table>
     </div>
+</div>
 
-    <!-- Modal Criar Nova Notificação -->
-    <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Notificação</h2>
+<!-- Modal Criar Nova Notificação -->
+<div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+        <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Notificação</h2>
 
-            <!-- Formulário -->
-            <form action="{{ route('admin.notifications.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    
-                    <div>
-                        <label for="uc_responsible_id" class="block text-gray-600 mb-1">Responsável pela UC</label>
-                        <select id="uc_responsible_id" name="uc_responsible_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                            <option value="">Selecione um responsável</option>
-                            @foreach($ucResponsibles as $ucResponsible)
-                                <option value="{{ $ucResponsible['id']}}">{{ $ucResponsible['user']['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- ver se está bem -->
-                    <div>
-                        <select id="student_num" name="student_num" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                            <option value="">Selecione um aluno</option>
-                            @foreach($students as $student)
-                                <option value="{{ $student['id'] }}" 
-                                    {{ old('student_num', $notification['student_num'] ?? '') == $student['id'] ? 'selected' : '' }}>
-                                    {{ $student['user']['name'] }} - {{ $student['id'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="title" class="block text-gray-600 mb-1">Título</label>
-                        <input type="text" id="title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                    </div>
-
-                    <div>
-                        <label for="content" class="block text-gray-600 mb-1">Conteúdo</label>
-                        <textarea id="content" name="content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
-                    </div>
-
-                    <div>
-                        <label for="status_visualization" class="block text-gray-600 mb-1">Status de Visualização</label>
-                        <select id="status_visualization" name="status_visualization" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                            <option value="0">Não Visualizada</option>
-                            <option value="1">Visualizada</option>
-                        </select>
-                    </div>
-
+        <!-- Formulário -->
+        <form action="{{ route('admin.notifications.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                
+                <div>
+                    <label for="uc_responsible_id" class="block text-gray-600 mb-1">Responsável pela UC</label>
+                    <select id="uc_responsible_id" name="uc_responsible_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <option value="">Selecione um responsável</option>
+                        @foreach($ucResponsibles as $ucResponsible)
+                            <option value="{{ $ucResponsible['id'] }}">{{ $ucResponsible['user']['name'] }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="flex justify-center">
-                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('createModal')">Cancelar</button>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Registrar</button>
+                <div>
+                    <label for="student_num" class="block text-gray-600 mb-1">Aluno</label>
+                    <select id="student_num" name="student_num" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <option value="">Selecione um aluno</option>
+                        @foreach($students as $student)
+                            <option value="{{ $student['id'] }}">
+                                {{ $student['user']['name'] }} - {{ $student['id'] }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
-            </form>
-        </div>
+                <div>
+                    <label for="title" class="block text-gray-600 mb-1">Título</label>
+                    <input type="text" id="title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="status_visualization" class="block text-gray-600 mb-1">Status de Visualização</label>
+                    <select id="status_visualization" name="status_visualization" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <option value="0">Não Visualizada</option>
+                        <option value="1">Visualizada</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="content" class="block text-gray-600 mb-1">Conteúdo</label>
+                    <textarea id="content" name="content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
+                </div>
+
+            </div>
+
+            <div class="flex justify-center">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('createModal')">Cancelar</button>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Registrar</button>
+            </div>
+
+        </form>
     </div>
-
+</div>
     @if (!empty($notification))
 
 
@@ -208,34 +231,61 @@
                 </div>
 
                 <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
-                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewNotificationModal')">×</button>
+                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal de Atualização -->
+    <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Notificação</h2>
 
+            <!-- Form -->
+            <form id="updateForm" action="{{ route('admin.notifications.update', $notification['id']) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
+                    <div>
+                        <label for="uc_responsible" class="block text-gray-600 mb-1">Responsável pela UC</label>
+                        <input type="text" id="update_uc_responsible" name="uc_responsible" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
 
+                    <div>
+                        <label for="student_number" class="block text-gray-600 mb-1">Número de Aluno</label>
+                        <input type="text" id="update_student_number" name="student_number" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
 
+                    <div>
+                        <label for="title" class="block text-gray-600 mb-1">Título</label>
+                        <input type="text" id="update_title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
 
+                    <div>
+                        <label for="content" class="block text-gray-600 mb-1">Conteúdo</label>
+                        <textarea id="update_content" name="content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2"></textarea>
+                    </div>
 
+                    <div>
+                        <label for="status_visualization" class="block text-gray-600 mb-1">Status de Visualização</label>
+                        <select id="update_status_visualization" name="status_visualization" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                            <option value="1">Visualizada</option>
+                            <option value="0">Não Visualizada</option>
+                        </select>
+                    </div>
 
+                </div>
 
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+                </div>
 
-
- <!--falta o update, esra no discord -->
-
-
-
-
-
-
-
-
-
-
-
+            </form>
+        </div>
+    </div>
 
     <!-- Modal de Confirmação -->
     <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
@@ -287,11 +337,9 @@
         }
 
         // Função para modal de visualização das notificações
-        function viewModal(id, ucResponsible, studentNumber, title, content, statusVisualization, createdAt) {
-            // Definir o título da notificação
+        function viewModal(id, title, content, ucResponsible, studentNumber, statusVisualization, createdAt) {
             document.querySelector('#viewModal .modal-content h2').textContent = title;
 
-            // Preencher os dados da notificação no modal
             document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
                 <div class="ml-4 flex flex-col gap-5">
                     <p><strong>ID:</strong> ${id}</p>
@@ -299,7 +347,7 @@
                     <p><strong>Número de Aluno:</strong> ${studentNumber}</p>
                     <p><strong>Título:</strong> ${title}</p>
                     <p><strong>Conteúdo:</strong> ${content}</p>
-                    <p><strong>Status de Visualização:</strong> ${statusVisualization ? 'Visualizada' : 'Não Visualizada'}</p>
+                    <p><strong>Status de Visualização:</strong> ${statusVisualization == 1 ? 'Visualizada' : 'Não Visualizada'}</p>
                     <p><strong>Data de Criação:</strong> ${createdAt}</p>
                 </div>
             `;
@@ -320,7 +368,7 @@
         }
 
         // Função para abrir o modal de atualização das notificações
-        function updateModal(id, ucResponsible, studentNumber, title, content, statusVisualization, createdAt) {
+    function updateModal(id, title, content, ucResponsible, studentNumber, statusVisualization) {
             openModal('updateModal');  // Abre o modal de atualização
 
             // Preenche os campos do formulário com os dados da notificação

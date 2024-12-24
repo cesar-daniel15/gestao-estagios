@@ -107,33 +107,13 @@
 
             <!-- Alunos -->
             <li class="relative">
-               <details class="group">
-                  <summary class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group cursor-pointer">
-                     <!-- Icon -->
-                     <svg xmlns="http://www.w3.org/2000/svg"  width="1.6em" height="1.6em" viewBox="0 0 256 256" class="ms-2">
+               <a href="{{ url('/admin/students') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                  <!-- Icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg"  width="1.6em" height="1.6em" viewBox="0 0 256 256" class="ms-2">
                         <path fill="currentColor" d="m227.79 52.62l-96-32a11.85 11.85 0 0 0-7.58 0l-96 32A12 12 0 0 0 20 63.37a6 6 0 0 0 0 .63v80a12 12 0 0 0 24 0V80.65l23.71 7.9a67.92 67.92 0 0 0 18.42 85A100.36 100.36 0 0 0 46 209.44a12 12 0 1 0 20.1 13.11C80.37 200.59 103 188 128 188s47.63 12.59 61.95 34.55a12 12 0 1 0 20.1-13.11a100.36 100.36 0 0 0-40.18-35.92a67.92 67.92 0 0 0 18.42-85l39.5-13.17a12 12 0 0 0 0-22.76Zm-99.79-8L186.05 64L128 83.35L70 64ZM172 120a44 44 0 1 1-81.06-23.71l33.27 11.09a11.9 11.9 0 0 0 7.58 0l33.27-11.09A43.85 43.85 0 0 1 172 120"/>
-                     </svg>
-                     <span class="ms-5 text-base">Alunos</span>
-                     <!-- Seta -->
-                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2 text-gray-500 group-open:rotate-180 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M7 10l5 5 5-5H7z"/>
-                     </svg>
-                  </summary>
-                  <ul class="ml-7 mt-2 rounded-md space-y-2">
-                     <!-- Submenu para Alunos -->
-                     <li>
-                        <a href="{{ url('/admin/students') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
-                           <span class="ms-5 text-sm">Alunos</span>
-                        </a>
-                     </li>
-                     <!-- Submenu para Notificacoes -->
-                     <li>
-                        <a href="{{ url('/admin/students/notifications') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
-                           <span class="ms-5 text-sm">Notificações</span>
-                        </a>
-                     </li>
-                  </ul>
-               </details>
+                  </svg>
+                  <span class="ms-5 text-base">Alunos</span>
+               </a>
             </li>
 
             <!-- Empresas -->
