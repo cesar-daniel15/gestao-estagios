@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
+use App\Http\Middleware\CheckProfileCompletion;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\StudentController;
@@ -79,27 +80,27 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
 });
 
 // Rotas para perfil de instituticao
-Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class, CheckProfileCompletion::class])->group(function () {
     Route::get('/dashboard', [InstitutionController::class, 'index'])->name('institution.dashboard');
     Route::get('/profile', [InstitutionController::class, 'show'])->name('institution.profile');
     Route::post('/profile', [InstitutionController::class, 'store'])->name('institution.store');
 });
 
 // Rotas para perfil de aluno
-Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class, CheckProfileCompletion::class])->group(function () {
     Route::get('/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
     Route::get('/profile', [StudentController::class, 'show'])->name('student.profile');
     Route::post('/profile', [StudentController::class, 'store'])->name('student.store');});
 
 // Rotas para perfil de responsaveis pela uc
-Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class, CheckProfileCompletion::class])->group(function () {
     Route::get('/dashboard', [ResponsibleController::class, 'index'])->name('responsible.dashboard');
     Route::get('/profile', [ResponsibleController::class, 'show'])->name('responsible.profile');
     Route::post('/profile', [ResponsibleController::class, 'store'])->name('responsible.store');
 });
 
 // Rotas para perfil de empresa
-Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class])->group(function () {
+Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class, CheckProfileCompletion::class])->group(function () {
     Route::get('/dashboard', [CompanyController::class, 'index'])->name('company.dashboard');
     Route::get('/profile', [CompanyController::class, 'show'])->name('company.profile');
     Route::post('/profile', [CompanyController::class, 'store'])->name('company.store');
