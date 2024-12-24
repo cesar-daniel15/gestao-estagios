@@ -49,7 +49,7 @@ class InstitutionController extends Controller
         // Validação
         $validator = Validator::make($request->all(), [
             'acronym' => 'required|string|max:5|unique:institutions,acronym' . ($institution ? ',' . $institution->id : ''),
-            'phone' => 'required|string|max:11|unique:institutions,phone' . ($institution ? ',' . $institution->id : ''),
+            'phone' => 'required|string|max:9|unique:institutions,phone' . ($institution ? ',' . $institution->id : ''),
             'address' => 'required|string|max:255',
             'website' => 'required|url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
