@@ -15,24 +15,30 @@ class NotificationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $student = $this->student; // Relacionamento com o estudante
-        $user = $student && $student->user ? $student->user : null; // Relacionamento do estudante com o usuário
-
+        $student = $this->student; 
+        $uc_responsible = $this->ucResponsible; 
+    
         return [
             'id' => $this->id,
             'title' => $this->title ?? 'Título não disponível',
-            'message' => $this->message ?? 'Mensagem não disponível',
+            'content' => $this->content ?? 'Mensagem não disponível',
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
-
+            'status_visualization' => $this->status_visualization ?? 'Não disponível',
             'student' => $student ? [
                 'id' => $student->id ?? 'Não disponível',
-                'name' => $student->name ?? 'Nome não disponível',
-                'user' => $user ? [
-                    'name' => $user->name ?? 'Nome do usuário não disponível',
+                'user' => $student->users->first() ? [ 
+                    'name' => $student->users->first()->name ?? 'Utilizador não disponível', 
+                    'email' => $student->users->first()->email ?? 'Email não disponível', 
                 ] : null,
-            ] : null, // Fechamento do array 'student'
+            ] : null, 
+            'uc_responsible' => $uc_responsible ? [
+                'id' => $uc_responsible->id ?? 'Não disponível',
+                'user' => $uc_responsible->users->first() ? [ 
+                    'name' => $uc_responsible->users->first()->name ?? 'Utilizador não disponível', 
+                    'email' => $uc_responsible->users->first()->email ?? 'Email não disponível', 
+                ] : null,
+            ] : null,
         ];
     }
 }
-

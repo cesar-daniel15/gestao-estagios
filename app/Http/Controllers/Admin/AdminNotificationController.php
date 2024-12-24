@@ -24,14 +24,15 @@ class AdminNotificationController extends Controller
     public function index()
     {
         // Obtenha as notificações
-        $notification = Notification::all();
-        
+        $notifications = Notification::with(['student.users', 'ucResponsible.users'])->get();
+        dd($notifications); // Adicione isso para ver a estrutura dos dados
+
         // Outras variáveis
         $ucResponsibles = UcResponsible::all();
         $students = Student::all();
     
         return view('admin.notifications', [
-            'notification' => NotificationResource::collection($notification)->resolve() ?? [],
+            'notifications' => NotificationResource::collection($notifications)->resolve() ?? [],
             'ucResponsibles'=> UcResponsibleResource::collection($ucResponsibles)->resolve() ?? [],
             'students'=> StudentResource::collection($students)->resolve() ?? []
         ]);
