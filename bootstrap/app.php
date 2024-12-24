@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: \App\Http\Middleware\CheckVerifiedAccount::class);
+        $middleware->web(append: [
+            \App\Http\Middleware\CheckVerifiedAccount::class,
+            \App\Http\Middleware\CheckProfileCompletion::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
