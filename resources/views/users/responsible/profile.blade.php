@@ -29,20 +29,19 @@
                         <label for="email" class="block text-gray-600 mb-1">Email</label>
                         <input type="text" id="email" name="email" value="{{ $user->email }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
                     </div>
-
                     <div class="mb-4">
                         <label for="institution" class="block text-gray-600 mb-1">Instituição</label>
-                        <input type="text" id="institution" name="institution" value="{{ $responsible->ucs->first()->course->institution->acronym ?? 'Não disponível' }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
+                        <input type="text" id="institution" name="institution" value="{{ $responsible && $responsible->ucs->isNotEmpty() ? $responsible->ucs->first()->course->institution->acronym : 'Não disponível' }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
                     </div>
 
                     <div class="mb-4">
                         <label for="course" class="block text-gray-600 mb-1">Curso</label>
-                        <input type="text" id="course" name="course"value="{{ $responsible->ucs->first()->course->name ?? 'Não disponível' }}"  class="border border-gray-300 rounded-lg w-full p-2" readonly>
+                        <input type="text" id="course" name="course" value="{{ $responsible && $responsible->ucs->isNotEmpty() ? $responsible->ucs->first()->course->name : 'Não disponível' }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
                     </div>
 
                     <div class="mb-4">
-                        <label for="phone" class="block text-gray-600 mb-1">Unidade Curricular</label>
-                        <input type="text" id="phone" name="phone" value="{{ $responsible->ucs->first()->name ?? 'Não disponível' }}"  class="border border-gray-300 rounded-lg w-full p-2" readonly>
+                        <label for="uc" class="block text-gray-600 mb-1">Unidade Curricular</label>
+                        <input type="text" id="uc" name="uc" value="{{ $responsible && $responsible->ucs->isNotEmpty() ? $responsible->ucs->first()->name : 'Não disponível' }}" class="border border-gray-300 rounded-lg w-full p-2" readonly>
                     </div>
 
                     <div class="mb-4">
