@@ -30,7 +30,7 @@ class Notification extends Model
     // Relacao com a tabela UcResponsible
     public function ucResponsible()
     {
-        return $this->belongsTo(UcResponsible::class, 'uc_responsible', 'id'); 
+        return $this->belongsTo(UcResponsible::class, 'uc_responsible_id', 'id'); 
     }
 
 }
