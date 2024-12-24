@@ -27,7 +27,7 @@ class AdminStudentController extends Controller
         $students = Student::with(['ucs' => function ($query) {
             $query->withPivot('lective_year'); 
         }, 'ucs.course.institution'])->get();
-
+        
         $unitCurriculars = UnitCurricular::all();
         $institutions = Institution::all();
         $courses = Course::all();
