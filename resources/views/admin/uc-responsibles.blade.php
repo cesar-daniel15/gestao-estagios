@@ -356,7 +356,6 @@
     function associateModal(responsibleId) {
         openModal('associateModal');
     }
-    
 
     // Abrir Modal para apagar um Responsável
     function openDeleteModal(id) {
@@ -365,7 +364,7 @@
         const deleteForm = document.querySelector('#deleteForm' + id);
         const confirmDeleteButton = document.getElementById('confirmDeleteButton');
         confirmDeleteButton.onclick = function () {
-            deleteForm.submit(); // Submete o Formulário
+            deleteForm.submit(); 
         };
     }
 

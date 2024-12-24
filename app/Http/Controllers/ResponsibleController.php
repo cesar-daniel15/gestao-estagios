@@ -48,8 +48,16 @@ class ResponsibleController extends Controller
 
         // Validação
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|max:15|unique:uc_responsibles,phone' . ($responsible ? ',' . $responsible->id : ''),
+            'phone' => 'required|string|max:9|unique:uc_responsibles,phone' . ($responsible ? ',' . $responsible->id : ''),
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'phone.required' => 'O campo telefone é obrigatório',
+            'phone.string' => 'O telefone deve ser uma string',
+            'phone.max' => 'O telefone não pode ter mais de 9 caracteres',
+            'phone.unique' => 'O telefone já está em uso',
+            'picture.image' => 'O arquivo deve ser uma imagem',
+            'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif',
+            'picture.max' => 'A imagem não pode ter mais de 2048 KB',
         ]);
 
         if ($validator->fails()) {
