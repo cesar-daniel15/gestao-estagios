@@ -51,7 +51,7 @@ class AdminInternshipOffersController extends Controller
         ]);
     }
     
-    
+
 
     /**
      * Display the specified internship offer.

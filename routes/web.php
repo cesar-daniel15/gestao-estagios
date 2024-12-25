@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminInternshipOffersController;
 use App\Http\Controllers\Admin\AdminInternshipPlansController;
+use App\Http\Controllers\Admin\AdminAttendanceRecordsController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
@@ -86,10 +87,16 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::delete('/internships-offers/{internship_offers}', [AdminInternshipOffersController::class, 'destroy'])->name('admin.internships_offers.destroy');
 
     Route::get('/internships-plans', [AdminInternshipPlansController::class, 'index'])->name('admin.internships_plans.index');
-    Route::get('/internships-plans/{plan}', [AdminInternshipPlansController::class, 'show'])->name('admin.internships_plans.show');
+    Route::get('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'show'])->name('admin.internships_plans.show');
     Route::post('/internships-plans', [AdminInternshipPlansController::class, 'store'])->name('admin.internships_plans.store');
-    Route::put('/internships-plans/{plan}', [AdminInternshipPlansController::class, 'update'])->name('admin.internships_plans.update');
-    Route::delete('/internships-plans/{plan}', [AdminInternshipPlansController::class, 'destroy'])->name('admin.internships_plans.destroy');
+    Route::put('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'update'])->name('admin.internships_plans.update');
+    Route::delete('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'destroy'])->name('admin.internships_plans.destroy');
+
+    Route::get('/attendance-records', [AdminAttendanceRecordsController::class, 'index'])->name('admin.internship_attendance_records.index');
+    Route::get('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'show'])->name('admin.internship_attendance_records.show');
+    Route::post('/attendance-records', [AdminAttendanceRecordsController::class, 'store'])->name('admin.internship_attendance_records.store');
+    Route::put('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'update'])->name('admin.internship_attendance_records.update');
+    Route::delete('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'destroy'])->name('admin.internship_attendance_records.destroy');
 
     
 });

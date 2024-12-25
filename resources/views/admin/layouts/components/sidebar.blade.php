@@ -176,7 +176,7 @@
                      </li>
                      <!-- Submenu para Registo Diarios -->
                      <li>
-                        <a href="{{ url('/admin/internships/attendance-records') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                        <a href="{{ url('/admin/attendance-records') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
                            <span class="ms-5 text-sm">Registos Diários</span>
                         </a>
                      </li>
