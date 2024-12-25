@@ -182,7 +182,7 @@
                      </li>
                      <!-- Submenu para Relatorios Finais -->
                      <li>
-                        <a href="{{ url('/admin/internships/final-reports') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 ">
+                        <a href="{{ url('/admin/final-reports') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 ">
                            <span class="ms-5 text-sm">Relatórios Finais</span>
                         </a>
                      </li>

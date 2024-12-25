@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminInternshipOffersController;
 use App\Http\Controllers\Admin\AdminInternshipPlansController;
 use App\Http\Controllers\Admin\AdminAttendanceRecordsController;
+use App\Http\Controllers\Admin\AdminFinalReportsController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Controllers\AuthController;
@@ -98,7 +99,12 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::put('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'update'])->name('admin.internship_attendance_records.update');
     Route::delete('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'destroy'])->name('admin.internship_attendance_records.destroy');
 
-    
+    Route::get('/final-reports', [AdminFinalReportsController::class, 'index'])->name('admin.internship_final_reports.index');
+    Route::get('/final-reports/final_report}', [AdminFinalReportsController::class, 'show'])->name('admin.internship_final_reports.show');
+    Route::post('/final-reports', [AdminFinalReportsController::class, 'store'])->name('admin.internship_final_reports.store');
+    Route::put('/final-reports/{final_report}', [AdminFinalReportsController::class, 'update'])->name('admin.internship_final_reports.update');
+    Route::delete('/final-reports/{final_report}', [AdminFinalReportsController::class, 'destroy'])->name('admin.internship_final_reports.destroy');
+
 });
 
 // Rotas para perfil de instituticao
