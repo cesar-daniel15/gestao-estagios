@@ -164,13 +164,13 @@
                   <ul class="ml-7 mt-2 rounded-md space-y-2">
                      <!-- Submenu para Ofertas de Estagio -->
                      <li>
-                        <a href="{{ url('/admin/internships/offers') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                        <a href="{{ url('/admin/internships-offers') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
                            <span class="ms-5 text-sm">Ofertas</span>
                         </a>
                      </li>
                      <!-- Submenu para Planos de Estagio -->
                      <li>
-                        <a href="{{ url('/admin/internships/plans') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
+                        <a href="{{ url('/admin/internships-plans') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400">
                            <span class="ms-5 text-sm">Planos</span>
                         </a>
                      </li>
