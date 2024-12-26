@@ -229,7 +229,7 @@
     <!-- Modal de Update -->
     <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Estudante</h2>
+            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Aluno</h2>
 
             <!-- Form -->
             <form id="updateForm" action="{{ route('admin.students.update', $student['id']) }}" method="POST" enctype="multipart/form-data">
@@ -397,6 +397,13 @@
             updateForm.action = `/admin/students/${id}`; 
         }
 
+        function associateModal(responsibleId) {
+            openModal('associateModal');
+
+            const associateForm = document.getElementById('associateForm');
+            associateForm.action = `/admin/students/${responsibleId}/associate-uc`; 
+        }
+
         function searchStudent() {
             const searchValue = document.getElementById('search').value.toLowerCase();
             const rows = document.querySelectorAll("#studentTable tbody tr");
@@ -410,10 +417,6 @@
                     row.style.display = "none";  
                 }
             });
-        }
-
-        function associateModal(responsibleId) {
-            openModal('associateModal');
         }
 
         function filterTable() {
