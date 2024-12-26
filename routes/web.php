@@ -100,7 +100,7 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::delete('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'destroy'])->name('admin.internship_attendance_records.destroy');
 
     Route::get('/final-reports', [AdminFinalReportsController::class, 'index'])->name('admin.internship_final_reports.index');
-    Route::get('/final-reports/final_report}', [AdminFinalReportsController::class, 'show'])->name('admin.internship_final_reports.show');
+    Route::get('/final-reports/{final_report}', [AdminFinalReportsController::class, 'show'])->name('admin.internship_final_reports.show');
     Route::post('/final-reports', [AdminFinalReportsController::class, 'store'])->name('admin.internship_final_reports.store');
     Route::put('/final-reports/{final_report}', [AdminFinalReportsController::class, 'update'])->name('admin.internship_final_reports.update');
     Route::delete('/final-reports/{final_report}', [AdminFinalReportsController::class, 'destroy'])->name('admin.internship_final_reports.destroy');
