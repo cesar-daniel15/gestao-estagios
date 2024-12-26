@@ -287,7 +287,6 @@
                     <select id="lective_year" name="lective_year" class="border border-gray-300 rounded-lg w-full p-2" required>
                         <option value="">Selecione o Ano Letivo</option>
                         <option value="2024/2025">2024/2025</option>
-                        <option value="2025/2026">2025/2026</option>
                     </select>
                 </div>
 
