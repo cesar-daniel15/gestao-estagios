@@ -80,9 +80,9 @@
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $internship_offer['id'] }}</td>
                             <td class="p-4 text-gray-600">{{ $internship_offer['title'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_offer['company']['name'] ?? 'Empresa não disponível' }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_offer['institution']['name'] ?? 'Instituição não disponível' }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_offer['deadline'] ?? 'Sem prazo definido' }}</td>
+                            <td class="p-4 text-gray-600">{{ $internship_offer['company']['name'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $internship_offer['institution']['name'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $internship_offer['deadline']  }}</td>
                             <td class="p-4 text-gray-600">
                                 <span class="{{ $offer['status'] === 'active' ? 'text-green-500' : 'text-red-500' }}">
                                     {{ $internship_offer['status'] === 'active' ? 'Ativo' : 'Inativo' }}

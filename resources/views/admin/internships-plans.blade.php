@@ -64,8 +64,8 @@
                         <th class="p-4 border-b text-gray-600">Total de Horas</th>
                         <th class="p-4 border-b text-gray-600">Data de Início</th>
                         <th class="p-4 border-b text-gray-600">Data de Fim</th>
-                        <th class="p-4 border-b text-gray-600">Objetivos</th>
-                        <th class="p-4 border-b text-gray-600">Atividades Planeadas</th>
+                        <th class="p-4 border-b text-gray-600">Status</th>
+                        <th class="p-4 border-b text-gray-600">Aprovação pelo UC</th>
                         <th class="p-4 border-b text-gray-600">Ações</th>
                     </tr>
                 </thead>
@@ -81,27 +81,31 @@
                             <td class="p-4 text-gray-600">{{ $internship_plan['total_hours'] }}</td>
                             <td class="p-4 text-gray-600">{{ \Carbon\Carbon::parse($internship_plan['start_date'])->format('d/m/Y') }}</td>
                             <td class="p-4 text-gray-600">{{ \Carbon\Carbon::parse($internship_plan['end_date'])->format('d/m/Y') }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_plan['objectives'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_plan['planned_activities'] }}</td>
+                            <td class="p-4 text-gray-600">
+                                <span class="px-2 py-1 {{ $internship_plan['status'] == 'approved' ? 'bg-green-500' : ($internship_plan['status'] == 'rejected' ? 'bg-red-500' : 'bg-yellow-500') }} text-white rounded-full">
+                                    {{ ucfirst($internship_plan['status']) }}
+                                </span>
+                            </td>
+                            <td class="p-4 text-gray-600">{{ $internship_plan['approved_by_uc'] }}</td>                            
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                             
                                     <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $internship_plan['id'] }}, '{{ $internship_plan['total_hours'] }}', '{{ $internship_plan['start_date'] }}', '{{ $internship_plan['end_date'] }}', '{{ $internship_plan['objectives'] }}', '{{ $internship_plan['planned_activities'] }}', '{{ $internship_plan['approved_by_uc'] }}', '{{ $internship_plan['status'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a onclick="viewModal({{ $internship_plan['id'] }}, '{{ $internship_plan['total_hours'] }}', '{{ $internship_plan['start_date'] }}', '{{ $internship_plan['end_date'] }}', '{{ $internship_plan['status'] }}','{{ $internship_plan['approved_by_uc'] }}', '{{ $internship_plan['objectives'] }}', '{{ $internship_plan['planned_activities'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
                                     </a>
 
                                     <!-- Botão Update -->
-                                    <button type="button" onclick="updateModal({{ $internship_plan['id'] }}, '{{ $internship_plan['total_hours'] }}', '{{ $internship_plan['start_date'] }}', '{{ $internship_plan['end_date'] }}', '{{ $internship_plan['objectives'] }}', '{{ $internship_plan['planned_activities'] }}', '{{ $internship_plan['approved_by_uc'] }}', '{{ $internship_plan['status'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <button type="button" onclick="updateModal({{ $internship_plan['id'] }}, '{{ $internship_plan['total_hours'] }}', '{{ $internship_plan['start_date'] }}', '{{ $internship_plan['end_date'] }}', '{{ $internship_plan['status'] }}', '{{ $internship_plan['approved_by_uc'] }}', '{{ $internship_plan['objectives'] }}', '{{ $internship_plan['planned_activities'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
                                     </button>
 
                                     <!-- Botão Apagar -->
-                                    <form id="deleteForm{{ $internship_plan['id'] }}" action="{{ route('admin.internship_plans.destroy', $internship_plan['id']) }}" method="POST">
+                                    <form id="deleteForm{{ $internship_plan['id'] }}" action="{{ route('admin.internships_plans.destroy', $internship_plan['id']) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" onclick="openDeleteModal({{ $internship_plan['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
@@ -119,6 +123,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
         <!-- Modal Criar Novo Plano de Estágio -->
         <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
@@ -175,7 +180,7 @@
                             <select id="status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                                 <option value="pending">Pendente</option>
                                 <option value="approved">Aprovado</option>
-                                <option value="rejected">Rejetado</option>
+                                <option value="rejected">Rejeitado</option>
                             </select>
                         </div>
 
@@ -201,11 +206,14 @@
                 <div class="modal-body flex flex-col">
                     <!-- Dados do Plano -->
                     <p><strong>ID:</strong> <span id="modal-plan-id"></span></p>
-                    <p><strong>Nome do Plano:</strong> <span id="modal-plan-name-detail"></span></p>
-                    <p><strong>Duração:</strong> <span id="modal-duration"></span></p>
+                    <p><strong>Total de Horas:</strong> <span id="modal-total_hours"></span></p>
                     <p><strong>Descrição:</strong> <span id="modal-description"></span></p>
                     <p><strong>Data de Início:</strong> <span id="modal-start-date"></span></p>
                     <p><strong>Data de Fim:</strong> <span id="modal-end-date"></span></p>
+                    <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                    <p><strong>Aprovação pelo UC:</strong> <span id="modal-approved_by_uc"></span></p>
+                    <p><strong>Objetivos:</strong> <span id="modal-objectives"></span></p>
+                    <p><strong>Atividades Planeadas:</strong> <span id="modal-planned_activities"></span></p>
                 </div>
             </div>
 
@@ -228,18 +236,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
-                        <label for="update_plan_name" class="block text-gray-600 mb-1">Nome do Plano</label>
-                        <input type="text" id="update_plan_name" name="plan_name" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
-                        <label for="update_duration" class="block text-gray-600 mb-1">Duração</label>
-                        <input type="text" id="update_duration" name="duration" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
-                        <label for="update_description" class="block text-gray-600 mb-1">Descrição</label>
-                        <textarea id="update_description" name="description" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2"></textarea>
+                        <label for="update_total_hours" class="block text-gray-600 mb-1">Total de Horas</label>
+                        <input type="number" id="update_total_hours" name="total_hours" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
 
                     <div>
@@ -250,6 +248,33 @@
                     <div>
                         <label for="update_end_date" class="block text-gray-600 mb-1">Data de Fim</label>
                         <input type="date" id="update_end_date" name="end_date" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="update_objectives" class="block text-gray-600 mb-1">Objetivos</label>
+                        <input type="text" id="update_objectives" name="objectives" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="update_planned_activities" class="block text-gray-600 mb-1">Atividades Planeadas</label>
+                        <input type="text" id="update_planned_activities" name="planned_activities" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                    </div>
+
+                    <div>
+                        <label for="approved_by_uc" class="block text-gray-600 mb-1">Aprovado pela Unidade Curricular</label>
+                        <select id="approved_by_uc" name="approved_by_uc" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="status" class="block text-gray-600 mb-1">Status</label>
+                        <select id="status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                            <option value="pending">Pendente</option>
+                            <option value="approved">Aprovado</option>
+                            <option value="rejected">Rejetado</option>
+                        </select>
                     </div>
 
                 </div>
@@ -310,16 +335,18 @@
         }
 
         // Função para modal de visualização dos Planos de Estágio
-        function viewModal(id, name, duration, description, startDate, endDate) {
-            document.querySelector('#viewModal .modal-content h2').textContent = name;
+        function viewModal(id, total_hours, startDate, endDate, status, approved_by_uc, objectives, planned_activities) {
+            document.querySelector('#viewModal .modal-content h2').textContent = id;
             document.querySelector('#viewModal .modal-body').innerHTML = `
                 <div class="ml-4 flex flex-col gap-5">
                     <p><strong>ID:</strong> ${id}</p>
-                    <p><strong>Nome do Plano:</strong> ${name}</p>
-                    <p><strong>Duração:</strong> ${duration}</p>
-                    <p><strong>Descrição:</strong> ${description}</p>
+                    <p><strong>Total de Horas:</strong> ${total_hours}</p>
                     <p><strong>Data de Início:</strong> ${startDate}</p>
                     <p><strong>Data de Fim:</strong> ${endDate}</p>
+                    <p><strong>Status: </strong> ${status}</p>
+                    <p><strong>Aprovação pelo UC: </strong> ${approved_by_uc}</p>
+                    <p><strong>Objetivos: </strong> ${objectives}</p>
+                    <p><strong>Atividades Planeadas: </strong> ${planned_activities}</p>
                 </div>
             `;
             openModal('viewModal');
@@ -337,18 +364,50 @@
         }
 
         // Abrir Modal para fazer uma atualização de um Plano de Estágio
-        function updateModal(id, name, duration, description, startDate, endDate) {
+        function updateModal(id, name, duration, startDate, endDate, status, approved_by_uc, objectives, planned_activities ) {
             openModal('updateModal');  
 
             document.getElementById('update_plan_name').value = name;
-            document.getElementById('update_duration').value = duration;
-            document.getElementById('update_description').value = description;
+            document.getElementById('total_hours').value = duration;
             document.getElementById('update_start_date').value = startDate;
             document.getElementById('update_end_date').value = endDate;
+            document.getElementById('update_status').value = status;
+            document.getElementById('update_approved_by_uc').value = approved_by_uc;
+            document.getElementById('update_objectives').value = objectives;
+            document.getElementById('update_planned_activities').value = planned_activities;
 
             const updateForm = document.getElementById('updateForm');
             updateForm.action = `/admin/internship_plans/${id}`; 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// arranjar
+
+
+
+
+
 
         // Função de pesquisa de Planos de Estágio
         function searchInternshipPlan() {
@@ -369,3 +428,4 @@
     </script>
 
 
+@endsection

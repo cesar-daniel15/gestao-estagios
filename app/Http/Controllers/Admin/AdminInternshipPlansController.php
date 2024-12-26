@@ -19,12 +19,27 @@ class AdminInternshipPlansController extends Controller
      */
     public function index()
     {
-        $internship_plans = InternshipPlan ::all();
-
+        $internship_plans = InternshipPlan::all();
+    
+        // Tratamento dos dados para garantir que as chaves existam
+        $internship_plans = $internship_plans->map(function ($internship_plan) {
+            return [
+                'id' => $internship_plan->id,
+                'total_hours' => $internship_plan->total_hours ?? 'N/A',
+                'start_date' => $internship_plan->start_date,
+                'end_date' => $internship_plan->end_date,
+                'status' => $internship_plan->status ?? 'N/A',
+                'approved_by_uc' => $internship_plan->approved_by_uc ?? 'N/A',
+                'objectives' => $internship_plan->objectives ?? 'N/A',
+                'planned_activities' => $internship_plan->planned_activities ?? 'N/A',
+            ];
+        });
+    
         return view('admin.internships-plans', [
-            'internship_plans' => InternshipPlanResource::collection($internship_plans)->resolve() ?? [],
+            'internship_plans' => $internship_plans, // Não precisa usar InternshipPlanResource aqui
         ]);
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -43,20 +58,21 @@ class AdminInternshipPlansController extends Controller
             'total_hours' => 'required|integer|min:1',
             'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => 'required|string|in:pending,approved,rejected',
+            'approved_by_uc' => 'required|boolean',
             'objectives' => 'required|string|max:1000',
             'planned_activities' => 'required|string|max:2000',
-            'approved_by_uc' => 'required|boolean',
-            'status' => 'required|string|in:pending,approved,rejected',
         ], [
             'total_hours.required' => 'O total de horas é obrigatório.',
             'total_hours.integer' => 'O total de horas deve ser um número inteiro.',
             'start_date.before_or_equal' => 'A data de início deve ser anterior ou igual à data de término.',
             'end_date.after_or_equal' => 'A data de término deve ser posterior ou igual à data de início.',
-            'objectives.required' => 'Os objetivos são obrigatórios.',
-            'planned_activities.required' => 'As atividades planejadas são obrigatórias.',
-            'approved_by_uc.required' => 'É necessário especificar se o plano foi aprovado pela UC.',
             'status.required' => 'O status é obrigatório.',
             'status.in' => 'O status deve ser "pending", "approved" ou "rejected".',
+            'approved_by_uc.required' => 'É necessário especificar se o plano foi aprovado pela UC.',
+            'objectives' => 'required|string|max:1000',
+            'planned_activities.required' => 'As atividades planejadas são obrigatórias.',
+
         ]);
 
         // Se a validação falhar
@@ -82,11 +98,11 @@ class AdminInternshipPlansController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(InternshipPlan $internship_plans)
+    public function show(InternshipPlan $internship_plan)
     {
 
         // Return para a view com os dados
-        return view('admin.internship_plans.index', compact('internship_plans'));
+        return view('admin.internship_plans.index', compact('internship_plan'));
     }
 
     /**
@@ -100,25 +116,25 @@ class AdminInternshipPlansController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, InternshipPlan $internshipPlan)
+    public function update(Request $request, InternshipPlan $internship_plan)
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
             'total_hours' => 'nullable|integer|min:1',
             'start_date' => 'nullable|date|before_or_equal:end_date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'objectives' => 'nullable|string|max:1000',
-            'planned_activities' => 'nullable|string|max:2000',
-            'approved_by_uc' => 'nullable|boolean',
+            'end_date' => 'nullable|date|after_orequal:start_date',
             'status' => 'nullable|string|in:pending,approved,rejected',
+            'approved_by_uc' => 'nullable|boolean',
+            'objectives' => 'nullable|string|max:5000',
+            'planned_activities' => 'nullable|string|max:2000',
         ], [
             'total_hours.integer' => 'O total de horas deve ser um número inteiro.',
             'start_date.before_or_equal' => 'A data de início deve ser anterior ou igual à data de término.',
             'end_date.after_or_equal' => 'A data de término deve ser posterior ou igual à data de início.',
+            'status.in' => 'O status deve ser "pending", "approved" ou "rejected".',
+            'approved_by_uc.boolean' => 'A aprovação pela UC deve ser um valor booleano.',
             'objectives.string' => 'Os objetivos devem ser uma string.',
             'planned_activities.string' => 'As atividades planejadas devem ser uma string.',
-            'approved_by_uc.boolean' => 'A aprovação pela UC deve ser um valor booleano.',
-            'status.in' => 'O status deve ser "pending", "approved" ou "rejected".',
         ]);
     
         // Se a validação falhar
@@ -129,7 +145,7 @@ class AdminInternshipPlansController extends Controller
         $data = $validator->validated();
     
         // Faz a atualização
-        $update = $internshipPlan->update($data);
+        $update = $internship_plan->update($data);
     
         // Verifica se a atualização ocorreu
         if ($update) {
@@ -142,10 +158,10 @@ class AdminInternshipPlansController extends Controller
     /**
      * Remove the specified internship plan from storage.
      */
-    public function destroy(InternshipPlan $internshipPlan)
+    public function destroy(InternshipPlan $internship_plan)
     {
         // Remove o plano de estágio da base de dados
-        $deleted = $internshipPlan->delete();
+        $deleted = $internship_plan->delete();
 
         // Verificar se o plano foi excluído
         if ($deleted) {
