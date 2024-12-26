@@ -31,9 +31,12 @@ class NotificationResource extends JsonResource
                     'name' => $student->users->first()->name ?? 'Utilizador não disponível', 
                     'email' => $student->users->first()->email ?? 'Email não disponível', 
                 ] : null,
-            ] : null, 
+                'institution' => $student->ucs->first()->course->institution->acronym ?? 'Instituição não disponível', 
+                'course' => $student->ucs->first()->course->acronym ?? 'Curso não disponível',
+                ] : null, 
             'uc_responsible' => $uc_responsible ? [
                 'id' => $uc_responsible->id ?? 'Não disponível',
+                'institution' => $uc_responsible->ucs->first()->course->institution->acronym ?? 'Instituição não disponível', 
                 'user' => $uc_responsible->users->first() ? [ 
                     'name' => $uc_responsible->users->first()->name ?? 'Utilizador não disponível', 
                     'email' => $uc_responsible->users->first()->email ?? 'Email não disponível', 

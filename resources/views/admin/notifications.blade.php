@@ -120,7 +120,7 @@
                                     </a>
 
                                     <!-- Botão Update -->
-                                    <button type="button" onclick="updateModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}', '{{ $notification['uc_responsible']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['student']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['status_visualization'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <button type="button" onclick="updateModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -164,7 +164,10 @@
                     <select id="uc_responsible_id" name="uc_responsible_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                         <option value="">Selecione um responsável</option>
                         @foreach($ucResponsibles as $ucResponsible)
-                            <option value="{{ $ucResponsible['id'] }}">{{ $ucResponsible['user']['name'] }}</option>
+                            <option value="{{ $ucResponsible['id'] }}">
+                                {{ $notification['uc_responsible']['institution'] ?? 'N/A' }} / 
+                                {{ $notification['uc_responsible']['user']['name']  ?? 'N/A' }}                           
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -175,7 +178,9 @@
                         <option value="">Selecione um aluno</option>
                         @foreach($students as $student)
                             <option value="{{ $student['id'] }}">
-                                {{ $student['user']['name'] }} - {{ $student['id'] }}
+                                {{ $notification['student']['institution']  ?? 'N/A' }} / 
+                                {{ $notification['student']['course'] ?? 'N/A' }} / 
+                                {{ $notification['student']['user']['name'] }}                       
                             </option>
                         @endforeach
                     </select>
@@ -219,7 +224,7 @@
                 <h2 class="text-xl font-bold text-gray-700 mb-4 text-center" id="modal-title"></h2>
                 <div class="modal-body flex flex-col md:flex-row">
                     <!-- Div para os dados -->
-                    <div class="w-full md:w-1/2 p-4 flex flex-col data-content">
+                    <div class="w-full p-4 flex flex-col text-start data-content">
                         <p><strong>ID:</strong> <span id="modal-id"></span> </p>
                         <p><strong>Responsável pela UC:</strong> <span id="modal-uc-responsible"></span> </p>
                         <p><strong>Número de Aluno:</strong> <span id="modal-student-num"></span> </p>
@@ -237,7 +242,7 @@
         </div>
     </div>
 
-    <!-- Modal de Atualização -->
+    <!-- Modal de Update -->
     <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Notificação</h2>
@@ -249,16 +254,6 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
-                        <label for="uc_responsible" class="block text-gray-600 mb-1">Responsável pela UC</label>
-                        <input type="text" id="update_uc_responsible" name="uc_responsible" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
-                        <label for="student_number" class="block text-gray-600 mb-1">Número de Aluno</label>
-                        <input type="text" id="update_student_number" name="student_number" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
                         <label for="title" class="block text-gray-600 mb-1">Título</label>
                         <input type="text" id="update_title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
@@ -266,15 +261,7 @@
                     <div>
                         <label for="content" class="block text-gray-600 mb-1">Conteúdo</label>
                         <textarea id="update_content" name="content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2"></textarea>
-                    </div>
-
-                    <div>
-                        <label for="status_visualization" class="block text-gray-600 mb-1">Status de Visualização</label>
-                        <select id="update_status_visualization" name="status_visualization" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                            <option value="1">Visualizada</option>
-                            <option value="0">Não Visualizada</option>
-                        </select>
-                    </div>
+                    </div>            
 
                 </div>
 
@@ -341,7 +328,7 @@
             document.querySelector('#viewModal .modal-content h2').textContent = title;
 
             document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
-                <div class="ml-4 flex flex-col gap-5">
+                <div class="flex flex-col gap-5 text-start">
                     <p><strong>ID:</strong> ${id}</p>
                     <p><strong>Responsável pela UC:</strong> ${ucResponsible}</p>
                     <p><strong>Número de Aluno:</strong> ${studentNumber}</p>
@@ -368,23 +355,15 @@
         }
 
         // Função para abrir o modal de atualização das notificações
-    function updateModal(id, title, content, ucResponsible, studentNumber, statusVisualization) {
+        function updateModal(id, title, content) {
             openModal('updateModal');  // Abre o modal de atualização
 
             // Preenche os campos do formulário com os dados da notificação
-            document.getElementById('update_ucResponsible').value = ucResponsible;
-            document.getElementById('update_studentNumber').value = studentNumber;
             document.getElementById('update_title').value = title;
             document.getElementById('update_content').value = content;
-            document.getElementById('update_statusVisualization').checked = (statusVisualization === 1); // Marca o checkbox se visualizada
 
-            // Ajusta a data de criação para exibição (caso necessário)
-            const createdAtField = document.getElementById('update_createdAt');
-            createdAtField.textContent = `Data de Criação: ${createdAt}`;
-
-            // Ajusta a ação do formulário para enviar os dados para a rota correta
             const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/admin/notifications/${id}`;  // Substitua pelo seu endpoint de atualização
+            updateForm.action = `/admin/notifications/${id}`;  
         }
 
         // Função de pesquisa de Notificações

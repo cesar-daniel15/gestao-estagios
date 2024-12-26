@@ -24,9 +24,10 @@ class AdminNotificationController extends Controller
     public function index()
     {
         // Obtenha as notificações
-        $notifications = Notification::with(['student.users', 'ucResponsible.users'])->get();
-        dd($notifications); // Adicione isso para ver a estrutura dos dados
-
+        $notifications = Notification::with([
+            'student.ucs.course.institution', // Carregando a relação do estudante
+            'ucResponsible.ucs.course.institution' // Carregando a relação do responsável pela UC
+        ])->get();
         // Outras variáveis
         $ucResponsibles = UcResponsible::all();
         $students = Student::all();
@@ -110,26 +111,21 @@ class AdminNotificationController extends Controller
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'uc_responsible_id' => 'nullable|exists:uc_responsibles,id',
-            'student_num' => 'nullable|exists:students,id',
             'title' => 'nullable|string|max:255',
             'content' => 'nullable|string|max:2000',
             'status_visualization' => 'nullable|boolean',
         ]);
 
-        // Verifica se a validação falhou
+        // Se a validação falhar
         if ($validator->fails()) {
-
-            // Passa os erros para a sessão
-            session()->flash('error', 'Erro de validação!');
-            session()->flash('validation_errors', $validator->errors()->all());
-
-            // Redireciona de volta com os erros armazenados na sessão
-            return redirect()->back()->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         // Dados validados
         $data = $validator->validated();
+
+        // Muda o staut para nao visualizado
+        $data['status_visualization'] = 0;
 
         // Realiza a atualização da notificação
         $update = $notification->update($data);
