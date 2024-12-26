@@ -178,7 +178,7 @@ class AdminUcResponsibleController extends Controller
     {
         // Validação simples
         $validator = Validator::make($request->all(), [
-            'uc_id' => 'exists:units_curriculars,id',
+            'uc_id' => 'required|exists:units_curriculars,id', 
         ], [
             'uc_id.exists' => 'A Unidade Curricular informada não existe.',
         ]);
@@ -190,16 +190,10 @@ class AdminUcResponsibleController extends Controller
 
         $responsible = UcResponsible::findOrFail($UcResponsible);
 
-        // Verificar se o responsável já tem alguma unidade curricular associada
-        if ($responsible->ucs()->count() > 0) {
-            return redirect()->back()->withErrors(['uc_id' => 'Este responsável já está associado a uma Unidade Curricular'])->withInput();
+        // Verifica se a unidade curricular já está associada ao responsável
+        if ($responsible->ucs()->where('uc_id', $request->uc_id)->exists()) {
+            return redirect()->route('admin.uc_responsibles.index')->with('info', 'A Unidade Curricular já está associada a este responsável');
         }
-
-        // Verificar se a unidade já tem algum responsável associado
-        if (DB::table('uc_to_responsibles')->where('uc_id', $request->uc_id)->exists()) {
-            return redirect()->back()->withErrors(['uc_id' => 'Esta Unidade Curricular já possui um responsável associado'])->withInput();
-        }
-
         // Associar a unidade curricular ao responsável
         $responsible->ucs()->attach($request->uc_id);
 

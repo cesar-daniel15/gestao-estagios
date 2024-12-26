@@ -206,13 +206,13 @@ class AdminStudentController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+
         // Encontrar o aluno
         $student = Student::findOrFail($studentId);
-    
-        // Verificar se o aluno já está associado à unidade curricular
+
+        // Verifica se a unidade curricular já está associada ao aluno
         if ($student->ucs()->where('uc_id', $request->uc_id)->exists()) {
-            return redirect()->back()->withErrors(['uc_id' => 'Este aluno já está associado a esta unidade curricular'])->withInput();
+            return redirect()->route('admin.students.index')->with('info', 'O aluno já está associado a esta unidade curricular');
         }
     
         // Associar a unidade curricular ao aluno com o ano letivo

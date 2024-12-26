@@ -4,10 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Institution; 
 use App\Models\User; 
+use App\Models\Institution; 
+use App\Models\Course;
+use App\Models\UnitCurricular; 
+use App\Models\UcResponsible; 
+use App\Models\UcToResponsible; 
 use Illuminate\Support\Str; 
 use App\Http\Resources\InstitutionResource; 
+use App\Http\Resources\CourseResource; 
+use App\Http\Resources\UnitResource;
+use App\Http\Resources\UcResponsibleResource; 
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
@@ -191,7 +198,7 @@ class InstitutionController extends Controller
             return redirect()->route('institutions.profile')->with('success', 'Perfil atualizado com sucesso!');
 
         } else {
-            return redirect()->route('institutions.profile')->with('error', 'Erro ao atualizar perfiç');
+            return redirect()->route('institutions.profile')->with('error', 'Erro ao atualizar perfil');
         }
     }
 
@@ -202,4 +209,77 @@ class InstitutionController extends Controller
     {
         //
     }
+
+    // Listar todos os cursos da instituicao logada
+    public function listCourses() {
+        
+        // User logado
+        $user = Auth::user();
+
+        // Instituicao associada ao user
+        $institution = $user->institution;
+
+        // Obtel todos os cursos associados a instituicao
+        $courses = Course::where('institution_id', $institution->id)->get();
+
+        $courses = CourseResource::collection($courses)->resolve();
+
+        // Retorna a view com os cursos
+        return view('users.institution.courses', compact('courses'));
+    }
+
+    // Listar todas as unidade curriculares da instituicao logada
+    public function listUcs() {
+        
+        // User logado
+        $user = Auth::user();
+
+        // Instituicao associada ao user
+        $institution = $user->institution;
+
+        // Obter todos os cursos associados à instituição
+        $courses = Course::where('institution_id', $institution->id)->pluck('id');
+
+        // Obter todas as unidades curriculares associadas aos cursos
+        $unitsCurriculars = UnitCurricular::whereIn('course_id', $courses)->get();
+
+        $unitsCurriculars = UnitResource::collection($unitsCurriculars)->resolve();
+
+        // Retorna a view com as unidades curriculares
+        return view('users.institution.units-curriculars', compact('unitsCurriculars'));
+    }
+
+
+    // Listar todos os responsáveis de UCs da instituição logada
+    public function listUcResponsible() {
+        // User logado
+        $user = Auth::user();
+
+        // Instituição associada ao user
+        $institution = $user->institution;
+
+        // Verifica se a instituição existe
+        if (!$institution) {
+            return redirect()->back()->with('error', 'Instituição não encontrada.');
+        }
+
+        // Obter todos os cursos associados à instituição
+        $courses = Course::where('institution_id', $institution->id)->pluck('id');
+
+        // Obter todas as unidades curriculares associadas aos cursos
+        $unitsCurriculars = UnitCurricular::whereIn('course_id', $courses)->get();
+
+        // Obter todos os responsáveis associados às unidades curriculares
+        $responsaveisIds = UcToResponsible::whereIn('uc_id', $unitsCurriculars->pluck('id'))->pluck('uc_responsible_id');
+
+        // Obter os responsáveis a partir dos IDs
+        $responsaveis = UcResponsible::whereIn('id', $responsaveisIds)->get();
+
+        // Transformar os responsáveis usando o UcResponsibleResource
+        $responsaveis = UcResponsibleResource::collection($responsaveis)->resolve();
+
+        // Retorna a view com os responsáveis
+        return view('users.institution.uc-responsibles', compact('responsaveis'));
+    }
+    
 }
