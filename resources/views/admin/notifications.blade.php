@@ -71,7 +71,7 @@
                 <tbody>
                 @if (empty($notifications))
                     <tr>
-                        <td colspan="6" class="p-4 text-gray-600 text-center">Ainda não existem notificações registradas</td>
+                        <td colspan="6" class="p-4 text-gray-600 text-center">Ainda não existem notificações registadas</td>
                     </tr>
                 @else
                     @foreach($notifications as $notification)
