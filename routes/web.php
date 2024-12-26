@@ -85,6 +85,9 @@ Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class, C
     Route::get('/dashboard', [InstitutionController::class, 'index'])->name('institution.dashboard');
     Route::get('/profile', [InstitutionController::class, 'show'])->name('institution.profile');
     Route::post('/profile', [InstitutionController::class, 'store'])->name('institution.store');
+    Route::get('/courses', [InstitutionController::class, 'listCourses'])->name('institution.courses');
+    Route::get('/units-curriculars', [InstitutionController::class, 'listUcs'])->name('institution.units');
+    Route::get('/uc-responsibles', [InstitutionController::class, 'listUcResponsible'])->name('institution.uc_responsibles');
 });
 
 // Rotas para perfil de aluno
