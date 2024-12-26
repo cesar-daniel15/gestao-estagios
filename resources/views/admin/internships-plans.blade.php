@@ -173,8 +173,9 @@
                         <div>
                             <label for="status" class="block text-gray-600 mb-1">Status</label>
                             <select id="status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                                <option value="active">Ativo</option>
-                                <option value="inactive">Inativo</option>
+                                <option value="pending">Pendente</option>
+                                <option value="approved">Aprovado</option>
+                                <option value="rejected">Rejetado</option>
                             </select>
                         </div>
 

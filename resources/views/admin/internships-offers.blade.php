@@ -126,9 +126,9 @@
         </div>
 
         <!-- Modal Criar Nova Oferta de Estágio -->
-        <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
-            <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Nova Oferta de Estágio</h2>
+        <div id="createModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Nova Oferta de Estágio</h2>
 
             <!-- Form -->
             <form action="{{ route('admin.internships_offers.store') }}" method="POST" enctype="multipart/form-data">
@@ -180,7 +180,7 @@
                         <select id="plan_id" name="plan_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                             <option value="" disabled selected>Selecione um plano</option>
                             @foreach ($internship_plans as $internship_plan)
-                                <option value="{{ $plan->id }}">{{ $plan->title }}</option>
+                                <option value="{{ $internship_plan->id }}">{{ $internship_plan->title }}</option>
                             @endforeach
                         </select>
                     </div>

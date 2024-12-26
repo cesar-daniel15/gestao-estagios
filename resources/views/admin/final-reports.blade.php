@@ -103,7 +103,7 @@
                                     </button>
 
                                     <!-- Botão Apagar -->
-                                    <form id="deleteForm{{ $final_report['id'] }}" action="{{ route('admin.final_reports.destroy', $final_report['id']) }}" method="POST">
+                                    <form id="deleteForm{{ $final_report['id'] }}" action="{{ route('admin.internship_final_reports.destroy', $final_report['id']) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" onclick="openDeleteModal({{ $final_report['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
