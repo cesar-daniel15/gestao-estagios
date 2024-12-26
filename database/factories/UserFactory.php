@@ -38,7 +38,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'name' => 'Escola Superior de Tecnologia e Gestão',
-            'email' => 'estg@estg.pt',
+            'email' => 'estg@ipvc.pt',
             'password' => Hash::make('password'),
             'profile' => 'Institution',
             'account_is_verified' => true,
