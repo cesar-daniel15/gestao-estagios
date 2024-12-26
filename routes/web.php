@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\AdminUcResponsibleController;
 use App\Http\Controllers\Admin\AdminNotificationController;
 use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\Admin\AdminCompanyController;
+use App\Http\Controllers\Admin\AdminInternshipOffersController;
+use App\Http\Controllers\Admin\AdminInternshipPlansController;
+use App\Http\Controllers\Admin\AdminAttendanceRecordsController;
+use App\Http\Controllers\Admin\AdminFinalReportsController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Middleware\CheckProfileCompletion;
@@ -78,6 +82,31 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/companies', [AdminCompanyController::class, 'store'])->name('admin.companies.store');
     Route::put('/companies/{company}', [AdminCompanyController::class, 'update'])->name('admin.companies.update');
     Route::delete('/companies/{company}', [AdminCompanyController::class, 'destroy'])->name('admin.companies.destroy');
+
+    Route::get('/internships-offers', [AdminInternshipOffersController::class, 'index'])->name('admin.internships_offers.index');
+    Route::get('/internships-offers/{internship_offers}', [AdminInternshipOffersController::class, 'show'])->name('admin.internships_offers.show');
+    Route::post('/internships-offers', [AdminInternshipOffersController::class, 'store'])->name('admin.internships_offers.store');
+    Route::put('/internships-offers/{internship_offers}', [AdminInternshipOffersController::class, 'update'])->name('admin.internships_offers.update');
+    Route::delete('/internships-offers/{internship_offers}', [AdminInternshipOffersController::class, 'destroy'])->name('admin.internships_offers.destroy');
+
+    Route::get('/internships-plans', [AdminInternshipPlansController::class, 'index'])->name('admin.internships_plans.index');
+    Route::get('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'show'])->name('admin.internships_plans.show');
+    Route::post('/internships-plans', [AdminInternshipPlansController::class, 'store'])->name('admin.internships_plans.store');
+    Route::put('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'update'])->name('admin.internships_plans.update');
+    Route::delete('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'destroy'])->name('admin.internships_plans.destroy');
+
+    Route::get('/attendance-records', [AdminAttendanceRecordsController::class, 'index'])->name('admin.internship_attendance_records.index');
+    Route::get('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'show'])->name('admin.internship_attendance_records.show');
+    Route::post('/attendance-records', [AdminAttendanceRecordsController::class, 'store'])->name('admin.internship_attendance_records.store');
+    Route::put('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'update'])->name('admin.internship_attendance_records.update');
+    Route::delete('/attendance-records/{attendance_record}', [AdminAttendanceRecordsController::class, 'destroy'])->name('admin.internship_attendance_records.destroy');
+
+    Route::get('/final-reports', [AdminFinalReportsController::class, 'index'])->name('admin.internship_final_reports.index');
+    Route::get('/final-reports/{final_report}', [AdminFinalReportsController::class, 'show'])->name('admin.internship_final_reports.show');
+    Route::post('/final-reports', [AdminFinalReportsController::class, 'store'])->name('admin.internship_final_reports.store');
+    Route::put('/final-reports/{final_report}', [AdminFinalReportsController::class, 'update'])->name('admin.internship_final_reports.update');
+    Route::delete('/final-reports/{final_report}', [AdminFinalReportsController::class, 'destroy'])->name('admin.internship_final_reports.destroy');
+
 });
 
 // Rotas para perfil de instituticao
