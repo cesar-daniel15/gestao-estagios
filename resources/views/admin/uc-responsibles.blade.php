@@ -353,10 +353,6 @@
         openModal('viewModal');
     }
 
-    function associateModal(responsibleId) {
-        openModal('associateModal');
-    }
-
     // Abrir Modal para apagar um Responsável
     function openDeleteModal(id) {
         openModal('deleteModal');  
@@ -381,6 +377,13 @@
         // Definindo a ação do formulário para o responsável específico
         const updateForm = document.getElementById('updateForm');
         updateForm.action = `/admin/uc-responsibles/${id}`; 
+    }
+
+    function associateModal(ucResponsible) {
+        openModal('associateModal');
+
+        const associateForm = document.getElementById('associateForm');
+        associateForm.action = `/admin/uc-responsibles/${ucResponsible}/associate-uc`; 
     }
 
     // Função de pesquisa de Responsáveis de UC
