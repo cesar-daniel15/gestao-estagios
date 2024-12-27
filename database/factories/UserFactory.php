@@ -19,7 +19,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+           //
         ];
     }
 
@@ -34,7 +34,7 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function institution(): static
+    public function institutionESTG(): static
     {
         return $this->state(fn (array $attributes) => [
             'name' => 'Escola Superior de Tecnologia e Gestão',
@@ -43,6 +43,78 @@ class UserFactory extends Factory
             'profile' => 'Institution',
             'account_is_verified' => true,
             'id_institution' => 1,
+        ]);
+    }
+
+    public function institutionESE(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Escola Superior de Educação',
+            'email' => 'ese@ipvc.pt',
+            'password' => Hash::make('password'),
+            'profile' => 'Institution',
+            'account_is_verified' => true,
+            'id_institution' => 2, 
+        ]);
+    }
+
+    public function studentCesar(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'César Sá',
+            'email' => 'cesar.sa@example.com',
+            'password' => Hash::make('password'),
+            'profile' => 'Student',
+            'account_is_verified' => true,
+            'id_student' => 1, 
+        ]);
+    }
+
+    public function studentRuben(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Ruben Benedito',
+            'email' => 'ruben.benedito@example.com',
+            'password' => Hash::make('password'),
+            'profile' => 'Student',
+            'account_is_verified' => true,
+            'id_student' => 2, 
+        ]);
+    }
+
+    public function responsibleTiago(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Tiago Silva',
+            'email' => 'tiago.silva@example.com',
+            'password' => Hash::make('password'),
+            'profile' => 'Responsible',
+            'account_is_verified' => true,
+            'id_responsible' => 1, 
+        ]);
+    }
+
+    public function companyBrandit(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Brandit',
+            'email' => 'contact@brandit.com',
+            'password' => Hash::make('password'),
+            'profile' => 'Company',
+            'account_is_verified' => true,
+            'id_company' => 1, 
+        ]);
+    }
+
+    public function companyDigiheart(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Digiheart',
+            'email' => 'contact@digiheart.com',
+            'password' => Hash::make('password'),
+            'profile' => 'Company',
+            'account_is_verified' => true,
+            'id_company' => 2, 
         ]);
     }
 
