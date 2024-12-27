@@ -84,10 +84,10 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::delete('/companies/{company}', [AdminCompanyController::class, 'destroy'])->name('admin.companies.destroy');
 
     Route::get('/internships-offers', [AdminInternshipOffersController::class, 'index'])->name('admin.internships_offers.index');
-    Route::get('/internships-offers/{internship_offers}', [AdminInternshipOffersController::class, 'show'])->name('admin.internships_offers.show');
+    Route::get('/internships-offers/{internship_offer}', [AdminInternshipOffersController::class, 'show'])->name('admin.internships_offers.show');
     Route::post('/internships-offers', [AdminInternshipOffersController::class, 'store'])->name('admin.internships_offers.store');
-    Route::put('/internships-offers/{internship_offers}', [AdminInternshipOffersController::class, 'update'])->name('admin.internships_offers.update');
-    Route::delete('/internships-offers/{internship_offers}', [AdminInternshipOffersController::class, 'destroy'])->name('admin.internships_offers.destroy');
+    Route::put('/internships-offers/{internship_offer}', [AdminInternshipOffersController::class, 'update'])->name('admin.internships_offers.update');
+    Route::delete('/internships-offers/{internship_offer}', [AdminInternshipOffersController::class, 'destroy'])->name('admin.internships_offers.destroy');
 
     Route::get('/internships-plans', [AdminInternshipPlansController::class, 'index'])->name('admin.internships_plans.index');
     Route::get('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'show'])->name('admin.internships_plans.show');
