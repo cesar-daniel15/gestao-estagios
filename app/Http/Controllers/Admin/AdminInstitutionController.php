@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 
-
 class AdminInstitutionController extends Controller
 { 
     /**

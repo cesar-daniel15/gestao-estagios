@@ -64,7 +64,7 @@
                 <tbody>
                 @if (empty($companies))
                     <tr>
-                        <td colspan="5" class="p-4 text-gray-600 text-center">Ainda não existem empresas registadas </td>
+                        <td colspan="6" class="p-4 text-gray-600 text-center">Ainda não existem empresas registadas </td>
                     </tr>
                 @else
                     @foreach($companies as $company)

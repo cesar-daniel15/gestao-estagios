@@ -442,7 +442,10 @@ function searchInternshipPlan() {
     });
 }
 
+
+
     </script>
 
+@endsection
 
 @endsection

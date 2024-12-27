@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Institution;
 use App\Models\Course;
 use App\Models\InternshipPlan;
+use App\Models\FinalReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
 use App\Http\Resources\InternshipOfferResource;
@@ -18,6 +19,7 @@ use App\Http\Resources\InternshipPlanResource;
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class AdminInternshipOffersController extends Controller
 {
@@ -41,17 +43,19 @@ class AdminInternshipOffersController extends Controller
         // Obter todos os planos
         $internship_plans = InternshipPlan::all(); // Adicionar consulta para planos
     
+        $finalReports = FinalReport::all();
+
         // Corrigir a referência à view para corresponder ao arquivo correto
         return view('admin.internships-offers', [
             'internship_offers' => InternshipOfferResource::collection($internship_offers)->resolve() ?? [],
-            'companies' => $companies, // Passar as empresas para a view
-            'institutions' => $institutions, // Passar as instituições para a view
-            'courses' => $courses, // Passar os cursos para a view
-            'internship_plans' => $internship_plans, // Passar os planos para a view
+            'companies' => $companies, 
+            'institutions' => $institutions, 
+            'courses' => $courses, 
+            'internship_plans' => $internship_plans, 
+            'finalReports' => $finalReports, 
         ]);
     }
     
-
 
     /**
      * Display the specified internship offer.
@@ -75,7 +79,7 @@ class AdminInternshipOffersController extends Controller
             'deadline' => 'nullable|date',
             'plan_id' => 'nullable|exists:internship_plans,id',
             'final_report_id' => 'nullable|exists:final_reports,id',
-            'status' => 'required|in:active,inactive',
+            'status' => 'nullable|in:open,closed,archived',
         ]);
 
        // Se a valicao falhar
@@ -119,15 +123,10 @@ class AdminInternshipOffersController extends Controller
     public function update(Request $request, InternshipOffer $internship_offer)
     {
         $validator = Validator::make($request->all(), [
-            'company_id' => 'required|exists:companies,id',
-            'institution_id' => 'required|exists:institutions,id',
-            'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'deadline' => 'nullable|date',
-            'plan_id' => 'nullable|exists:internship_plans,id',
-            'final_report_id' => 'nullable|exists:final_reports,id',
-            'status' => 'required|in:active,inactive',
+            'deadline' => 'required|date',
+            'status' => 'required|in:Aberto,Fechado,Arquivado', // Aceita os valores em português
         ]);
 
         // Verifica se a validacao falhou
@@ -137,6 +136,19 @@ class AdminInternshipOffersController extends Controller
 
         $data = $validator->validated();
 
+        // Converte o status para ingles como têm na bd
+        switch ($data['status']) {
+            case 'Aberto':
+                $data['status'] = 'open';
+                break;
+            case 'Fechado':
+                $data['status'] = 'closed';
+                break;
+            case 'Arquivado':
+                $data['status'] = 'archived';
+                break;
+        }
+    
         // Faz a atualizacao
         $updated = $internship_offer->update($data);
 
@@ -159,5 +171,35 @@ class AdminInternshipOffersController extends Controller
         }
 
         return redirect()->route('admin.internships_offers.index')->with('error', 'Erro ao excluir a oferta de estágio.');
+    }
+
+   // Método para atualizar o status de todas as ofertas que já passaram do prazo aceito
+    public function closeOffer()
+    {
+        // Data de hoje
+        $today = Carbon::now()->toDateString(); 
+
+        // Encontra todas as ofertas abertas cuja data limite já passou
+        $offers = InternshipOffer::where('status', 'open')->where('deadline', '<', $today)->get();
+        
+        if ($offers->isEmpty()) {
+            return redirect()->route('admin.internships_offers.index');
+        }
+
+        // Contador para ofertas fechadas
+        $closedCount = 0;
+
+        foreach ($offers as $offer) {
+            $offer->status = 'closed'; 
+            $offer->save(); 
+            $closedCount++; 
+        }
+
+        // Verifica se alguma oferta foi fechada
+        if ($closedCount > 0) {
+            return redirect()->route('admin.internships_offers.index')->with('info', 'Algumas ofertas foram fechadas');
+        } else {
+            return redirect()->route('admin.internships_offers.index')->with('info', 'Nenhuma oferta foi fechada, todas estão dentro do prazo.');
+        }
     }
 }
