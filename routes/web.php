@@ -88,6 +88,7 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/internships-offers', [AdminInternshipOffersController::class, 'store'])->name('admin.internships_offers.store');
     Route::put('/internships-offers/{internship_offer}', [AdminInternshipOffersController::class, 'update'])->name('admin.internships_offers.update');
     Route::delete('/internships-offers/{internship_offer}', [AdminInternshipOffersController::class, 'destroy'])->name('admin.internships_offers.destroy');
+    Route::post('/internships-offers/close', [AdminInternshipOffersController::class, 'closeOffer'])->name('admin.internships_offers.close');
 
     Route::get('/internships-plans', [AdminInternshipPlansController::class, 'index'])->name('admin.internships_plans.index');
     Route::get('/internships-plans/{internship_plans}', [AdminInternshipPlansController::class, 'show'])->name('admin.internships_plans.show');

@@ -19,6 +19,7 @@ use App\Http\Resources\InternshipPlanResource;
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class AdminInternshipOffersController extends Controller
 {
@@ -170,5 +171,35 @@ class AdminInternshipOffersController extends Controller
         }
 
         return redirect()->route('admin.internships_offers.index')->with('error', 'Erro ao excluir a oferta de estágio.');
+    }
+
+   // Método para atualizar o status de todas as ofertas que já passaram do prazo aceito
+    public function closeOffer()
+    {
+        // Data de hoje
+        $today = Carbon::now()->toDateString(); 
+
+        // Encontra todas as ofertas abertas cuja data limite já passou
+        $offers = InternshipOffer::where('status', 'open')->where('deadline', '<', $today)->get();
+        
+        if ($offers->isEmpty()) {
+            return redirect()->route('admin.internships_offers.index');
+        }
+
+        // Contador para ofertas fechadas
+        $closedCount = 0;
+
+        foreach ($offers as $offer) {
+            $offer->status = 'closed'; 
+            $offer->save(); 
+            $closedCount++; 
+        }
+
+        // Verifica se alguma oferta foi fechada
+        if ($closedCount > 0) {
+            return redirect()->route('admin.internships_offers.index')->with('info', 'Algumas ofertas foram fechadas');
+        } else {
+            return redirect()->route('admin.internships_offers.index')->with('info', 'Nenhuma oferta foi fechada, todas estão dentro do prazo.');
+        }
     }
 }
