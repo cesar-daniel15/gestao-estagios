@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\InternshipPlan;
+use App\Models\InternshipOffer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
-use App\Http\Resources\InternshipPlanResource; 
+use App\Http\Resources\InternshipPlanResource;
+use App\Http\Resources\InternshipOfferResource;
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class AdminInternshipPlansController extends Controller
 {
@@ -20,23 +23,12 @@ class AdminInternshipPlansController extends Controller
     public function index()
     {
         $internship_plans = InternshipPlan::all();
-    
-        // Tratamento dos dados para garantir que as chaves existam
-        $internship_plans = $internship_plans->map(function ($internship_plan) {
-            return [
-                'id' => $internship_plan->id,
-                'total_hours' => $internship_plan->total_hours ?? 'N/A',
-                'start_date' => $internship_plan->start_date,
-                'end_date' => $internship_plan->end_date,
-                'status' => $internship_plan->status ?? 'N/A',
-                'approved_by_uc' => $internship_plan->approved_by_uc ?? 'N/A',
-                'objectives' => $internship_plan->objectives ?? 'N/A',
-                'planned_activities' => $internship_plan->planned_activities ?? 'N/A',
-            ];
-        });
-    
+
+        $internship_offers = InternshipOffer::all();
+        
         return view('admin.internships-plans', [
-            'internship_plans' => $internship_plans, // Não precisa usar InternshipPlanResource aqui
+            'internship_plans' => $internship_plans,
+            'internship_offers' => $internship_offers,
         ]);
     }
 

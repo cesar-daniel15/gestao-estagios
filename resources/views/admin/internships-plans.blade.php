@@ -79,8 +79,8 @@
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $internship_plan['id'] }}</td>
                             <td class="p-4 text-gray-600">{{ $internship_plan['total_hours'] }}</td>
-                            <td class="p-4 text-gray-600">{{ \Carbon\Carbon::parse($internship_plan['start_date'])->format('d/m/Y') }}</td>
-                            <td class="p-4 text-gray-600">{{ \Carbon\Carbon::parse($internship_plan['end_date'])->format('d/m/Y') }}</td>
+                            <td class="p-4 text-gray-600">{{ $internship_plan['start_date'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $internship_plan['end_date'] }}</td>
                             <td class="p-4 text-gray-600">
                                 <span class="px-2 py-1 {{ $internship_plan['status'] == 'approved' ? 'bg-green-500' : ($internship_plan['status'] == 'rejected' ? 'bg-red-500' : 'bg-yellow-500') }} text-white rounded-full">
                                     {{ ucfirst($internship_plan['status']) }}
@@ -91,7 +91,7 @@
                                 <div class="flex space-x-2 justify-center">
                                             
                                     <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $internship_plan['id'] }}, '{{ $internship_plan['total_hours'] }}', '{{ $internship_plan['start_date'] }}', '{{ $internship_plan['end_date'] }}', '{{ $internship_plan['status'] }}','{{ $internship_plan['approved_by_uc'] }}', '{{ $internship_plan['objectives'] }}', '{{ $internship_plan['planned_activities'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a onclick="viewModal({{ $internship_plan['id'] }}, '{{ $internship_plan['total_hours'] }}', '{{ $internship_plan['start_date'] }}', '{{ $internship_plan['end_date'] }}', '{{ $internship_plan['status'] }}','{{ $internship_plan['approved_by_uc'] }}', '{{ $internship_plan['objectives'] }}', '{{ $internship_plan['planned_activities'] }}', '{{$internship_plan['internship_offer_id']}} ')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
@@ -153,6 +153,15 @@
                             <input type="date" id="end_date" name="end_date" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                         </div>
 
+                        <!-- Aprovação pela Unidade Curricular -->
+                        <div>
+                            <label for="approved_by_uc" class="block text-gray-600 mb-1">Aprovado pela Unidade Curricular</label>
+                            <select id="approved_by_uc" name="approved_by_uc" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
+                        </div>
+
                         <!-- Objetivos -->
                         <div>
                             <label for="objectives" class="block text-gray-600 mb-1">Objetivos</label>
@@ -165,15 +174,6 @@
                             <textarea id="planned_activities" name="planned_activities" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required></textarea>
                         </div>
 
-                        <!-- Aprovação pela Unidade Curricular -->
-                        <div>
-                            <label for="approved_by_uc" class="block text-gray-600 mb-1">Aprovado pela Unidade Curricular</label>
-                            <select id="approved_by_uc" name="approved_by_uc" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                                <option value="1">Sim</option>
-                                <option value="0">Não</option>
-                            </select>
-                        </div>
-
                         <!-- Status -->
                         <div>
                             <label for="status" class="block text-gray-600 mb-1">Status</label>
@@ -181,6 +181,17 @@
                                 <option value="pending">Pendente</option>
                                 <option value="approved">Aprovado</option>
                                 <option value="rejected">Rejeitado</option>
+                            </select>
+                        </div>
+
+                        <!-- Oferta -->
+                        <div>
+                            <label for="internship_offer_id" class="block text-gray-600 mb-1">Oferta</label>
+                            <select id="internship_offer_id" name="internship_offer_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                                <option value="" disabled selected>Selecione uma Oferta</option>
+                                @foreach ($internship_offers as $internship_offer)
+                                    <option value="{{ $internship_offer->id }}">{{ $internship_offer->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -214,6 +225,7 @@
                     <p><strong>Aprovação pelo UC:</strong> <span id="modal-approved_by_uc"></span></p>
                     <p><strong>Objetivos:</strong> <span id="modal-objectives"></span></p>
                     <p><strong>Atividades Planeadas:</strong> <span id="modal-planned_activities"></span></p>
+                    <p><strong>Oferta:</strong> <span id="modal-internship_offer-id"></span></p>
                 </div>
             </div>
 
@@ -224,7 +236,7 @@
     </div>
 
 
-    <!-- Modal de Atualização do Plano de Estágio -->
+    <!-- Modal de Update do Plano de Estágio -->
     <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Plano de Estágio</h2>
@@ -335,7 +347,7 @@
         }
 
         // Função para modal de visualização dos Planos de Estágio
-        function viewModal(id, total_hours, startDate, endDate, status, approved_by_uc, objectives, planned_activities) {
+        function viewModal(id, total_hours, startDate, endDate, status, approved_by_uc, objectives, planned_activities, internship_offer ) {
             document.querySelector('#viewModal .modal-content h2').textContent = id;
             document.querySelector('#viewModal .modal-body').innerHTML = `
                 <div class="ml-4 flex flex-col gap-5">
@@ -347,6 +359,8 @@
                     <p><strong>Aprovação pelo UC: </strong> ${approved_by_uc}</p>
                     <p><strong>Objetivos: </strong> ${objectives}</p>
                     <p><strong>Atividades Planeadas: </strong> ${planned_activities}</p>
+                    <p><strong>Oferta: </strong> ${internship_offer}</p>
+
                 </div>
             `;
             openModal('viewModal');
@@ -364,11 +378,12 @@
         }
 
         // Abrir Modal para fazer uma atualização de um Plano de Estágio
-        function updateModal(id, name, duration, startDate, endDate, status, approved_by_uc, objectives, planned_activities ) {
-            openModal('updateModal');  
+        function updateModal(id, total_hours, startDate, endDate, status, approved_by_uc, objectives, planned_activities) {
+            openModal('updateModal');
 
-            document.getElementById('update_plan_name').value = name;
-            document.getElementById('total_hours').value = duration;
+            document.getElementById('updateForm').reset();
+
+            document.getElementById('total_hours').value = total_hours;
             document.getElementById('update_start_date').value = startDate;
             document.getElementById('update_end_date').value = endDate;
             document.getElementById('update_status').value = status;
@@ -377,7 +392,7 @@
             document.getElementById('update_planned_activities').value = planned_activities;
 
             const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/admin/internship_plans/${id}`; 
+            updateForm.action = `/admin/internship_plans/${id}`;
         }
 
 
@@ -410,21 +425,23 @@
 
 
         // Função de pesquisa de Planos de Estágio
-        function searchInternshipPlan() {
-            const searchValue = document.getElementById('search').value.toLowerCase();
-            const rows = document.querySelectorAll("#internshipPlanTable tbody tr");
+// Função de pesquisa de Planos de Estágio
+function searchInternshipPlan() {
+    const searchValue = document.getElementById('search').value.toLowerCase();
+    const rows = document.querySelectorAll("#internshipPlanTable tbody tr");
 
-            rows.forEach(row => {
-                const planName = row.querySelector(".plan-name").textContent.toLowerCase();
-                const planDuration = row.querySelector(".plan-duration").textContent.toLowerCase();
+    rows.forEach(row => {
+        const planStatus = row.querySelector(".internship_plan-status").textContent.toLowerCase();
 
-                if (planName.includes(searchValue) || planDuration.includes(searchValue)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
+        // Verifica se o status do plano contém o valor de pesquisa
+        if (planStatus.includes(searchValue)) {
+            row.style.display = ""; // Exibe a linha se o termo for encontrado
+        } else {
+            row.style.display = "none"; // Oculta a linha caso contrário
         }
+    });
+}
+
     </script>
 
 

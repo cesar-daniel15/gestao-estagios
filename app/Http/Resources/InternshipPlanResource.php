@@ -17,13 +17,13 @@ class InternshipPlanResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'duration' => $this->duration,
-            'description' => $this->description ?? 'Não disponível', 
-            'start_date' => Carbon::parse($this->start_date)->format('d/m/Y'), // Formatar a data
-            'end_date' => Carbon::parse($this->end_date)->format('d/m/Y'), // Formatar a data
-            'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(), // Mostrar data de criação
-            'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(), // Mostrar data de atualização
+            'total_hours' => $this->total_hours ?? 'N/A',
+            'start_date' => $this->start_date ? Carbon::parse($this->start_date)->format('d/m/Y') : null,
+            'end_date' => $this->end_date ? Carbon::parse($this->end_date)->format('d/m/Y') : null,
+            'status' => $this->status ?? 'N/A',
+            'approved_by_uc' => $this->approved_by_uc ? 'Sim' : 'Não', // Return 'Sim' or 'Não'
+            'objectives' => $this->objectives ?? 'N/A',
+            'planned_activities' => $this->planned_activities ?? 'N/A',
         ];
     }
 }
