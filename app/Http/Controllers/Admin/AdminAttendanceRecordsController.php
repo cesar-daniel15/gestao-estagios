@@ -24,8 +24,8 @@ class AdminAttendanceRecordsController extends Controller
         // Obtenha os registros de presença
         $attendance_records = AttendanceRecord::all();
     
-        // Obtenha as ofertas de estágio (garanta que a tabela `internship_offers` existe)
-        $internship_offers = InternshipOffer::all(); // Supondo que a tabela de ofertas de estágio seja `internship_offers`
+        // Obtenha as ofertas de estágio
+        $internship_offers = InternshipOffer::all(); 
     
         // Retorne a view e passe as variáveis necessárias
         return view('admin.attendance-records', [
@@ -57,7 +57,7 @@ class AdminAttendanceRecordsController extends Controller
             'afternoon_start_time' => 'required|date_format:H:i', // Valida se o horário de início da tarde está no formato correto
             'afternoon_end_time' => 'required|date_format:H:i|after:afternoon_start_time', // Valida se o horário de término da tarde é depois do início
             'approval_hours' => 'required|numeric|min:0', // Valida se as horas de aprovação são um número positivo
-            'sumary' => 'nullable|string|max:1000', // Valida o campo sumário (opcional)
+            'summary' => 'nullable|string|max:1000', // Valida o campo sumário (opcional)
         ], [
             'internship_offer_id.exists' => 'O estágio selecionado não existe.',
             'date.date' => 'A data informada não é válida.',
@@ -66,7 +66,7 @@ class AdminAttendanceRecordsController extends Controller
             'afternoon_start_time.date_format' => 'O horário de início da tarde não está no formato correto.',
             'afternoon_end_time.after' => 'O horário de término da tarde deve ser depois do início.',
             'approval_hours.numeric' => 'As horas de aprovação devem ser um número.',
-            'sumary.max' => 'O sumário não pode ter mais de 1000 caracteres.',
+            'sumamry.max' => 'O sumário não pode ter mais de 1000 caracteres.',
         ]);
 
         // Se a validação falhar, retorna para a página anterior com os erros
@@ -121,7 +121,7 @@ class AdminAttendanceRecordsController extends Controller
             'afternoon_start_time' => 'required|date_format:H:i',
             'afternoon_end_time' => 'required|date_format:H:i|after_or_equal:afternoon_start_time',
             'approval_hours' => 'required|numeric|min:0',
-            'sumary' => 'nullable|string|max:255',
+            'summary' => 'nullable|string|max:255',
         ], [
             'internship_offer_id.required' => 'A oferta de estágio é obrigatória.',
             'date.required' => 'A data é obrigatória.',
@@ -134,8 +134,8 @@ class AdminAttendanceRecordsController extends Controller
             'approval_hours.required' => 'As horas de aprovação são obrigatórias.',
             'approval_hours.numeric' => 'As horas de aprovação devem ser um número.',
             'approval_hours.min' => 'As horas de aprovação não podem ser menores que 0.',
-            'sumary.string' => 'O resumo deve ser uma string.',
-            'sumary.max' => 'O resumo não pode ter mais de 255 caracteres.',
+            'summary.string' => 'O resumo deve ser uma string.',
+            'summary.max' => 'O resumo não pode ter mais de 255 caracteres.',
         ]);
     
         // Se a validação falhar

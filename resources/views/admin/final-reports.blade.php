@@ -121,6 +121,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
     <!-- Modal Criar Novo Relatório Final -->
     <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">

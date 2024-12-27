@@ -81,7 +81,7 @@
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $attendance_record['id'] }}</td>
                             <td class="p-4 text-gray-600">{{ $attendance_record['internship_offer']['title'] ?? 'Oferta não disponível' }}</td>
-                            <td class="p-4 text-gray-600">{{ \Carbon\Carbon::parse($attendance_record['date'])->format('d/m/Y') }}</td>
+                            <td class="p-4 text-gray-600">{{ $attendance_record['date'] }}</td>
                             <td class="p-4 text-gray-600">{{ $attendance_record['morning_start_time'] }}</td>
                             <td class="p-4 text-gray-600">{{ $attendance_record['morning_end_time'] }}</td>
                             <td class="p-4 text-gray-600">{{ $attendance_record['afternoon_start_time'] }}</td>
@@ -91,14 +91,14 @@
                                 <div class="flex space-x-2 justify-center">
                                     
                                     <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $attendance_record['id'] }}, '{{ $attendance_record['internship_offer']['title'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['sumary'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a onclick="viewModal({{ $attendance_record['id'] }}, '{{ $attendance_record['internship_offer']['title'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['summary'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
                                     </a>
 
-                                    <!-- Botão Editar -->
-                                    <button type="button" onclick="updateModal({{ $attendance_record['id'] }}, '{{ $attendance_record['internship_offer']['title'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['sumary'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <!-- Botão Update -->
+                                    <button type="button" onclick="updateModal({{ $attendance_record['id'] }}, '{{ $attendance_record['internship_offer']['title'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['summary'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -123,6 +123,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
     <!-- Modal Criar Novo Registro de Presença -->
     <div id="createModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
@@ -175,8 +176,8 @@
                     </div>
 
                     <div>
-                        <label for="sumary" class="block text-gray-600 mb-1">Sumário</label>
-                        <textarea id="sumary" name="sumary" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
+                        <label for="summary" class="block text-gray-600 mb-1">Sumário</label>
+                        <textarea id="summary" name="summary" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
                     </div>
 
                 </div>
@@ -383,12 +384,17 @@
 
             rows.forEach(row => {
                 const internshipOffer = row.querySelector(".internship-offer").textContent.toLowerCase();
-                row.style.display = internshipOffer.includes(searchValue) ? "" : "none";
-
                 const date = row.querySelector(".attendanceRecord-date").textContent.toLowerCase();
-                row.style.display = date.includes(searchValue) ? "" : "none";
+                
+                // Verifica se qualquer um dos dois campos (internshipOffer ou date) inclui o valor de pesquisa
+                if (internshipOffer.includes(searchValue) || date.includes(searchValue)) {
+                    row.style.display = ""; // Exibe a linha se corresponder ao valor de pesquisa
+                } else {
+                    row.style.display = "none"; // Oculta a linha se nenhum campo corresponder
+                }
             });
         }
+
     </script>
 
 

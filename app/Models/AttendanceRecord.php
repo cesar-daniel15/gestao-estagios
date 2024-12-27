@@ -21,7 +21,7 @@ class AttendanceRecord extends Model
         'afternoon_start_time',
         'afternoon_end_time',
         'approval_hours',
-        'sumary',
+        'summary',
     ];
 
     // Relacao com a tabela Internship Offers
