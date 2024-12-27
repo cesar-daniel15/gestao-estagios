@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Http\Resources\CompanyResource; 
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Storage;
 
 class AdminCompanyController extends Controller
 {
