@@ -409,9 +409,9 @@
 
                 // Verifica se o título ou o nome da empresa inclui o valor de pesquisa
                 if (internshipTitle.includes(searchValue) || companyName.includes(searchValue)) {
-                    row.style.display = ""; // Mostra a linha
+                    row.style.display = ""; 
                 } else {
-                    row.style.display = "none"; // Esconde a linha
+                    row.style.display = "none";
                 }
             });
         }
@@ -428,13 +428,13 @@
                     continue; 
                 }
                 if (option.getAttribute('data-institution') === institutionId) {
-                    option.style.display = 'block'; // Mostra o curso
+                    option.style.display = 'block';
                 } else {
-                    option.style.display = 'none'; // Esconde o curso
+                    option.style.display = 'none'; 
                 }
             }
 
-            courseSelect.value = ""; // Limpa a seleção de cursos
+            courseSelect.value = ""; 
         }
 
     </script>
