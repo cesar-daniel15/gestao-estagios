@@ -165,9 +165,9 @@
                         <option value="">Selecione um responsável</option>
                         @foreach($ucResponsibles as $ucResponsible)
                             <option value="{{ $ucResponsible['id'] }}">
-                                {{ $notification['uc_responsible']['institution'] ?? 'N/A' }} / 
-                                {{ $notification['uc_responsible']['user']['name']  ?? 'N/A' }}                           
-                            </option>
+                                {{ $ucResponsible['users'][0]['name'] ?? 'Não disponível' }} / 
+                                {{ $ucResponsible['ucs'][0]['course']['institution']['acronym'] ?? 'Não disponível' }}                           
+                                </option>
                         @endforeach
                     </select>
                 </div>
@@ -178,10 +178,10 @@
                         <option value="">Selecione um aluno</option>
                         @foreach($students as $student)
                             <option value="{{ $student['id'] }}">
-                                {{ $notification['student']['institution']  ?? 'N/A' }} / 
-                                {{ $notification['student']['course'] ?? 'N/A' }} / 
-                                {{ $notification['student']['user']['name'] }}                       
-                            </option>
+                                {{ $student['users'][0]['name'] ?? 'Não disponível' }} / 
+                                {{ $student['ucs'][0]['course']['institution']['acronym'] ?? 'Não disponível' }} / 
+                                {{ $student['ucs'][0]['course']['acronym'] ?? 'Não disponível' }}                       
+                                </option>
                         @endforeach
                     </select>
                 </div>
@@ -214,8 +214,8 @@
         </form>
     </div>
 </div>
-    @if (!empty($notification))
 
+    @if (!empty($notification))
 
     <!-- Modal de Visualização -->
     <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">

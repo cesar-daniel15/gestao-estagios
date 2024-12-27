@@ -23,22 +23,22 @@ class AdminNotificationController extends Controller
      */
     public function index()
     {
-        // Obtenha as notificações
         $notifications = Notification::with([
-            'student.ucs.course.institution', // Carregando a relação do estudante
-            'ucResponsible.ucs.course.institution' // Carregando a relação do responsável pela UC
+            'student.ucs.course.institution', 
+            'ucResponsible.ucs.course.institution' 
         ])->get();
-        // Outras variáveis
-        $ucResponsibles = UcResponsible::all();
-        $students = Student::all();
     
+        // Carregar responsáveis com a relação de usuários e instituições
+        $ucResponsibles = UcResponsible::with(['users', 'ucs.course.institution'])->get();
+        // Carregar alunos com a relação de usuários e instituições
+        $students = Student::with(['users', 'ucs.course.institution'])->get();
+        
         return view('admin.notifications', [
             'notifications' => NotificationResource::collection($notifications)->resolve() ?? [],
-            'ucResponsibles'=> UcResponsibleResource::collection($ucResponsibles)->resolve() ?? [],
-            'students'=> StudentResource::collection($students)->resolve() ?? []
+            'ucResponsibles' => $ucResponsibles,
+            'students' => $students,
         ]);
     }
-    
 
     /**
      * Show the form for creating a new resource.

@@ -17,7 +17,7 @@ class NotificationResource extends JsonResource
     {
         $student = $this->student; 
         $uc_responsible = $this->ucResponsible; 
-    
+
         return [
             'id' => $this->id,
             'title' => $this->title ?? 'Título não disponível',
@@ -27,20 +27,27 @@ class NotificationResource extends JsonResource
             'status_visualization' => $this->status_visualization ?? 'Não disponível',
             'student' => $student ? [
                 'id' => $student->id ?? 'Não disponível',
-                'user' => $student->users->first() ? [ 
+                'user' => [
                     'name' => $student->users->first()->name ?? 'Utilizador não disponível', 
                     'email' => $student->users->first()->email ?? 'Email não disponível', 
-                ] : null,
-                'institution' => $student->ucs->first()->course->institution->acronym ?? 'Instituição não disponível', 
-                'course' => $student->ucs->first()->course->acronym ?? 'Curso não disponível',
-                ] : null, 
+                ],
+                'institution' => [
+                    'acronym' => $student->ucs->first() && $student->ucs->first()->course && $student->ucs->first()->course->institution 
+                        ? $student->ucs->first()->course->institution->acronym 
+                        : 'Instituição não disponível',
+                ],
+            ] : null, 
             'uc_responsible' => $uc_responsible ? [
                 'id' => $uc_responsible->id ?? 'Não disponível',
-                'institution' => $uc_responsible->ucs->first()->course->institution->acronym ?? 'Instituição não disponível', 
-                'user' => $uc_responsible->users->first() ? [ 
+                'user' => [
                     'name' => $uc_responsible->users->first()->name ?? 'Utilizador não disponível', 
                     'email' => $uc_responsible->users->first()->email ?? 'Email não disponível', 
-                ] : null,
+                ],
+                'institution' => [
+                    'acronym' => $uc_responsible->ucs->first() && $uc_responsible->ucs->first()->course && $uc_responsible->ucs->first()->course->institution 
+                        ? $uc_responsible->ucs->first()->course->institution->acronym 
+                        : 'Instituição não disponível',
+                ],
             ] : null,
         ];
     }
