@@ -71,36 +71,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                @if (empty($internship_offers) || count($internship_offers) === 0)
+                @if (empty($internship_offers))
                     <tr>
-                        <td colspan="7" class="p-4 text-gray-600 text-center">Ainda não existem ofertas de estágio registradas.</td>
+                        <td colspan="7" class="p-4 text-gray-600 text-center">Ainda não existem ofertas de estágio registadas</td>
                     </tr>
                 @else
                     @foreach($internship_offers as $internship_offer)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $internship_offer['id'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_offer['title'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_offer['company']['name'] ?? 'Empresa não disponível' }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_offer['institution']['name'] ?? 'Instituição não disponível' }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_offer['deadline'] ?? 'Sem prazo definido' }}</td>
+                            <td class="p-4 text-gray-600 internship-title">{{ $internship_offer['title'] }}</td>
+                            <td class="p-4 text-gray-600 company-name">{{ $internship_offer['company']['users']['name'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $internship_offer['institution']['acronym'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $internship_offer['deadline'] }}</td>
                             <td class="p-4 text-gray-600">
-                                <span class="{{ $offer['status'] === 'active' ? 'text-green-500' : 'text-red-500' }}">
-                                    {{ $internship_offer['status'] === 'active' ? 'Ativo' : 'Inativo' }}
+                                <span class="px-2 py-1 {{ $internship_offer['status'] == 'Aberto' ? 'bg-green-500' : ($internship_offer['status'] == 'Fechado' ? 'bg-red-500' : 'bg-yellow-500') }} text-white rounded-full">
+                                    {{ $internship_offer['status'] }}
                                 </span>
-                            </td>
+                            </td>                            
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
                                     <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ $internship_offer['status'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a onclick="viewModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['company']['users']['name'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ $internship_offer['institution']['acronym'] }}', '{{ $internship_offer['course']['name'] }}', '{{ $internship_offer['plan_id'] }}', '{{ $internship_offer['final_report_id'] }}', '{{ $internship_offer['status'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
                                     </a>
 
                                     <!-- Botão Atualizar -->
-                                    <button type="button" onclick="updateModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ $internship_offer['status'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                    <button type="button" onclick="updateModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ ($internship_offer['status']) }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
                                     </button>
@@ -124,9 +124,10 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <!-- Modal Criar Nova Oferta de Estágio -->
-        <div id="createModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
+    <!-- Modal Criar Nova Oferta de Estágio -->
+    <div id="createModal" class="fixed inset-0 items-center justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Nova Oferta de Estágio</h2>
 
@@ -138,7 +139,7 @@
                     <!-- Título -->
                     <div>
                         <label for="title" class="block text-gray-600 mb-1">Título</label>
-                        <input type="text" id="title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <input type="text" id="title" name="title" Placeholder="Oferta de Estágio (Empresa)" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <!-- Empresa -->
@@ -147,56 +148,46 @@
                         <select id="company_id" name="company_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                             <option value="" disabled selected>Selecione uma empresa</option>
                             @foreach ($companies as $company)
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                <option value="{{ $company['id'] }}">{{ optional($company->users->first())->name ?? 'N/A' }}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    <!-- Instituição -->
+                    <!-- Instituições -->
                     <div>
                         <label for="institution_id" class="block text-gray-600 mb-1">Instituição</label>
-                        <select id="institution_id" name="institution_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <select id="institution_id" name="institution_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" onchange="filterCourses()">
                             <option value="" disabled selected>Selecione uma instituição</option>
                             @foreach ($institutions as $institution)
-                                <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                                <option value="{{ $institution['id'] }}">{{ $institution['acronym'] }}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    <!-- Curso -->
+                    <!-- Cursos -->
                     <div>
                         <label for="course_id" class="block text-gray-600 mb-1">Curso</label>
-                        <select id="course_id" name="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <select id="course_id" name="course_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                             <option value="" disabled selected>Selecione um curso</option>
                             @foreach ($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Plano -->
-                    <div>
-                        <label for="plan_id" class="block text-gray-600 mb-1">Plano</label>
-                        <select id="plan_id" name="plan_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                            <option value="" disabled selected>Selecione um plano</option>
-                            @foreach ($internship_plans as $internship_plan)
-                                <option value="{{ $internship_plan->id }}">{{ $internship_plan->title }}</option>
+                                <option value="{{ $course['id'] }}" data-institution="{{ $course['institution_id'] }}">{{ $course['name'] }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <!-- Prazo -->
                     <div>
-                        <label for="deadline" class="block text-gray-600 mb-1">Prazo</label>
+                        <label for="deadline" class="block text-gray-600 mb-1">Data limite</label>
                         <input type="date" id="deadline" name="deadline" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
                     <!-- Estado -->
                     <div>
                         <label for="status" class="block text-gray-600 mb-1">Estado</label>
-                        <select id="status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                            <option value="active" selected>Ativo</option>
-                            <option value="inactive">Inativo</option>
+                        <select id="status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" >
+                            <option value="open">Aberto</option>
+                            <option value="closed">Fechado</option>
+                            <option value="archived">Arquivado</option>
                         </select>
                     </div>
 
@@ -245,62 +236,41 @@
         </div>
     </div>
 
-
     <!-- Modal de Atualização de Oferta de Estágio -->
     <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Oferta de Estágio</h2>
 
             <!-- Form -->
-            <form id="updateForm" action="{{ route('admin.internships_offers.update', ['id' => 'PLACEHOLDER_ID']) }}" method="POST" enctype="multipart/form-data">
+            <form id="updateForm" action="{{ route('admin.internships_offers.update',  $internship_offer['id']) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
-                        <label for="title" class="block text-gray-600 mb-1">Título</label>
-                        <input type="text" id="update_title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <label for="update_title" class="block text-gray-600 mb-1">Título</label>
+                        <input type="text" id="update_title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
 
                     <div>
-                        <label for="description" class="block text-gray-600 mb-1">Descrição</label>
+                        <label for="update_description" class="block text-gray-600 mb-1">Descrição</label>
                         <textarea id="update_description" name="description" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="3"></textarea>
                     </div>
 
                     <div>
-                        <label for="deadline" class="block text-gray-600 mb-1">Prazo</label>
-                        <input type="date" id="update_deadline" name="deadline" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                        <label for="update_deadline" class="block text-gray-600 mb-1">Prazo</label>
+                        <input type="date" id="update_deadline" name="deadline" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
 
                     <div>
-                        <label for="status" class="block text-gray-600 mb-1">Estado</label>
+                        <label for="update_status" class="block text-gray-600 mb-1">Estado</label>
                         <select id="update_status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                            <option value="active">Ativo</option>
-                            <option value="inactive">Inativo</option>
+                            <option value="Aberto">Aberto</option>
+                            <option value="Fechado">Fechado</option>
+                            <option value="Arquivado">Arquivado</option>
                         </select>
                     </div>
 
-                    <div>
-                        <label for="plan_id" class="block text-gray-600 mb-1">Plano</label>
-                        <select id="update_plan_id" name="plan_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                            <option value="">Selecione um Plano</option>
-                            <!-- Popule com os IDs dos planos disponíveis -->
-                            @foreach($plans as $plan)
-                                <option value="{{ $plan->id }}">{{ $plan->title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="final_report_id" class="block text-gray-600 mb-1">Relatório Final</label>
-                        <select id="update_final_report_id" name="final_report_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                            <option value="">Selecione um Relatório</option>
-                            <!-- Popule com os IDs dos relatórios disponíveis -->
-                            @foreach($finalReports as $report)
-                                <option value="{{ $report->id }}">{{ $report->title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
                 </div>
 
                 <div class="flex justify-end">
@@ -359,17 +329,17 @@
         }
 
         // Função para modal de visualização das ofertas de estágio
-        function viewModal(id, title, description, companyName, acronym, deadline, planId, reportId, status) {
+        function viewModal(id, title, companyName, description, deadline, institution, course, planId, reportId, status) {
             document.querySelector('#viewModal .modal-content h2').textContent = title;
             document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
                 <div class="ml-4 flex flex-col gap-5">
-                    <p><strong>ID:</strong> ${id}</p>
-                    <p><strong>Título:</strong> ${title}</p>
+                    <p><strong>Empresa:</strong> ${companyName}</p>
                     <p><strong>Descrição:</strong> ${description}</p>
-                    <p><strong>Empresa:</strong> ${companyName} (${acronym})</p>
                     <p><strong>Prazo:</strong> ${deadline}</p>
-                    <p><strong>Plano ID:</strong> ${planId}</p>
-                    <p><strong>Relatório Final ID:</strong> ${reportId}</p>
+                    <p><strong>Instituição:</strong> ${institution}</p>
+                    <p><strong>Curso:</strong> ${course}</p>
+                    <p><strong>Plano:</strong> ${planId}</p>
+                    <p><strong>Relatório Final:</strong> ${reportId}</p>
                     <p><strong>Status:</strong> ${status}</p>
                 </div>
             `;
@@ -389,40 +359,81 @@
         }
 
         // Abrir Modal para fazer uma atualização de uma Oferta de Estágio
-        function updateModal(id, title, description, companyName, acronym, deadline, planId, reportId, status) {
+        function updateModal(id, title, description, deadline, status) {
             openModal('updateModal');
 
             document.getElementById('update_title').value = title;
             document.getElementById('update_description').value = description;
-            document.getElementById('update_company_name').value = companyName;
-            document.getElementById('update_acronym').value = acronym;
-            document.getElementById('update_deadline').value = deadline;
-            document.getElementById('update_plan_id').value = planId;
-            document.getElementById('update_report_id').value = reportId;
-            document.getElementById('update_status').value = status;
+
+            // Conversão simples da data
+            const dateParts = deadline.split(' '); 
+            const day = dateParts[0]; 
+            const month = dateParts[2]; 
+            const year = dateParts[4]; 
+            const monthMap = {
+                'janeiro': '01',
+                'fevereiro': '02',
+                'março': '03',
+                'abril': '04',
+                'maio': '05',
+                'junho': '06',
+                'julho': '07',
+                'agosto': '08',
+                'setembro': '09',
+                'outubro': '10',
+                'novembro': '11',
+                'dezembro': '12'
+            };
+
+            // Formata a data no formato YYYY-MM-DD
+            const formattedDeadline = `${year}-${monthMap[month]}-${day}`;
+            document.getElementById('update_deadline').value = formattedDeadline; 
+
+            document.getElementById('update_status').value = status; 
 
             const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/admin/internship.offers/${id}`;
+            updateForm.action = `/admin/internships-offers/${id}`;
         }
 
         // Função de pesquisa de Ofertas de Estágio
-        function searchInternship() {
+        function searchInternshipOffer() {
             const searchValue = document.getElementById('search').value.toLowerCase();
             const rows = document.querySelectorAll("#internshipOffersTable tbody tr");
 
             rows.forEach(row => {
-                const internshipTitle = row.querySelector(".internship-title").textContent.toLowerCase();
-                const companyName = row.querySelector(".company-name").textContent.toLowerCase();
-                const acronymName = row.querySelector(".acronym-name").textContent.toLowerCase();
+                const internshipTitle = row.querySelector(".internship-title").textContent.toLowerCase(); 
+                const companyName = row.querySelector(".company-name").textContent.toLowerCase(); 
 
-                if (internshipTitle.includes(searchValue) || companyName.includes(searchValue) || acronymName.includes(searchValue)) {
-                    row.style.display = "";
+                // Verifica se o título ou o nome da empresa inclui o valor de pesquisa
+                if (internshipTitle.includes(searchValue) || companyName.includes(searchValue)) {
+                    row.style.display = ""; // Mostra a linha
                 } else {
-                    row.style.display = "none";
+                    row.style.display = "none"; // Esconde a linha
                 }
             });
         }
-  
+
+        function filterCourses() {
+            const institutionId = document.getElementById('institution_id').value;
+            const courseSelect = document.getElementById('course_id');
+            const options = courseSelect.options;
+
+            // Mostra ou esconde as opções de cursos com base na instituição selecionada
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                if (option.value === "") {
+                    continue; 
+                }
+                if (option.getAttribute('data-institution') === institutionId) {
+                    option.style.display = 'block'; // Mostra o curso
+                } else {
+                    option.style.display = 'none'; // Esconde o curso
+                }
+            }
+
+            courseSelect.value = ""; // Limpa a seleção de cursos
+        }
+
     </script>
 
 @endsection
