@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UnitCurricular;
-use App\Models\UcResponsible; 
+use App\Models\UcResponsible;
+use App\Models\UcToStudent;
+use App\Models\UcToResponsible; // Importando o modelo correto
 use App\Models\User; 
 use Illuminate\Support\Str; 
 use App\Http\Resources\UcResponsibleResource; 
+use App\Http\Resources\StudentResource; 
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
@@ -186,4 +189,36 @@ class ResponsibleController extends Controller
 
         return redirect()->route('responsibles.index')->with('success', 'Responsável removido com sucesso!');
     }
+
+    public function listStudents()
+    {
+        // Obtém o usuário logado
+        $user = Auth::user();
+        
+        // Verifica se o usuário é um responsável
+        if ($user->profile !== 'Responsible') {
+            return redirect()->back()->with('error', 'Você não tem permissão para acessar esta página.');
+        }
+        
+        // Supondo que o responsável tenha uma relação com as unidades curriculares que ele gere
+        $responsible = $user->responsible; // Obtém o responsável associado ao usuário
+        
+        if (!$responsible) {
+            return redirect()->back()->with('error', 'Responsável não encontrado.');
+        }
+
+        // Buscar unidades curriculares associadas ao responsável
+        $unitCurricularIds = UcToResponsible::where('uc_responsible_id', $responsible->id)  // Alteração para o campo correto
+                                    ->pluck('uc_id');
+        
+        // Obter os alunos associados a essas unidades curriculares
+        $students = UcToStudent::whereIn('uc_id', $unitCurricularIds)  // Filtra pelas unidades curriculares
+                        ->join('students', 'uc_to_students.student_num', '=', 'students.id')  // Faz o join com os alunos
+                        ->select('students.*')
+                        ->get();
+
+        // Retorna a view com os alunos encontrados
+        return view('users.responsible.students', compact('students'));
+    }
+
 }

@@ -130,6 +130,9 @@ Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class, C
     Route::get('/dashboard', [ResponsibleController::class, 'index'])->name('responsible.dashboard');
     Route::get('/profile', [ResponsibleController::class, 'show'])->name('responsible.profile');
     Route::post('/profile', [ResponsibleController::class, 'store'])->name('responsible.store');
+    Route::get('/students', [ResponsibleController::class, 'listStudents'])->name('responsible.students');
+    Route::post('/students', [ResponsibleController::class, 'store'])->name('responsible.students.store');
+
 });
 
 // Rotas para perfil de empresa
