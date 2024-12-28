@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\App;
 
 class AdminInternshipOffersController extends Controller
 {
@@ -201,5 +204,25 @@ class AdminInternshipOffersController extends Controller
         } else {
             return redirect()->route('admin.internships_offers.index')->with('info', 'Nenhuma oferta foi fechada, todas estão dentro do prazo.');
         }
+    }
+
+    //  Metodo para fazer download da oferta em PDF
+    public function download($id)
+    {
+        $internship_offer = InternshipOffer::with(['company', 'institution', 'course'])->findOrFail($id);
+        
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $dompdf = new Dompdf($options);
+
+        $html = view('pdf.internship_offer', ['internship_offer' => $internship_offer])->render();
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $fileName = $internship_offer->title . '.pdf';
+
+        return $dompdf->stream($fileName, ['Attachment' => true]);
     }
 }
