@@ -78,10 +78,10 @@ class AdminAttendanceRecordsController extends Controller
         $data = $validator->validated();
 
         // Cria um novo registro de presença
-        $attendanceRecord = AttendanceRecord::create($data);
+        $attendance_record = AttendanceRecord::create($data);
 
         // Verifica se o registro foi criado com sucesso
-        if ($attendanceRecord) {
+        if ($attendance_record) {
             // Redireciona para a página de registros de presença com uma mensagem de sucesso
             return redirect()->route('admin.internship_attendance_records.index')->with('success', 'Registro de presença criado com sucesso!');
         } else {
@@ -114,23 +114,21 @@ class AdminAttendanceRecordsController extends Controller
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'internship_offer_id' => 'required|exists:internship_offers,id',
             'date' => 'required|date',
-            'morning_start_time' => 'required|date_format:H:i',
-            'morning_end_time' => 'required|date_format:H:i|after_or_equal:morning_start_time',
-            'afternoon_start_time' => 'required|date_format:H:i',
-            'afternoon_end_time' => 'required|date_format:H:i|after_or_equal:afternoon_start_time',
+            'morning_start' => 'required|date_format:H:i',
+            'morning_end' => 'required|date_format:H:i|after_or_equal:morning_start',
+            'afternoon_start' => 'required|date_format:H:i',
+            'afternoon_end' => 'required|date_format:H:i|after_or_equal:afternoon_start',
             'approval_hours' => 'required|numeric|min:0',
             'summary' => 'nullable|string|max:255',
         ], [
-            'internship_offer_id.required' => 'A oferta de estágio é obrigatória.',
             'date.required' => 'A data é obrigatória.',
-            'morning_start_time.required' => 'O horário de início da manhã é obrigatório.',
-            'morning_end_time.required' => 'O horário de término da manhã é obrigatório.',
-            'morning_end_time.after_or_equal' => 'O horário de término da manhã deve ser igual ou posterior ao horário de início.',
-            'afternoon_start_time.required' => 'O horário de início da tarde é obrigatório.',
-            'afternoon_end_time.required' => 'O horário de término da tarde é obrigatório.',
-            'afternoon_end_time.after_or_equal' => 'O horário de término da tarde deve ser igual ou posterior ao horário de início.',
+            'morning_start.required' => 'O horário de início da manhã é obrigatório.',
+            'morning_end.required' => 'O horário de término da manhã é obrigatório.',
+            'morning_end.after_or_equal' => 'O horário de término da manhã deve ser igual ou posterior ao horário de início.',
+            'afternoon_start.required' => 'O horário de início da tarde é obrigatório.',
+            'afternoon_end.required' => 'O horário de término da tarde é obrigatório.',
+            'afternoon_end.after_or_equal' => 'O horário de término da tarde deve ser igual ou posterior ao horário de início.',
             'approval_hours.required' => 'As horas de aprovação são obrigatórias.',
             'approval_hours.numeric' => 'As horas de aprovação devem ser um número.',
             'approval_hours.min' => 'As horas de aprovação não podem ser menores que 0.',

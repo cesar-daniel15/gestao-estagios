@@ -98,7 +98,7 @@
                                     </a>
 
                                     <!-- Botão Update -->
-                                    <button type="button" onclick="updateModal({{ $attendance_record['id'] }}, '{{ $attendance_record['internship_offer']['title'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['summary'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <button type="button" onclick="updateModal({{ $attendance_record['id'] }}, '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['summary'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -233,11 +233,6 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
-                        <label for="internship_offer" class="block text-gray-600 mb-1">Oferta de Estágio</label>
-                        <input type="text" id="update_internship_offer" name="internship_offer" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
                         <label for="date" class="block text-gray-600 mb-1">Data</label>
                         <input type="date" id="update_date" name="date" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
                     </div>
@@ -361,10 +356,9 @@
         }
 
         // Abrir Modal para fazer uma atualização de um Registro de Presença
-        function updateModal(id, internship_offer, date, morning_start, morning_end, afternoon_start, afternoon_end, approval_hours, summary) {
+        function updateModal(id, date, morning_start, morning_end, afternoon_start, afternoon_end, approval_hours, summary) {
             openModal('updateModal');  
 
-            document.getElementById('update_internship_offer').value = internship_offer;
             document.getElementById('update_date').value = date;
             document.getElementById('update_morning_start').value = morning_start;
             document.getElementById('update_morning_end').value = morning_end;
@@ -374,7 +368,7 @@
             document.getElementById('update_summary').value = summary;
 
             const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/admin/attendance_records/${id}`; 
+            updateForm.action = `/admin/attendance-records/${id}`; 
         }
 
         // Função de pesquisa de Registros de Presença

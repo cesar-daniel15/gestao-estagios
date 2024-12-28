@@ -64,7 +64,7 @@
                         <th class="p-4 border-b text-gray-600">Total de Horas</th>
                         <th class="p-4 border-b text-gray-600">Total de Dias</th>
                         <th class="p-4 border-b text-gray-600">Status</th>
-                        <th class="p-4 border-b text-gray-600">Data de Criação</th>
+                        <th class="p-4 border-b text-gray-600">Avaliação Final</th>
                         <th class="p-4 border-b text-gray-600">Ações</th>
                     </tr>
                 </thead>
@@ -84,7 +84,7 @@
                                     {{ ucfirst($final_report['status']) }}
                                 </span>
                             </td>
-                            <td class="p-4 text-gray-600">{{ $final_report['created_at'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $final_report['final_evaluation'] }}</td>
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
