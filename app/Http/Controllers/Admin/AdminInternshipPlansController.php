@@ -68,7 +68,7 @@ class AdminInternshipPlansController extends Controller
 
         $data = $validator->validated();
 
-         // Verifica se o status esta aprovado e muda o approved_by_uc
+        // Verifica se o status esta aprovado e muda o approved_by_uc
         $data['approved_by_uc'] = ($data['status'] === 'approved') ? 1 : 0;
 
         // Obtem a oferta de estágio correspondente
