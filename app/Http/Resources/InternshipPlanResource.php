@@ -21,9 +21,12 @@ class InternshipPlanResource extends JsonResource
             'start_date' => $this->start_date ? Carbon::parse($this->start_date)->format('d/m/Y') : null,
             'end_date' => $this->end_date ? Carbon::parse($this->end_date)->format('d/m/Y') : null,
             'status' => $this->status ?? 'N/A',
-            'approved_by_uc' => $this->approved_by_uc ? 'Sim' : 'Não', // Return 'Sim' or 'Não'
+            'status' => $this->status === 'pending' ? 'Pendente' : ($this->status === 'approved' ? 'Aprovado' : 'Rejeitado'),
+
+            'approved_by_uc' => $this->approved_by_uc ? 'Sim' : 'Não', 
             'objectives' => $this->objectives ?? 'N/A',
             'planned_activities' => $this->planned_activities ?? 'N/A',
+            'internship_offer_title' => $this->internshipOffer->title ?? 'N/A', 
         ];
     }
 }

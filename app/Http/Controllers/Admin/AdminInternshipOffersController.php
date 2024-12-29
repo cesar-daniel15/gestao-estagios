@@ -32,7 +32,7 @@ class AdminInternshipOffersController extends Controller
     public function index()
     {
         // Obter as ofertas de estágio com os relacionamentos necessários
-        $internship_offers = InternshipOffer::with(['company', 'institution', 'course'])->get();
+        $internship_offers = InternshipOffer::with(['company', 'institution', 'course', 'plans'])->get();
     
         // Obter todas as empresas
         $companies = Company::all();
@@ -80,7 +80,6 @@ class AdminInternshipOffersController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'deadline' => 'nullable|date',
-            'plan_id' => 'nullable|exists:internship_plans,id',
             'final_report_id' => 'nullable|exists:final_reports,id',
             'status' => 'nullable|in:open,closed,archived',
         ]);

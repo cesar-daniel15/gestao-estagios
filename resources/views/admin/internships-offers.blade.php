@@ -102,8 +102,8 @@
                                     </a>
 
                                     <!-- Botão Atualizar -->
-                                    <button type="button" onclick="updateModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ ($internship_offer['status']) }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                    <button type="button" onclick="updateModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ $internship_offer['status'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
                                     </button>

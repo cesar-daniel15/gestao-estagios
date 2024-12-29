@@ -59,6 +59,12 @@
                     <td class="border border-gray-300 p-2"><strong>Data Limite</strong></td>
                     <td class="border border-gray-300 p-2">{{ $internship_offer->deadline }}</td>
                 </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2"><strong>Estado da Oferta</strong></td>
+                    <td class="border border-gray-300 p-2">
+                        {{ $internship_offer->status === 'open' ? 'Aberto' : ($internship_offer->status === 'closed' ? 'Fechado' : 'Arquivado') }}
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -76,24 +82,54 @@
             </tbody>
         </table>
 
-        <h3 class="text-sky-400 text-lg font-bold mt-6 mb-4">Informação Complementar</h3>
+        <h3 class="text-sky-400 text-lg font-bold mt-6 mb-4">Plano de Estágio</h3>
         <table class="min-w-full">
             <tbody>
-                <tr>
-                    <td class="border border-gray-300 p-2"><strong>Status</strong></td>
-                    <td class="border border-gray-300 p-2">
-                        {{ $internship_offer->status === 'open' ? 'Aberto' : ($internship_offer->status === 'closed' ? 'Fechado' : 'Arquivado') }}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="border border-gray-300 p-2"><strong>Plano</strong></td>
-                    <td class="border border-gray-300 p-2">{{ $internship_offer->plan_id ?? 'Indisponível' }}</td>
-                </tr>
-                <tr>
-                    <td class="border border-gray-300 p-2"><strong>Relatório Final</strong></td>
-                    <td class="border border-gray-300 p-2">{{ $internship_offer->final_report_id ?? 'Indisponível' }}</td>
-                </tr>
+                @if($internship_offer->plans && $internship_offer->plans->isNotEmpty())
+                @foreach($internship_offer->plans as $plan)
+                    <tr>
+                        <td class="border border-gray-300 p-2"><strong>Estado do Plano</strong></td>
+                        <td class="border border-gray-300 p-2">
+                            {{ $plan->status === 'pending' ? 'Pendente' : ($plan->status === 'approved' ? 'Aprovado' : 'Rejeitado') }}
+                        </td>
+                    <tr>
+                    <tr>
+                        <td class="border border-gray-300 p-2"><strong>Data de Inicio</strong></td>
+                        <td class="border border-gray-300 p-2">{{ $plan->start_date }}</td>
+                    <tr>
+                    <tr>
+                        <td class="border border-gray-300 p-2"><strong>Data de Fim</strong></td>
+                        <td class="border border-gray-300 p-2">{{ $plan->end_date }}</td>
+                    <tr>
+                    <tr>
+                        <td class="border border-gray-300 p-2"><strong>Objetivos</strong></td>
+                        <td class="border border-gray-300 p-2">{{ $plan->objectives }}</td>
+                    <tr>
+                    <tr>
+                        <td class="border border-gray-300 p-2"><strong>Atividades Planeadas</strong></td>
+                        <td class="border border-gray-300 p-2">{{ $plan->planned_activities }}</td>
+                    @endforeach
+                    @else
+                        Nenhum plano associado.
+                    @endif
             </tbody>
         </table>
+
+        <h3 class="text-sky-400 text-lg font-bold mt-6 mb-4">Relatório Final</h3>
+        <table class="min-w-full">
+            <tbody>
+                @if($internship_offer->final_report_id)
+                    <tr>
+                        <td class="border border-gray-300 p-2"><strong>Relatório ID:</strong></td>
+                        <td class="border border-gray-300 p-2">{{ $internship_offer->final_report_id }}</td>
+                    </tr>
+                @else
+                    <tr>
+                        <td colspan="2" class="border border-gray-300 p-2">Relatório indisponível.</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+
     </div>
 </body>

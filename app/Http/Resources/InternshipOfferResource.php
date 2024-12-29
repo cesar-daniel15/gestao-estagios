@@ -22,7 +22,6 @@ class InternshipOfferResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'deadline' => $this->deadline ? Carbon::parse($this->deadline)->locale('pt')->isoFormat('LL') : 'Sem prazo definido',
-            'plan_id' => $this->plan_id ?? 'Indisponível',
             'final_report_id' => $this->final_report_id ?? 'Indisponível',
             'status' => $this->status === 'open' ? 'Aberto' : ($this->status === 'closed' ? 'Fechado' : 'Arquivado'),
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
@@ -44,10 +43,10 @@ class InternshipOfferResource extends JsonResource
                 'name' => $this->course->name ?? 'Curso não disponível',
             ],
             'plan' => [
-                'id' => $this->plan->id ?? null,
-                'start_date' => $this->plan->start_date ?? null,
-                'end_date' => $this->plan->end_date ?? null,
-                'objectives' => $this->plan->objectives ?? null,
+                'id' => $this->plans->first()->id ?? null, 
+                'start_date' => $this->plans->first()->start_date ?? null,
+                'end_date' => $this->plans->first()->end_date ?? null,
+                'objectives' => $this->plans->first()->objectives ?? null,
             ],
             'final_report' => [
                 'id' => $this->finalReport->id ?? null,
