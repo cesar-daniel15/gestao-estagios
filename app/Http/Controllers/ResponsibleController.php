@@ -8,7 +8,9 @@ use App\Models\UnitCurricular;
 use App\Models\UcResponsible;
 use App\Models\UcToStudent;
 use App\Models\UcToResponsible; // Importando o modelo correto
-use App\Models\User; 
+use App\Models\User;
+use App\Models\Internship;
+ 
 use Illuminate\Support\Str; 
 use App\Http\Resources\UcResponsibleResource; 
 use App\Http\Resources\StudentResource; 
@@ -190,6 +192,27 @@ class ResponsibleController extends Controller
         return redirect()->route('responsibles.index')->with('success', 'Responsável removido com sucesso!');
     }
 
+
+    public function dashboard()
+    {
+        // Pegando todos os alunos com estágio atribuído
+        $students = \App\Models\UcToStudent::whereNotNull('internship_id')->get();
+    
+        // Se não houver alunos com estágio, retornamos um gráfico vazio
+        if ($students->isEmpty()) {
+            $chartData = [];
+        } else {
+            // Agrupar alunos por estágio (internship_id) e contar a quantidade de alunos em cada estágio
+            $chartData = $students->groupBy('internship_id')->map(function ($group) {
+                return $group->count();
+            })->toArray();
+        }
+    
+        return view('responsible.dashboard', compact('chartData'));
+    }
+    
+
+
     public function listStudents()
     {
         // Obtém o usuário logado
@@ -219,6 +242,16 @@ class ResponsibleController extends Controller
 
         // Retorna a view com os alunos encontrados
         return view('users.responsible.students', compact('students'));
+    }
+
+
+
+    public function listInternships()
+    {
+        // Lógica para buscar e passar estágios para a view
+        $internships = Internship::where('responsible_id', auth()->id())->get();
+
+        return view('responsible.internships', compact('internships'));
     }
 
 }

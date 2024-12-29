@@ -40,7 +40,7 @@
 
             <!-- Estágio -->
             <li>
-               <a href="{{ url('/student/internships') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
+               <a href="{{ url('/responsible/internships') }}" class="flex items-center p-2 text-gray-500 hover:text-white rounded-lg hover:bg-sky-400 group">
                <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.6em" viewBox="0 0 48 48" class="ms-2">
                   <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
                      <circle cx="24" cy="11" r="7"/>

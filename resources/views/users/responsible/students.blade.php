@@ -236,6 +236,21 @@
     }
 
 
+        function ViewModal(student) {
+        document.getElementById('modal-id').innerText = student.id;
+        document.getElementById('modal-name-text').innerText = student.name;
+        document.getElementById('modal-phone').innerText = student.phone;
+        document.getElementById('modal-internship-name').innerText = student.internship || 'Nenhum estágio atribuído';
+        document.getElementById('modal-created-at').innerText = student.created_at;
+
+        const picture = document.getElementById('modal-picture-img');
+        picture.src = student.picture || 'placeholder.jpg';
+        picture.alt = `Foto de ${student.name}`;
+
+        openModal('viewModal');
+    }
+
+
 </script>
 
 @endsection
