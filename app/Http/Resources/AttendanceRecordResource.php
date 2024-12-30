@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Carbon\Carbon;
 
 class AttendanceRecordResource extends JsonResource
 {
@@ -17,19 +16,18 @@ class AttendanceRecordResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => [
-                'id' => $this->user->id ?? null,
-                'name' => $this->user->name ?? 'Utilizador não disponível',
-                'email' => $this->user->email ?? 'Email não disponível',
-            ],
-            'internship_offer' => [
-                'id' => $this->internshipOffer->id ?? null,
-                'title' => $this->internshipOffer->title ?? 'Oferta não disponível',
-            ],
-            'check_in' => $this->check_in ? Carbon::parse($this->check_in)->locale('pt')->isoFormat('LLLL') : 'Não disponível',
-            'check_out' => $this->check_out ? Carbon::parse($this->check_out)->locale('pt')->isoFormat('LLLL') : 'Não disponível',
-            'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
-            'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
+            'internship_offer_id' => $this->internship_offer_id,
+            'internship_offer_title' => $this->internshipOffer->title, 
+            'date' => $this->date,
+            'morning_start_time' => $this->morning_start_time,
+            'morning_end_time' => $this->morning_end_time,
+            'afternoon_start_time' => $this->afternoon_start_time,
+            'afternoon_end_time' => $this->afternoon_end_time,
+            'approval_hours' => $this->approval_hours,
+            'summary' => $this->summary,
+            'approval_status' => $this->approval_status === 'pending' ? 'Pendente' : ($this->approval_status === 'approved' ? 'Aprovado' : 'Rejeitado'),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
