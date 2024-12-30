@@ -76,7 +76,7 @@
                     @foreach($internship_plans as $internship_plan)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $internship_plan['id'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $internship_plan['internship_offer_title'] }}</td>
+                            <td class="p-4 text-gray-600 internship_plan-name">{{ $internship_plan['internship_offer_title'] }}</td>
                             <td class="p-4 text-gray-600">{{ $internship_plan['total_hours'] }}</td>
                             <td class="p-4 text-gray-600">
                                 <span class="px-2 py-1 {{ $internship_plan['status'] == 'Aprovado' ? 'bg-green-500' : ($internship_plan['status'] == 'Rejeitado' ? 'bg-red-500' : 'bg-yellow-500') }} text-white rounded-full">
@@ -87,7 +87,7 @@
                                 <div class="flex space-x-2 justify-center">
 
                                     <!-- Botão Update -->
-                                    <button type="button" onclick="updateModal({{ $internship_plan['id'] }}, '{{ $internship_plan['total_hours'] }}', '{{ $internship_plan['start_date'] }}', '{{ $internship_plan['end_date'] }}', '{{ $internship_plan['objectives'] }}', '{{ $internship_plan['planned_activities'] }}', '{{ $internship_plan['status'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <button type="button" onclick="updateModal({{ $internship_plan['id'] }}, {{ $internship_plan['total_hours'] }}, {{ json_encode($internship_plan['start_date']) }}, {{ json_encode($internship_plan['end_date']) }}, {{ json_encode($internship_plan['objectives']) }}, {{ json_encode($internship_plan['planned_activities']) }}, {{ json_encode($internship_plan['status']) }})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -328,10 +328,9 @@
             const rows = document.querySelectorAll("#internshipPlanTable tbody tr");
 
             rows.forEach(row => {
-                const planStatus = row.querySelector(".internship_plan-status").textContent.toLowerCase();
+                const planName = row.querySelector(".internship_plan-name").textContent.toLowerCase();
 
-                // Verifica se o status do plano contém o valor de pesquisa
-                if (planStatus.includes(searchValue)) {
+                if (planName.includes(searchValue)) {
                     row.style.display = ""; 
                 } else {
                     row.style.display = "none"; 
