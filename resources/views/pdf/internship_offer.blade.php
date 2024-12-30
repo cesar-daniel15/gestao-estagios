@@ -92,22 +92,23 @@
                         <td class="border border-gray-300 p-2">
                             {{ $plan->status === 'pending' ? 'Pendente' : ($plan->status === 'approved' ? 'Aprovado' : 'Rejeitado') }}
                         </td>
-                    <tr>
+                    </tr>
                     <tr>
                         <td class="border border-gray-300 p-2"><strong>Data de Inicio</strong></td>
                         <td class="border border-gray-300 p-2">{{ $plan->start_date }}</td>
-                    <tr>
+                    </tr>
                     <tr>
                         <td class="border border-gray-300 p-2"><strong>Data de Fim</strong></td>
                         <td class="border border-gray-300 p-2">{{ $plan->end_date }}</td>
-                    <tr>
+                    </tr>
                     <tr>
                         <td class="border border-gray-300 p-2"><strong>Objetivos</strong></td>
                         <td class="border border-gray-300 p-2">{{ $plan->objectives }}</td>
-                    <tr>
+                    </tr>
                     <tr>
                         <td class="border border-gray-300 p-2"><strong>Atividades Planeadas</strong></td>
                         <td class="border border-gray-300 p-2">{{ $plan->planned_activities }}</td>
+                    </tr>
                     @endforeach
                     @else
                         Nenhum plano associado.
