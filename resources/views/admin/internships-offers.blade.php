@@ -320,31 +320,7 @@
 
             document.getElementById('update_title').value = title;
             document.getElementById('update_description').value = description;
-
-            // Conversão simples da data
-            const dateParts = deadline.split(' '); 
-            const day = dateParts[0]; 
-            const month = dateParts[2]; 
-            const year = dateParts[4]; 
-            const monthMap = {
-                'janeiro': '01',
-                'fevereiro': '02',
-                'março': '03',
-                'abril': '04',
-                'maio': '05',
-                'junho': '06',
-                'julho': '07',
-                'agosto': '08',
-                'setembro': '09',
-                'outubro': '10',
-                'novembro': '11',
-                'dezembro': '12'
-            };
-
-            // Formata a data no formato YYYY-MM-DD
-            const formattedDeadline = `${year}-${monthMap[month]}-${day}`;
-            document.getElementById('update_deadline').value = formattedDeadline; 
-
+            document.getElementById('update_deadline').value = deadline; 
             document.getElementById('update_status').value = status; 
 
             const updateForm = document.getElementById('updateForm');
