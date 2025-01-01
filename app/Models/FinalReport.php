@@ -14,9 +14,10 @@ class FinalReport extends Model
     
     // Campos
     protected $fillable = [
+        'internship_offer_id', 
         'total_hours',          
         'total_days',          
-        'final_report_content',
+        'final_report_file_path',
         'company_evaluation',   
         'final_evaluation',    
         'status',        
@@ -25,6 +26,6 @@ class FinalReport extends Model
     // Relacao com a tabela Internship Ofers
     public function internshipOffer()
     {
-        return $this->hasOne(InternshipOffer::class, 'final_report_id');
+        return $this->belongsTo(InternshipOffer::class, 'internship_offer_id'); 
     }
 }
