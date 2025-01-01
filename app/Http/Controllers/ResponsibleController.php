@@ -9,12 +9,15 @@ use App\Models\UcResponsible;
 use App\Models\UcToStudent;
 use App\Models\UcToResponsible; // Importando o modelo correto
 use App\Models\User;
-use App\Models\Internship;
+use App\Models\Notification;
+use App\Models\Student;
+
  
 use Illuminate\Support\Str; 
 use App\Http\Resources\UcResponsibleResource; 
 use App\Http\Resources\StudentResource; 
-use Illuminate\Support\Facades\Validator; 
+use App\Http\Resources\NotificationResource;
+use Illuminate\Support\Facades\Validator;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -246,12 +249,34 @@ class ResponsibleController extends Controller
 
 
 
-    public function listInternships()
-    {
-        // Lógica para buscar e passar estágios para a view
-        $internships = Internship::where('responsible_id', auth()->id())->get();
 
-        return view('responsible.internships', compact('internships'));
+    public function listNotifications()
+    {
+        // Obtém o ID do responsável autenticado
+        $ucResponsiblesId = Auth::id();
+    
+        // Busca todas as notificações associadas ao responsável
+        $notifications = Notification::where('uc_responsible_id', $ucResponsiblesId)->get();
+    
+        // Busca os responsáveis pela UC associados ao responsável autenticado
+        $ucResponsibles = UcResponsible::with(['users', 'ucs.course.institution'])
+            ->where('id', $ucResponsiblesId)
+            ->get();
+    
+            $students = Student::with(['users', 'ucs.course.institution'])
+            ->whereHas('ucs', function ($query) use ($ucResponsiblesId) {
+                $query->whereHas('uc_to_students', function ($query2) use ($ucResponsiblesId) {
+                    // Verifique a coluna correta de relacionamento
+                    $query2->where('uc_responsible_id', $ucResponsiblesId);
+                });
+            })
+            ->get();
+        
+    
+        // Retorna a view com as notificações, responsáveis e alunos
+        return view('users.responsible.notifications', compact('notifications', 'ucResponsibles', 'students'));
     }
+    
+    
 
 }
