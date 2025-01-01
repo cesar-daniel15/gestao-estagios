@@ -17,13 +17,14 @@ class FinalReportResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'internship_offer_title' => $this->internshipOffer->title ?? 'Não disponível', 
             'total_hours' => $this->total_hours ?? 'Não disponível',
             'total_days' => $this->total_days ?? 'Não disponível',
             'final_report_content' => $this->final_report_content ?? 'Não disponível',
             'company_evaluation' => $this->company_evaluation ?? 'Não disponível',
             'final_evaluation' => $this->final_evaluation ?? 'Não disponível',
-            'status' => $this->status ?? 'Não especificado',
-            'attachment' => $this->attachment ? asset('storage/' . $this->attachment) : null, // URL do anexo ou null
+            'status' => $this->status ?? 'Não disponível',
+            'status' => $this->status === 'submitted' ? 'Submetido' : ($this->status === 'evaluated' ? 'Avalido' : 'Rejeitado'),
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
         ];
