@@ -17,7 +17,7 @@
             <!-- Barra de pesquisa -->
             <div class="relative w-full md:w-auto mb-4 md:mb-0">
                 <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" 
-                    placeholder="Procurar por Instituição" oninput="searchFinalReport()" />
+                    placeholder="Procurar por Relatorio" oninput="searchReport()" />
                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
                     <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
                 </svg>
@@ -61,10 +61,12 @@
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="p-4 border-b text-gray-600">ID</th>
-                        <th class="p-4 border-b text-gray-600">Total de Horas</th>
-                        <th class="p-4 border-b text-gray-600">Total de Dias</th>
-                        <th class="p-4 border-b text-gray-600">Status</th>
+                        <th class="p-4 border-b text-gray-600">Nome Oferta</th>
+                        <th class="p-4 border-b text-gray-600">Avaliação Empresa</th>
                         <th class="p-4 border-b text-gray-600">Avaliação Final</th>
+                        <th class="p-4 border-b text-gray-600">Total Horas</th>
+                        <th class="p-4 border-b text-gray-600">Total Dias</th>
+                        <th class="p-4 border-b text-gray-600">Status</th>
                         <th class="p-4 border-b text-gray-600">Ações</th>
                     </tr>
                 </thead>
@@ -77,26 +79,29 @@
                     @foreach($final_reports as $final_report)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $final_report['id'] }}</td>
+                            <td class="p-4 text-gray-600 finalReport-title">{{ $final_report['internship_offer_title'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $final_report['company_evaluation'] }}</td>
+                            <td class="p-4 text-gray-600">{{ $final_report['final_evaluation'] }}</td>
                             <td class="p-4 text-gray-600">{{ $final_report['total_hours'] }}</td>
                             <td class="p-4 text-gray-600">{{ $final_report['total_days'] }}</td>
                             <td class="p-4 text-gray-600">
-                                <span class="px-2 py-1 {{ $final_report['status'] == 'approved' ? 'bg-green-500' : ($final_report['status'] == 'rejected' ? 'bg-red-500' : 'bg-yellow-500') }} text-white rounded-full">
+                                <span class="px-2 py-1 {{ $final_report['status'] == 'Avaliado' ? 'bg-green-500' : ($final_report['status'] == 'Rejeitado' ? 'bg-red-500' : 'bg-yellow-500') }} text-white rounded-full">
                                     {{ ucfirst($final_report['status']) }}
                                 </span>
                             </td>
-                            <td class="p-4 text-gray-600">{{ $final_report['final_evaluation'] }}</td>
+
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
-                                    <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $final_report['id'] }}, '{{ $final_report['total_hours'] }}', '{{ $final_report['total_days'] }}', '{{ $final_report['final_report_content'] }}', '{{ $final_report['company_evaluation'] }}', '{{ $final_report['final_evaluation'] }}', '{{ $final_report['status'] }}','{{ $final_report['created_at'] }}', '{{ $final_report['attachment'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <!-- Botão PDF -->
+                                    <a href="{{ route('admin.internship_final_reports.download', $final_report['id']) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                            <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                                            <path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
                                         </svg>
                                     </a>
 
                                     <!-- Botão Editar -->
-                                    <button type="button" onclick="updateModal({{ $final_report['id'] }}, '{{ $final_report['total_hours'] }}', '{{ $final_report['total_days'] }}', '{{ $final_report['final_report_content'] }}', '{{ $final_report['company_evaluation'] }}', '{{ $final_report['final_evaluation'] }}', '{{ $final_report['status'] }}', '{{ $final_report['attachment'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <button type="button" onclick="updateModal({{ $final_report['id'] }}, '{{ $final_report['company_evaluation'] }}', '{{ $final_report['final_evaluation'] }}', '{{ $final_report['status'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -134,42 +139,37 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     
                     <div>
-                        <label for="total_hours" class="block text-gray-600 mb-1">Total de Horas</label>
-                        <input type="number" id="total_hours" name="total_hours" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                    </div>
-
-                    <div>
-                        <label for="total_days" class="block text-gray-600 mb-1">Total de Dias</label>
-                        <input type="number" id="total_days" name="total_days" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                    </div>
-
-                    <div>
-                        <label for="final_report_content" class="block text-gray-600 mb-1">Conteúdo do Relatório</label>
-                        <textarea id="final_report_content" name="final_report_content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
+                        <label for="internship_offer_id" class="block text-gray-600 mb-1">Escolha a Oferta de Estágio</label>
+                        <select id="internship_offer_id" name="internship_offer_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                            <option value="">Selecione uma oferta</option>
+                            @foreach($internship_offers as $offer)
+                                <option value="{{ $offer['id'] }}">{{ $offer['id'] }} - {{ $offer['title'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div>
                         <label for="company_evaluation" class="block text-gray-600 mb-1">Avaliação da Empresa</label>
-                        <textarea id="company_evaluation" name="company_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
+                        <input type="number" id="company_evaluation" name="company_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" min="0" max="20">
                     </div>
 
                     <div>
                         <label for="final_evaluation" class="block text-gray-600 mb-1">Avaliação Final</label>
-                        <textarea id="final_evaluation" name="final_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
+                        <input type="number" id="final_evaluation" name="final_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" min="0" max="20">
                     </div>
 
                     <div>
                         <label for="status" class="block text-gray-600 mb-1">Status</label>
                         <select id="status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                            <option value="pending">Pendente</option>
-                            <option value="approved">Aprovado</option>
+                            <option value="submitted">Submetido</option>
                             <option value="rejected">Rejeitado</option>
+                            <option value="evaluated">Avaliado</option>
                         </select>
                     </div>
 
                     <div>
-                        <label for="attachment" class="block text-gray-600 mb-1">Anexo (opcional)</label>
-                        <input type="file" id="attachment" name="attachment" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <label for="final_report_file" class="block text-gray-600 mb-1">Arquivo do Relatório Final (PDF)</label>
+                        <input type="file" id="final_report_file" name="final_report_file" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" accept=".pdf" required>
                     </div>
 
                 </div>
@@ -185,33 +185,6 @@
 
     @if (!empty($final_reports))
 
-    <!-- Modal de Visualização -->
-    <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg relative w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <div class="modal-content flex flex-col">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center" id="modal-final-report-title"></h2>
-                <div class="modal-body flex flex-col md:flex-row">
-                    <!-- Div para dados -->
-                    <div class="w-full md:w-1/2 p-4 flex flex-col data-content">
-                        <p><strong>ID:</strong> <span id="modal-id"></span></p>
-                        <p><strong>Total de Horas:</strong> <span id="modal-total-hours"></span></p>
-                        <p><strong>Total de Dias:</strong> <span id="modal-total-days"></span></p>
-                        <p><strong>Conteúdo do Relatório:</strong> <span id="modal-content"></span></p>
-                        <p><strong>Avaliação da Empresa:</strong> <span id="modal-company-evaluation"></span></p>
-                        <p><strong>Avaliação Final:</strong> <span id="modal-final-evaluation"></span></p>
-                        <p><strong>Status:</strong> <span id="modal-status"></span></p>
-                        <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span></p>
-                        <p><strong>Anexo:</strong> <span id="modal-attachment"><a href="#" id="attachment-link" class="text-sky-400 hover:underline" target="_blank">Baixar anexo</a></span></p>
-                    </div>
-                </div>
-
-                <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
-                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal de Update -->
     <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
@@ -224,43 +197,22 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
-                        <label for="total_hours" class="block text-gray-600 mb-1">Total de Horas</label>
-                        <input type="number" id="update_total_hours" name="total_hours" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ $final_report['total_hours'] }}">
-                    </div>
-
-                    <div>
-                        <label for="total_days" class="block text-gray-600 mb-1">Total de Dias</label>
-                        <input type="number" id="update_total_days" name="total_days" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" value="{{ $final_report['total_days'] }}">
-                    </div>
-
-                    <div>
-                        <label for="final_report_content" class="block text-gray-600 mb-1">Conteúdo do Relatório</label>
-                        <textarea id="update_final_report_content" name="final_report_content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">{{ $final_report['final_report_content'] }}</textarea>
-                    </div>
-
-                    <div>
                         <label for="company_evaluation" class="block text-gray-600 mb-1">Avaliação da Empresa</label>
-                        <textarea id="update_company_evaluation" name="company_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">{{ $final_report['company_evaluation'] }}</textarea>
-                    </div>
+                        <input type="number" id="update_company_evaluation" name="company_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" min="0" max="20" value="{{ $final_report['company_evaluation'] }}" required>
+                        </div>
 
                     <div>
                         <label for="final_evaluation" class="block text-gray-600 mb-1">Avaliação Final</label>
-                        <textarea id="update_final_evaluation" name="final_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">{{ $final_report['final_evaluation'] }}</textarea>
+                        <input type="number" id="update_final_evaluation" name="final_evaluation" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" min="0" max="20" value="{{ $final_report['final_evaluation'] }}" required>
                     </div>
 
                     <div>
-                        <label for="status" class="block text-gray-600 mb-1">Status</label>
+                        <label for="update_status" class="block text-gray-600 mb-1">Status</label>
                         <select id="update_status" name="status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                            <option value="pending" {{ $final_report['status'] == 'Pendente' ? 'selected' : '' }}>Pendente</option>
-                            <option value="approved" {{ $final_report['status'] == 'Aprovado' ? 'selected' : '' }}>Aprovado</option>
-                            <option value="rejected" {{ $final_report['status'] == 'Rejeitado' ? 'selected' : '' }}>Rejeitado</option>
+                            <option value="Submetido">Submetido</option>
+                            <option value="Rejeitado">Rejeitado</option>
+                            <option value="Avaliado">Avaliado</option>
                         </select>
-                    </div>
-
-                    <div>
-                        <label for="current_attachment" class="block text-gray-600 mb-1">Anexo Atual</label>
-                        <a href="{{ Storage::url($final_report['attachment']) }}" target="_blank" class="text-blue-500 hover:underline">Baixar Anexo</a>
-                        <input type="file" id="current_attachment" name="attachment" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2 mt-2">
                     </div>
 
                 </div>
@@ -324,26 +276,6 @@
             modal.classList.add('hidden');
         }
 
-        // Função para modal de visualização dos relatórios
-        function viewModal(id, totalHours, totalDays, content, companyEvaluation, finalEvaluation, status, createdAt, attachment) {
-            document.querySelector('#viewModal .modal-content h2').textContent = `Relatório #${id}`;
-            document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
-                <div class="ml-4 flex flex-col gap-5">
-                    <p><strong>ID:</strong> ${id}</p>
-                    <p><strong>Total de Horas:</strong> ${totalHours}</p>
-                    <p><strong>Total de Dias:</strong> ${totalDays}</p>
-                    <p><strong>Conteúdo:</strong> ${content}</p>
-                    <p><strong>Avaliação da Empresa:</strong> ${companyEvaluation}</p>
-                    <p><strong>Avaliação Final:</strong> ${finalEvaluation}</p>
-                    <p><strong>Status:</strong> ${status}</p>
-                    <p><strong>Data de Criação:</strong> ${createdAt}</p>
-                    <p><strong>Anexo:</strong> <a href="${attachment}" target="_blank">Baixar Anexo</a></p>
-                </div>
-            `;
-
-            openModal('viewModal');
-        }
-
         // Abrir Modal para apagar um Relatório
         function openDeleteModal(id) {
             openModal('deleteModal');  
@@ -356,18 +288,12 @@
         }
 
         // Abrir Modal para fazer uma atualização de um Relatório
-        function updateModal(id, totalHours, totalDays, content, companyEvaluation, finalEvaluation, status, attachment) {
+        function updateModal(id,companyEvaluation, finalEvaluation, status) {
             openModal('updateModal');
 
-            document.getElementById('update_total_hours').value = totalHours;
-            document.getElementById('update_total_days').value = totalDays;
-            document.getElementById('update_final_report_content').value = content;
             document.getElementById('update_company_evaluation').value = companyEvaluation;
             document.getElementById('update_final_evaluation').value = finalEvaluation;
             document.getElementById('update_status').value = status;
-            document.getElementById('current_attachment').innerHTML = `
-                <a href="${attachment}" target="_blank">Baixar Anexo Atual</a>
-            `;
 
             const updateForm = document.getElementById('updateForm');
             updateForm.action = `/admin/final-reports/${id}`;
@@ -379,11 +305,8 @@
             const rows = document.querySelectorAll("#finalReportTable tbody tr");
 
             rows.forEach(row => {
-                const reportContent = row.querySelector(".finalReport-content").textContent.toLowerCase();
-                row.style.display = finalReportContent.includes(searchValue) ? "" : "none";
-
-                const reportId = row.querySelector(".finalReport-id").textContent.toLowerCase();
-                row.style.display = finalReportId.includes(searchValue) ? "" : "none";
+                const reportContent = row.querySelector(".finalReport-title").textContent.toLowerCase();
+                row.style.display = reportContent.includes(searchValue) ? "" : "none"; 
             });
         }
 

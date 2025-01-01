@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('phone'); // Contacto  do aluno
             $table->string('picture')->nullable(); // Foto 
-            $table->unsignedBigInteger('assigned_internship_id')->nullable(); // FK para o estagio
+            $table->unsignedBigInteger('assigned_internship_id')->nullable()->unique(); // FK para o estágio
             $table->timestamps();
 
             // Fk's
-            $table->foreign('assigned_internship_id')->references('id')->on('internship_offers'); 
+            $table->foreign('assigned_internship_id')->references('id')->on('internship_offers')->onDelete('set null'); 
 
         });
     }

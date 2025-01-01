@@ -20,8 +20,6 @@ class InternshipOffer extends Model
         'title',
         'description',
         'deadline',
-        'plan_id',
-        'final_report_id',
         'status',
     ];
 
@@ -44,21 +42,21 @@ class InternshipOffer extends Model
     }
 
     // Relacao com a  tabela Internship Plans
-    public function plan()
+    public function plans()
     {
-        return $this->belongsTo(InternshipPlan::class, 'plan_id');
+        return $this->hasMany(InternshipPlan::class, 'internship_offer_id'); 
     }
 
     // Relacao com a tabela Final Reports
-    public function finalReport()
+    public function finalReports()
     {
-        return $this->belongsTo(FinalReport::class, 'final_report_id');
+        return $this->hasMany(FinalReport::class, 'internship_offer_id'); 
     }
 
     // Relacao com a tabela Students
-    public function students()
+    public function student()
     {
-        return $this->hasMany(Student::class, 'assigned_internship_id');
+        return $this->hasOne(Student::class, 'assigned_internship_id');
     }
 
     // Relacao com a tabela Attendance Record

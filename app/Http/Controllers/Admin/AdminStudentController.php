@@ -12,10 +12,12 @@ use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Institution; // Import do Model Institution
 use App\Models\Course; // Import do Model Course
-use App\Models\UnitCurricular; // Import do Model UnitCurricular
+use App\Models\UnitCurricular; // Import do Model 
+use App\Models\InternshipOffer;
 use App\Http\Resources\UnitResource; // Import do UnitResource
 use App\Http\Resources\InstitutionResource;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\InternshipPlanResource;
 
 class AdminStudentController extends Controller
 {
@@ -31,12 +33,14 @@ class AdminStudentController extends Controller
         $unitCurriculars = UnitCurricular::all();
         $institutions = Institution::all();
         $courses = Course::all();
+        $internshipOffers = InternshipOffer::all();
 
         return view('admin.students', [
             'students' => StudentResource::collection($students)->resolve() ?? [],
             'unitCurriculars' => UnitResource::collection($unitCurriculars)->resolve() ?? [],
             'institutions' => InstitutionResource::collection($institutions)->resolve() ?? [],
-            'courses' => CourseResource::collection($courses)->resolve() ?? []
+            'courses' => CourseResource::collection($courses)->resolve() ?? [],
+            'internshipOffers' => $internshipOffers
         ]);
 
         // Retorna para view com os alunos

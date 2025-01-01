@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('title'); // Titulo
             $table->text('description'); // Descricao
             $table->date('deadline'); // Prazo
-            $table->unsignedBigInteger('plan_id')->nullable(); // FK para Internship_Plans
-            $table->unsignedBigInteger('final_report_id')->nullable(); // FK para Final_Reports
             $table->enum('status', ['open', 'closed', 'archived'])->default('open'); // Status
             $table->timestamps();
 
@@ -28,8 +26,6 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('institution_id')->references('id')->on('institutions')->onDelete('cascade');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->foreign('plan_id')->references('id')->on('internship_plans')->onDelete('set null');
-            $table->foreign('final_report_id')->references('id')->on('final_reports')->onDelete('set null');
         });
     }
 
