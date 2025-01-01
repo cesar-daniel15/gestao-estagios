@@ -115,22 +115,6 @@
                     @endif
             </tbody>
         </table>
-
-        <h3 class="text-sky-400 text-lg font-bold mt-6 mb-4">Relatório Final</h3>
-        <table class="min-w-full">
-            <tbody>
-                @if($internship_offer->final_report_id)
-                    <tr>
-                        <td class="border border-gray-300 p-2"><strong>Relatório ID:</strong></td>
-                        <td class="border border-gray-300 p-2">{{ $internship_offer->final_report_id }}</td>
-                    </tr>
-                @else
-                    <tr>
-                        <td colspan="2" class="border border-gray-300 p-2">Relatório indisponível.</td>
-                    </tr>
-                @endif
-            </tbody>
-        </table>
-
+        
     </div>
 </body>
