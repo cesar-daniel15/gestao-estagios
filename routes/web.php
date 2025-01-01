@@ -108,6 +108,7 @@ Route::prefix('admin')->middleware(['auth', CheckVerifiedAccount::class])->group
     Route::post('/final-reports', [AdminFinalReportsController::class, 'store'])->name('admin.internship_final_reports.store');
     Route::put('/final-reports/{final_report}', [AdminFinalReportsController::class, 'update'])->name('admin.internship_final_reports.update');
     Route::delete('/final-reports/{final_report}', [AdminFinalReportsController::class, 'destroy'])->name('admin.internship_final_reports.destroy');
+    Route::get('/final-reports/{final_report}/download', [AdminFinalReportsController::class, 'download'])->name('admin.internship_final_reports.download');
 
 });
 
