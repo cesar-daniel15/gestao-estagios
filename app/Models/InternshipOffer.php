@@ -21,7 +21,6 @@ class InternshipOffer extends Model
         'description',
         'deadline',
         'status',
-        'final_report_id',
     ];
 
     // Relacao com a tabela Company
@@ -49,9 +48,9 @@ class InternshipOffer extends Model
     }
 
     // Relacao com a tabela Final Reports
-    public function finalReport()
+    public function finalReports()
     {
-        return $this->belongsTo(FinalReport::class, 'final_report_id');
+        return $this->hasMany(FinalReport::class, 'internship_offer_id'); 
     }
 
     // Relacao com a tabela Students
