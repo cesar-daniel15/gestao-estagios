@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('final_reports', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('internship_offer_id')->constrained('internship_offers')->onDelete('cascade'); 
             $table->integer('total_hours'); // Total de horas
             $table->integer('total_days'); // Total de dias
-            $table->text('final_report_content'); // Conteúdo do relatório final
-            $table->text('company_evaluation'); // Avaliação da empresa
-            $table->text('final_evaluation'); // Avaliação final
-            $table->enum('status', ['draft', 'submitted', 'approved', 'rejected']); // Status
+            $table->string('final_report_file_path'); // Caminho para o ficheiro do relatorio final
+            $table->text('company_evaluation')->nullable(); // Avaliação da empresa
+            $table->text('final_evaluation')->nullable(); // Avaliação final
+            $table->enum('status', [ 'submitted', 'evaluated', 'rejected']); // Status
             $table->timestamps();
         });
     }
