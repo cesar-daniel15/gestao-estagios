@@ -69,8 +69,14 @@ class AuthController extends Controller
     {   
         // Validacao dos dados
         $loginUserData = $request->validate([
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|exists:users,email', 
             'password' => 'required||string|min:8',
+        ], [
+            'email.required' => 'O e-mail é obrigatório',
+            'email.email' => 'O e-mail deve ser um e-mail válido',
+            'email.exists' => 'Não existe nenhuma conta associada a este e-mail.',
+            'password.required' => 'A password é obrigatória',
+            'password.min' => 'A password deve ter pelo menos 8 valores',
         ]);
 
         // Verifica se existe um user com esse email
