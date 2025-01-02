@@ -119,7 +119,7 @@ class AdminAttendanceRecordsController extends Controller
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'approval_status' => 'nullable|string',
+            'approval_status' => 'nullable|string|in:Pendente,Aprovado,Rejeitado',
             'date' => 'nullable|date',
             'morning_start_time' => 'nullable|date_format:H:i',
             'morning_end_time' => 'nullable|date_format:H:i|after_or_equal:morning_start_time',
