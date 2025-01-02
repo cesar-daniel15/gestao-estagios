@@ -243,7 +243,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
-                        <label for="approval_status" class="block text-gray-600 mb-1">Status</label>
+                        <label for="update_approval_status" class="block text-gray-600 mb-1">Status</label>
                         <select id="update_approval_status" name="approval_status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                             <option value="Pendente">Pendente</option>
                             <option value="Aprovado">Aprovado</option>
