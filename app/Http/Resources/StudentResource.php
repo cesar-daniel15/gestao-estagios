@@ -29,7 +29,10 @@ class StudentResource extends JsonResource
             'id' => $this->id,
             'phone' => $this->phone,
             'picture' => $this->picture ? asset('storage/' . $this->picture) : asset('images/uploads/default-user.png'),
-            'assigned_internship_id' => $this->assigned_internship_id  ?? 'Sem Estágio' , 
+            'assigned_internship_id' => $this->assigned_internship_id ?? 'Sem Estágio',
+                'internship_offer' => [
+                        'title' => $this->internshipOffer->title ?? 'Sem Estágio',
+                    ],
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
             'ucs' => $this->ucs->map(function ($uc) {

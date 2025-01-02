@@ -94,16 +94,16 @@
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
-                                    <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['company']['users']['name'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ $internship_offer['institution']['acronym'] }}', '{{ $internship_offer['course']['name'] }}', '{{ $internship_offer['plan_id'] }}', '{{ $internship_offer['final_report_id'] }}', '{{ $internship_offer['status'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <!-- Botão PDF -->
+                                    <a href="{{ route('admin.internship_offers.download', $internship_offer['id']) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                            <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                                            <path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
                                         </svg>
                                     </a>
 
                                     <!-- Botão Atualizar -->
-                                    <button type="button" onclick="updateModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ ($internship_offer['status']) }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                    <button type="button" onclick="updateModal({{ $internship_offer['id'] }}, '{{ $internship_offer['title'] }}', '{{ $internship_offer['description'] }}', '{{ $internship_offer['deadline'] }}', '{{ $internship_offer['status'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
                                     </button>
@@ -211,34 +211,6 @@
 
     @if (!empty($internship_offers))
 
-    <!-- Modal de Visualização de Oferta de Estágio -->
-    <div id="viewModal" class="fixed inset-0 items-center bg-black bg-opacity-50 justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg relative w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <div class="modal-content flex flex-col">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center" id="modal-title"></h2>
-                <div class="modal-body flex flex-col md:flex-row">
-                    <!-- Div para os dados -->
-                    <div class="w-full p-4 flex flex-col data-content">
-                        <p><strong>ID:</strong> <span id="modal-id"></span></p>
-                        <p><strong>Empresa:</strong> <span id="modal-company"></span></p>
-                        <p><strong>Instituição:</strong> <span id="modal-institution"></span></p>
-                        <p><strong>Curso:</strong> <span id="modal-course"></span></p>
-                        <p><strong>Descrição:</strong> <span id="modal-description"></span></p>
-                        <p><strong>Plano:</strong> <span id="modal-plan"></span></p>
-                        <p><strong>Relatório Final:</strong> <span id="modal-final-report"></span></p>
-                        <p><strong>Prazo:</strong> <span id="modal-deadline"></span></p>
-                        <p><strong>Estado:</strong> <span id="modal-status"></span></p>
-                        <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span></p>
-                    </div>
-                </div>
-
-                <div class="modal-footer flex justify-end absolute top-0 right-0 p-5">
-                    <button type="button" class="text-gray-600 hover:text-gray-800 text-3xl font-bold" onclick="closeModal('viewModal')">×</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal de Atualização de Oferta de Estágio -->
     <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
@@ -331,25 +303,6 @@
             modal.classList.add('hidden');
         }
 
-        // Função para modal de visualização das ofertas de estágio
-        function viewModal(id, title, companyName, description, deadline, institution, course, planId, reportId, status) {
-            document.querySelector('#viewModal .modal-content h2').textContent = title;
-            document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
-                <div class="ml-4 flex flex-col gap-5">
-                    <p><strong>Empresa:</strong> ${companyName}</p>
-                    <p><strong>Descrição:</strong> ${description}</p>
-                    <p><strong>Prazo:</strong> ${deadline}</p>
-                    <p><strong>Instituição:</strong> ${institution}</p>
-                    <p><strong>Curso:</strong> ${course}</p>
-                    <p><strong>Plano:</strong> ${planId}</p>
-                    <p><strong>Relatório Final:</strong> ${reportId}</p>
-                    <p><strong>Status:</strong> ${status}</p>
-                </div>
-            `;
-
-            openModal('viewModal');
-        }
-
         // Abrir Modal para apagar uma Oferta de Estágio
         function openDeleteModal(id) {
             openModal('deleteModal');
@@ -367,31 +320,7 @@
 
             document.getElementById('update_title').value = title;
             document.getElementById('update_description').value = description;
-
-            // Conversão simples da data
-            const dateParts = deadline.split(' '); 
-            const day = dateParts[0]; 
-            const month = dateParts[2]; 
-            const year = dateParts[4]; 
-            const monthMap = {
-                'janeiro': '01',
-                'fevereiro': '02',
-                'março': '03',
-                'abril': '04',
-                'maio': '05',
-                'junho': '06',
-                'julho': '07',
-                'agosto': '08',
-                'setembro': '09',
-                'outubro': '10',
-                'novembro': '11',
-                'dezembro': '12'
-            };
-
-            // Formata a data no formato YYYY-MM-DD
-            const formattedDeadline = `${year}-${monthMap[month]}-${day}`;
-            document.getElementById('update_deadline').value = formattedDeadline; 
-
+            document.getElementById('update_deadline').value = deadline; 
             document.getElementById('update_status').value = status; 
 
             const updateForm = document.getElementById('updateForm');

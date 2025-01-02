@@ -62,7 +62,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'name' => 'César Sá',
-            'email' => 'cesar.sa@example.com',
+            'email' => 'cesar.sa@gmail.com',
             'password' => Hash::make('password'),
             'profile' => 'Student',
             'account_is_verified' => true,
@@ -74,7 +74,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'name' => 'Ruben Benedito',
-            'email' => 'ruben.benedito@example.com',
+            'email' => 'ruben.benedito@gmail.com',
             'password' => Hash::make('password'),
             'profile' => 'Student',
             'account_is_verified' => true,
@@ -86,7 +86,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'name' => 'Tiago Silva',
-            'email' => 'tiago.silva@example.com',
+            'email' => 'tiago.silva@gmail.com',
             'password' => Hash::make('password'),
             'profile' => 'Responsible',
             'account_is_verified' => true,

@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\App;
 
 class AdminInternshipOffersController extends Controller
 {
@@ -29,7 +32,7 @@ class AdminInternshipOffersController extends Controller
     public function index()
     {
         // Obter as ofertas de estágio com os relacionamentos necessários
-        $internship_offers = InternshipOffer::with(['company', 'institution', 'course'])->get();
+        $internship_offers = InternshipOffer::with(['company', 'institution', 'course', 'plans'])->get();
     
         // Obter todas as empresas
         $companies = Company::all();
@@ -77,7 +80,6 @@ class AdminInternshipOffersController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'deadline' => 'nullable|date',
-            'plan_id' => 'nullable|exists:internship_plans,id',
             'final_report_id' => 'nullable|exists:final_reports,id',
             'status' => 'nullable|in:open,closed,archived',
         ]);
@@ -201,5 +203,25 @@ class AdminInternshipOffersController extends Controller
         } else {
             return redirect()->route('admin.internships_offers.index')->with('info', 'Nenhuma oferta foi fechada, todas estão dentro do prazo.');
         }
+    }
+
+    //  Metodo para fazer download da oferta em PDF
+    public function download($id)
+    {
+        $internship_offer = InternshipOffer::with(['company', 'institution', 'course'])->findOrFail($id);
+        
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $dompdf = new Dompdf($options);
+
+        $html = view('pdf.internship_offer', ['internship_offer' => $internship_offer])->render();
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $fileName = $internship_offer->title . '.pdf';
+
+        return $dompdf->stream($fileName, ['Attachment' => true]);
     }
 }

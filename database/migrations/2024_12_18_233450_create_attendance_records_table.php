@@ -19,8 +19,9 @@ return new class extends Migration
             $table->time('morning_end_time'); // Fim da manhã
             $table->time('afternoon_start_time'); // Início da tarde
             $table->time('afternoon_end_time'); // Fim da tarde
-            $table->integer('approval_hours'); // Horas aprovadas
+            $table->string('approval_hours'); // Horas para serem aprovadas
             $table->text('summary'); // Resumo
+            $table->enum('approval_status', ['pending', 'approved', 'rejected'])->default('pending'); // Status de aprovação por parte da empresa
             $table->timestamps();
 
             $table->foreign('internship_offer_id')->references('id')->on('internship_offers')->onDelete('cascade');

@@ -14,13 +14,28 @@
         </div>
         <div class="flex flex-col gap-5 md:flex-row justify-between items-center my-5">
 
-            <!-- Barra de pesquisa -->
-            <div class="relative w-full md:w-auto mb-4 md:mb-0">
-                <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" 
-                    placeholder="Procurar por Registo" oninput="searchAttendanceRecord()" />
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
-                    <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
-                </svg>
+            <div class="flex flex-col md:flex-row">
+                <!-- Barra de pesquisa -->
+                <div class="relative w-full md:w-auto mb-4 md:mb-0">
+                    <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" 
+                        placeholder="Procurar por Registo" oninput="searchAttendanceRecord()" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                        <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
+                    </svg>
+                </div>
+
+                <!-- Filtro de Status -->
+                <div class="relative w-auto md:ms-5 mt-4 md:mt-0">
+                    <select id="search-status" class="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" onchange="searchByStatus()">
+                        <option value="" disabled selected>Procurar por Status</option>
+                        <option value="Aprovado">Aprovado</option>
+                        <option value="Rejeitado">Rejeitado</option>
+                        <option value="Pendente">Pendente</option>
+                    </select>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                        <path fill="#9c9c9c" d="M2 8a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2z"/>
+                    </svg>
+                </div>
             </div>
 
             <div class="flex gap-4">
@@ -41,6 +56,7 @@
                         Atualizar
                     </button>
                 </div>
+
             </div>
         </div>
 
@@ -57,17 +73,14 @@
 
         <!-- Tabela Registros de Presença -->
         <div class="overflow-x-auto">
-            <table class="table-auto w-full border-collapse text-center text-sm overflow-hidden rounded-xl" id="attendanceRecordTable">
+            <table class="table-auto w-full border-collapse text-center text-sm overflow-hidden rounded-xl hidden" id="attendanceRecordTable">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="p-4 border-b text-gray-600">ID</th>
                         <th class="p-4 border-b text-gray-600">Oferta de Estágio</th>
                         <th class="p-4 border-b text-gray-600">Data</th>
-                        <th class="p-4 border-b text-gray-600">Início Manhã</th>
-                        <th class="p-4 border-b text-gray-600">Fim Manhã</th>
-                        <th class="p-4 border-b text-gray-600">Início Tarde</th>
-                        <th class="p-4 border-b text-gray-600">Fim Tarde</th>
                         <th class="p-4 border-b text-gray-600">Horas de Aprovação</th>
+                        <th class="p-4 border-b text-gray-600">Status de Aprovação</th>
                         <th class="p-4 border-b text-gray-600">Ações</th>
                     </tr>
                 </thead>
@@ -80,25 +93,26 @@
                     @foreach($attendance_records as $attendance_record)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $attendance_record['id'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $attendance_record['internship_offer']['title'] ?? 'Oferta não disponível' }}</td>
+                            <td class="p-4 text-gray-600 internship-offer">{{ $attendance_record['internship_offer_title'] ?? 'Oferta não disponível' }}</td>
                             <td class="p-4 text-gray-600">{{ $attendance_record['date'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $attendance_record['morning_start_time'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $attendance_record['morning_end_time'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $attendance_record['afternoon_start_time'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $attendance_record['afternoon_end_time'] }}</td>
                             <td class="p-4 text-gray-600">{{ $attendance_record['approval_hours'] }}</td>
+                            <td class="p-4 text-gray-600 internship-offer-status">
+                                <span class="px-2 py-1 {{ $attendance_record['approval_status'] == 'Aprovado' ? 'bg-green-500' : ($attendance_record['approval_status'] == 'Rejeitado' ? 'bg-red-500' : 'bg-yellow-500') }} text-white rounded-full">
+                                    {{ $attendance_record['approval_status'] }}
+                                </span>
+                            </td>
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
                                     <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $attendance_record['id'] }}, '{{ $attendance_record['internship_offer']['title'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['summary'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a onclick="viewModal({{ $attendance_record['id'] }}, '{{ $attendance_record['internship_offer_title'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['summary'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
                                     </a>
 
-                                    <!-- Botão Update -->
-                                    <button type="button" onclick="updateModal({{ $attendance_record['id'] }}, '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['approval_hours'] }}', '{{ $attendance_record['summary'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <!-- Botão Editar -->
+                                    <button type="button" onclick="updateModal({{ $attendance_record['id'] }}, '{{ $attendance_record['approval_status'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['summary'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
                                         </svg>
@@ -170,12 +184,7 @@
                         <input type="time" id="afternoon_end_time" name="afternoon_end_time" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                     </div>
 
-                    <div>
-                        <label for="approval_hours" class="block text-gray-600 mb-1">Horas de Aprovação</label>
-                        <input type="number" id="approval_hours" name="approval_hours" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required min="0">
-                    </div>
-
-                    <div>
+                    <div class="col-span-2">
                         <label for="summary" class="block text-gray-600 mb-1">Sumário</label>
                         <textarea id="summary" name="summary" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
                     </div>
@@ -233,38 +242,42 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
                     <div>
+                        <label for="update_approval_status" class="block text-gray-600 mb-1">Status</label>
+                        <select id="update_approval_status" name="approval_status" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                            <option value="Pendente">Pendente</option>
+                            <option value="Aprovado">Aprovado</option>
+                            <option value="Rejeitado">Rejeitado</option>
+                        </select>
+                    </div>
+
+                    <div>
                         <label for="date" class="block text-gray-600 mb-1">Data</label>
-                        <input type="date" id="update_date" name="date" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <input type="date" id="update_date" name="date" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required readonly> 
                     </div>
 
                     <div>
                         <label for="morning_start" class="block text-gray-600 mb-1">Início Manhã</label>
-                        <input type="time" id="update_morning_start" name="morning_start" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <input type="time" id="update_morning_start" name="morning_start" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required readonly>
                     </div>
 
                     <div>
                         <label for="morning_end" class="block text-gray-600 mb-1">Fim Manhã</label>
-                        <input type="time" id="update_morning_end" name="morning_end" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <input type="time" id="update_morning_end" name="morning_end" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required readonly>
                     </div>
 
                     <div>
                         <label for="afternoon_start" class="block text-gray-600 mb-1">Início Tarde</label>
-                        <input type="time" id="update_afternoon_start" name="afternoon_start" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <input type="time" id="update_afternoon_start" name="afternoon_start" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required readonly>
                     </div>
 
                     <div>
                         <label for="afternoon_end" class="block text-gray-600 mb-1">Fim Tarde</label>
-                        <input type="time" id="update_afternoon_end" name="afternoon_end" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
+                        <input type="time" id="update_afternoon_end" name="afternoon_end" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required readonly>
                     </div>
 
-                    <div>
-                        <label for="approval_hours" class="block text-gray-600 mb-1">Horas de Aprovação</label>
-                        <input type="number" id="update_approval_hours" name="approval_hours" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
+                    <div class="col-span-2">
                         <label for="summary" class="block text-gray-600 mb-1">Sumário</label>
-                        <textarea id="update_summary" name="summary" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2"></textarea>
+                        <textarea id="update_summary" name="summary" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required></textarea>
                     </div>
 
                 </div>
@@ -356,15 +369,15 @@
         }
 
         // Abrir Modal para fazer uma atualização de um Registro de Presença
-        function updateModal(id, date, morning_start, morning_end, afternoon_start, afternoon_end, approval_hours, summary) {
+        function updateModal(id, approval_status, date, morning_start, morning_end, afternoon_start, afternoon_end, summary) {
             openModal('updateModal');  
 
+            document.getElementById('update_approval_status').value = approval_status;
             document.getElementById('update_date').value = date;
             document.getElementById('update_morning_start').value = morning_start;
             document.getElementById('update_morning_end').value = morning_end;
             document.getElementById('update_afternoon_start').value = afternoon_start;
             document.getElementById('update_afternoon_end').value = afternoon_end;
-            document.getElementById('update_approval_hours').value = approval_hours;
             document.getElementById('update_summary').value = summary;
 
             const updateForm = document.getElementById('updateForm');
@@ -378,17 +391,22 @@
 
             rows.forEach(row => {
                 const internshipOffer = row.querySelector(".internship-offer").textContent.toLowerCase();
-                const date = row.querySelector(".attendanceRecord-date").textContent.toLowerCase();
-                
-                // Verifica se qualquer um dos dois campos (internshipOffer ou date) inclui o valor de pesquisa
-                if (internshipOffer.includes(searchValue) || date.includes(searchValue)) {
-                    row.style.display = ""; // Exibe a linha se corresponder ao valor de pesquisa
-                } else {
-                    row.style.display = "none"; // Oculta a linha se nenhum campo corresponder
-                }
+                row.style.display = internshipOffer.includes(searchValue) ? "" : "none";
             });
         }
 
+        // Pesquisar por status
+        function searchByStatus() {
+            const selectedStatus = document.getElementById('search-status').value;
+            const rows = document.querySelectorAll("#attendanceRecordTable tbody tr");
+
+            rows.forEach(row => {
+                const statusElement = row.querySelector(".internship-offer-status span");
+                const statusText = statusElement ? statusElement.textContent.trim() : "";
+
+                row.style.display = (selectedStatus === "" || statusText === selectedStatus) ? "" : "none";
+            });
+        }
     </script>
 
 

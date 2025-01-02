@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('internship_plans', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('internship_offer_id'); // FK para Internship Offers
             $table->integer('total_hours'); // Total de horas
             $table->date('start_date'); // Data de início
             $table->date('end_date'); // Data do fim
@@ -21,6 +22,9 @@ return new class extends Migration
             $table->boolean('approved_by_uc')->default(false); // Aprovado pela UC
             $table->enum('status', ['pending', 'approved', 'rejected']); // Status
             $table->timestamps();
+
+            // Ligação da FK
+            $table->foreign('internship_offer_id')->references('id')->on('internship_offers')->onDelete('cascade'); 
         });
     }
 

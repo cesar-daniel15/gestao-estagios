@@ -20,12 +20,13 @@ class InternshipPlan extends Model
         'objectives',          
         'planned_activities', 
         'approved_by_uc',     
-        'status',      
+        'status',  
+        'internship_offer_id',     
     ];
 
     //  Relacao com a tabela Internship Offers
-    public function internshipOffers()
+    public function internshipOffer()
     {
-        return $this->hasMany(InternshipOffer::class, 'plan_id');
+        return $this->belongsTo(InternshipOffer::class, 'internship_offer_id'); 
     }
 }
