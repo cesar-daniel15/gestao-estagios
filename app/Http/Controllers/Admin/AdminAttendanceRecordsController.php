@@ -125,7 +125,7 @@ class AdminAttendanceRecordsController extends Controller
             'morning_end_time' => 'nullable|date_format:H:i|after_or_equal:morning_start_time',
             'afternoon_start_time' => 'nullable|date_format:H:i',
             'afternoon_end_time' => 'nullable|date_format:H:i|after_or_equal:afternoon_start_time',
-            'summary' => 'nullable|string|max:255',
+            'summary' => 'required|string|max:1000',
         ]);
     
         // Se a validação falhar
