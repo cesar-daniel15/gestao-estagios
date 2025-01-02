@@ -111,7 +111,6 @@
                                         </svg>
                                     </a>
 
-
                                     <!-- Botão Editar -->
                                     <button type="button" onclick="updateModal({{ $attendance_record['id'] }}, '{{ $attendance_record['approval_status'] }}', '{{ $attendance_record['date'] }}', '{{ $attendance_record['morning_start_time'] }}', '{{ $attendance_record['morning_end_time'] }}', '{{ $attendance_record['afternoon_start_time'] }}', '{{ $attendance_record['afternoon_end_time'] }}', '{{ $attendance_record['summary'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
@@ -408,7 +407,6 @@
                 row.style.display = (selectedStatus === "" || statusText === selectedStatus) ? "" : "none";
             });
         }
-
     </script>
 
 
