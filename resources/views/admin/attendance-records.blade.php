@@ -404,7 +404,6 @@
                 const statusElement = row.querySelector(".internship-offer-status span");
                 const statusText = statusElement ? statusElement.textContent.trim() : "";
 
-                // Verifica se a linha deve ser exibida ou não
                 row.style.display = (selectedStatus === "" || statusText === selectedStatus) ? "" : "none";
             });
         }
