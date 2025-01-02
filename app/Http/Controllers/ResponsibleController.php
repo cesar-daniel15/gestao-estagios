@@ -56,54 +56,30 @@ class ResponsibleController extends Controller
 
         // Validação
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|max:9|unique:uc_responsibles,phone' . ($responsible ? ',' . $responsible->id : ''),
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ], [
-            'phone.required' => 'O campo telefone é obrigatório',
-            'phone.string' => 'O telefone deve ser uma string',
-            'phone.max' => 'O telefone não pode ter mais de 9 caracteres',
-            'phone.unique' => 'O telefone já está em uso',
-            'picture.image' => 'O arquivo deve ser uma imagem',
-            'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif',
-            'picture.max' => 'A imagem não pode ter mais de 2048 KB',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $data = $validator->validated();
-
-        if ($responsible) {
-            // Atualiza o registro existente
-            $responsible->update($data);
-
-            // Verifica se a imagem foi enviada e faz o upload
-            if ($request->hasFile('picture')) {
-                if ($responsible->picture && Storage::exists($responsible->picture)) {
-                    Storage::delete($responsible->picture);
-                }
-                $path = $request->file('picture')->store('images/uploads', 'public');
-                $responsible->update(['picture' => $path]);
-            }
-
-            return redirect()->route('responsible.profile')->with('success', 'Perfil atualizado com sucesso!');
-        } else {
-            // Cria um novo registro
-            $responsible = UcResponsible::create($data);
-
-            // Associa o responsável ao utilizador logado
-            $user->id_responsible = $responsible->id;
-            $user->save();
-
-            if ($request->hasFile('picture')) {
-                $path = $request->file('picture')->store('images/uploads', 'public');
-                $responsible->update(['picture' => $path]);
-            }
-
-            return redirect()->route('responsible.profile')->with('success', 'Perfil criado com sucesso!');
-        }
+        'phone' => 'required|string|max:9|unique:uc_responsibles,phone' . ($responsible ? ',' . $responsible->id : ''),
+        'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ], [
+        'phone.required' => 'O campo telefone é obrigatório',
+        'phone.string' => 'O telefone deve ser uma string',
+        'phone.max' => 'O telefone não pode ter mais de 9 caracteres',
+        'phone.unique' => 'O telefone já está em uso',
+        'picture.image' => 'O arquivo deve ser uma imagem',
+        'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif',
+        'picture.max' => 'A imagem não pode ter mais de 2048 KB',
+    ]);
+    if ($request->hasFile('picture')) {
+        $path = $request->file('picture')->store('images/uploads', 'public');
+        $responsible->update(['picture' => $path]);
     }
+
+    // Associa o responsável ao utilizador logado
+    $user->id_responsible = $responsible->id;
+    $user->save();
+
+    return redirect()->route('responsible.profile')->with('success', 'Perfil criado com sucesso!');
+    }
+
+
 
     /**
      * Display the specified resource.
@@ -254,28 +230,29 @@ class ResponsibleController extends Controller
     {
         // Obtém o ID do responsável autenticado
         $ucResponsiblesId = Auth::id();
-    
+        
         // Busca todas as notificações associadas ao responsável
         $notifications = Notification::where('uc_responsible_id', $ucResponsiblesId)->get();
-    
+        
         // Busca os responsáveis pela UC associados ao responsável autenticado
         $ucResponsibles = UcResponsible::with(['users', 'ucs.course.institution'])
             ->where('id', $ucResponsiblesId)
             ->get();
-    
-            $students = Student::with(['users', 'ucs.course.institution'])
-            ->whereHas('ucs', function ($query) use ($ucResponsiblesId) {
-                $query->whereHas('uc_to_students', function ($query2) use ($ucResponsiblesId) {
-                    // Verifique a coluna correta de relacionamento
-                    $query2->where('uc_responsible_id', $ucResponsiblesId);
-                });
-            })
-            ->get();
         
+        // Aqui você vai buscar os alunos relacionados a esse responsável
+        // Assumindo que a relação entre UcResponsible e Student já esteja definida
+        $students = Student::whereHas('ucs', function ($query) use ($ucResponsiblesId) {
+            $query->whereHas('course', function ($subQuery) use ($ucResponsiblesId) {
+            });
+        })->get();
+        
+        // Obtém o usuário logado
+        $user = Auth::user();
     
-        // Retorna a view com as notificações, responsáveis e alunos
-        return view('users.responsible.notifications', compact('notifications', 'ucResponsibles', 'students'));
+        // Retorna a view com as notificações, responsáveis, alunos e o usuário
+        return view('users.responsible.notifications', compact('notifications', 'ucResponsibles', 'students', 'user'));
     }
+    
     
     
 

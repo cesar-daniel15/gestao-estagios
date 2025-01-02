@@ -68,9 +68,8 @@
                     <th class="p-4 border-b text-gray-600">Responsável UC</th>
                     <th class="p-4 border-b text-gray-600">Número do Aluno</th>
                     <th class="p-4 border-b text-gray-600">Título</th>
-                    <th class="p-4 border-b text-gray-600">Mensagem</th>
+                    <th class="p-4 border-b text-gray-600">Conteúdo</th>
                     <th class="p-4 border-b text-gray-600">Data de Criação</th>
-                    <th class="p-4 border-b text-gray-600">Status de Visualização</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,28 +97,11 @@
                                 @endif
                             </td>
                             <td class="p-4 text-gray-600 notification-title">{{ $notification['title'] }}</td>
-                            <td class="p-4 text-gray-600 text-center">
-                                @if ($notification['status_visualization'] == 1)
-                                    <span class="flex items-center justify-center text-green-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        Visualizada
-                                    </span>
-                                @else
-                                    <span class="flex items-center justify-center text-red-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                        Não Visualizada
-                                    </span>
-                                @endif
-                            </td>
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
                                     <!-- Botão Ver -->
-                                    <a onclick="viewModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}', '{{ $notification['uc_responsible']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['student']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['status_visualization'] }}', '{{ $notification['created_at'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                    <a onclick="viewModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}', '{{ $notification['uc_responsible']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['student']['user']['name'] ?? 'Não disponível' }}', '{{ $notification['created_at'] }}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
@@ -159,24 +141,26 @@
         <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Notificação</h2>
 
         <!-- Formulário -->
-        <form action="{{ route('admin.notifications.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('responsible.notifications.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 
-                <div>
-                    <label for="uc_responsible_id" class="block text-gray-600 mb-1">Responsável pela UC</label>
-                    <select id="uc_responsible_id" name="uc_responsible_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                        <option value="">Selecione um responsável</option>
-                        @foreach($ucResponsibles as $ucResponsible)
-                            <option value="{{ $ucResponsible['id'] }}">
-                                {{ $ucResponsible['users'][0]['name'] ?? 'Não disponível' }} / 
-                                {{ $ucResponsible['ucs'][0]['course']['institution']['acronym'] ?? 'Não disponível' }}                           
-                                </option>
-                        @endforeach
-                    </select>
-                </div>
+            <div>
+                <label for="uc_responsible_id" class="block text-gray-600 mb-1">Responsável pela UC</label>
+                <select id="uc_responsible_id" name="uc_responsible_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
+                    <option value="{{ $user->id }}" selected>
+                        {{ $user->name }} / Responsável pela UC
+                    </option>
+                    @foreach($ucResponsibles as $ucResponsible)
+                        <option value="{{ $ucResponsible['id'] }}">
+                            {{ $ucResponsible['users'][0]['name'] ?? 'Não disponível' }} / 
+                            {{ $ucResponsible['ucs'][0]['course']['institution']['acronym'] ?? 'Não disponível' }} 
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
                 <div>
                     <label for="student_num" class="block text-gray-600 mb-1">Aluno</label>
@@ -195,14 +179,6 @@
                 <div>
                     <label for="title" class="block text-gray-600 mb-1">Título</label>
                     <input type="text" id="title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="status_visualization" class="block text-gray-600 mb-1">Status de Visualização</label>
-                    <select id="status_visualization" name="status_visualization" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                        <option value="0">Não Visualizada</option>
-                        <option value="1">Visualizada</option>
-                    </select>
                 </div>
 
                 <div>
@@ -236,7 +212,6 @@
                         <p><strong>Número de Aluno:</strong> <span id="modal-student-num"></span> </p>
                         <p><strong>Título:</strong> <span id="modal-notification-title"></span> </p>
                         <p><strong>Conteúdo:</strong> <span id="modal-content"></span> </p>
-                        <p><strong>Status de Visualização:</strong> <span id="modal-status-visualization"></span> </p>
                         <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span> </p>
                     </div>
                 </div>
@@ -298,29 +273,13 @@
 
 
     <script>
-        // Pesquisar por título
-        function searchTitle() {
-            const searchTitle = document.getElementById('search-title').value.toLowerCase();
-            const rows = document.querySelectorAll("#notificationTable tbody tr");
-
-            rows.forEach(row => {
-                const title = row.querySelector("td:nth-child(4)").textContent.toLowerCase(); // Search in the "Título" column
-
-                const matchTitle = title.includes(searchTitle);
-
-                if (matchTitle) {
-                    row.style.display = ""; 
-                } else {
-                    row.style.display = "none"; 
-                }
-            });
-        }
 
         // Atualiza a pagina
         function refreshTable() {
             location.reload();
         }
 
+        
         // Loader
         document.addEventListener('DOMContentLoaded', function () {
             const loader = document.getElementById('loader');
@@ -332,6 +291,79 @@
                 notificationTable.classList.remove('hidden'); 
             }, 2000);
         });
+
+        // Funcao para abrir o modal
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            modal.classList.remove('hidden');
+        }
+
+        // Funcao  para fechar o modal
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+        }
+
+        // Função para modal de visualização das notificações
+        function viewModal(id, title, content, ucResponsible, studentNumber, createdAt) {
+            document.querySelector('#viewModal .modal-content h2').textContent = title;
+
+            document.querySelector('#viewModal .modal-body .data-content').innerHTML = `
+                <div class="flex flex-col gap-5 text-start">
+                    <p><strong>ID:</strong> ${id}</p>
+                    <p><strong>Responsável pela UC:</strong> ${ucResponsible}</p>
+                    <p><strong>Número de Aluno:</strong> ${studentNumber}</p>
+                    <p><strong>Título:</strong> ${title}</p>
+                    <p><strong>Conteúdo:</strong> ${content}</p>
+                    <p><strong>Data de Criação:</strong> ${createdAt}</p>
+                </div>
+            `;
+
+            // Abrir o modal
+            openModal('viewModal');
+        }
+
+        // Abrir Modal para apagar uma Notificação
+        function openDeleteModal(id) {
+            openModal('deleteModal');  
+
+            const deleteForm = document.querySelector('#deleteForm' + id);
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            confirmDeleteButton.onclick = function () {
+                deleteForm.submit(); // Submete o Form 
+            };
+        }
+
+        
+        // Função para abrir o modal de atualização das notificações
+        function updateModal(id, title, content) {
+            openModal('updateModal');  // Abre o modal de atualização
+
+            // Preenche os campos do formulário com os dados da notificação
+            document.getElementById('update_title').value = title;
+            document.getElementById('update_content').value = content;
+
+            const updateForm = document.getElementById('updateForm');
+            updateForm.action = `/users/notifications/${id}`;  
+        }
+
+
+        // Função de pesquisa de Notificações
+        function searchNotification() {
+            const searchValue = document.getElementById('search').value.toLowerCase(); // Obtém o valor de pesquisa
+            const rows = document.querySelectorAll("#notificationTable tbody tr"); // Seleciona todas as linhas da tabela de notificações
+
+            rows.forEach(row => {
+                // Obtém o título da notificação na linha
+                const notificationTitle = row.querySelector(".notification-title").textContent.toLowerCase();
+                
+                // Mostra a linha se o título contiver o valor da pesquisa, caso contrário, oculta
+                row.style.display = notificationTitle.includes(searchValue) ? "" : "none";
+            });
+        }
+
     </script>
 
 @endsection
