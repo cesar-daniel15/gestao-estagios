@@ -24,7 +24,20 @@
                         <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
                     </svg>
                 </div>
-            
+
+                <!-- Filtro de Curso -->
+                <div class="relative w-auto md:ms-5 mt-4 md:mt-0">
+                    <select id="search-course" class="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" onchange="searchUC();">           
+                        <option value="" disabled selected>Filtrar por Curso</option>
+                        @foreach($courses as $course)
+                            <option value="{{ $course['id'] }}">{{ $course['acronym'] }}</option>
+                        @endforeach
+                    </select>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
+                        <path fill="#9c9c9c" d="M2 8a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m0 4a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1m1 3a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2z"/>
+                    </svg>
+                </div>
+
             </div>
 
             <div class="flex gap-4">
@@ -68,14 +81,14 @@
                 <tbody>
                 @if (empty($unitsCurriculars))
                         <tr>
-                            <td colspan="7" class="p-4 text-gray-600 text-center">Ainda não existem cursos registados</td>
+                            <td colspan="7" class="p-4 text-gray-600 text-center">Ainda não existem unidades curriculares registados</td>
                         </tr>
                 @else
                     @foreach ($unitsCurriculars as $unitsCurricular)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $unitsCurricular['id'] }}</td>
                             <td class="p-4 text-gray-600 uc-name">{{ $unitsCurricular['name'] }}</td>
-                            <td class="p-4 text-gray-600">{{ $unitsCurricular['course']['name'] }}</td>
+                            <td class="p-4 text-gray-600 course-name" data-course-id="{{ $unitsCurricular['course']['id'] }}">{{ $unitsCurricular['course']['acronym'] }}</td>
                             <td class="p-4 text-gray-600">{{ $unitsCurricular['acronym'] }}</td>
                             <td class="p-4 text-gray-600">{{ $unitsCurricular['ects'] }}</td>
                             <td class="p-4 text-gray-600">{{ $unitsCurricular['created_at'] }}</td>
@@ -95,17 +108,19 @@
      // Pesquisar por curso
     function searchUC() {
         const searchUc = document.getElementById('search-uc').value.toLowerCase();
+        const selectCourse = document.getElementById('search-course').value; 
         const rows = document.querySelectorAll("#ucTable tbody tr");
 
         rows.forEach(row => {
             const ucName = row.querySelector(".uc-name") ? row.querySelector(".uc-name").textContent.toLowerCase() : "";
+            const courseId = row.querySelector(".course-name").getAttribute("data-course-id"); 
 
             const matchName = ucName.includes(searchUc);
+            const matchCourse = selectCourse ? courseId === selectCourse : true; 
 
-            row.style.display = matchName ? "" : "none";
+            row.style.display = matchName && matchCourse ? "" : "none";
         });
     }
-
     // Atualiza a página
     function refreshTable() {
         location.reload();
