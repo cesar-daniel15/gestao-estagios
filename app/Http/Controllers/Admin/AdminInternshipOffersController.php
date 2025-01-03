@@ -44,11 +44,10 @@ class AdminInternshipOffersController extends Controller
         $courses = Course::all();
     
         // Obter todos os planos
-        $internship_plans = InternshipPlan::all(); // Adicionar consulta para planos
+        $internship_plans = InternshipPlan::all(); 
     
         $finalReports = FinalReport::all();
 
-        // Corrigir a referência à view para corresponder ao arquivo correto
         return view('admin.internships-offers', [
             'internship_offers' => InternshipOfferResource::collection($internship_offers)->resolve() ?? [],
             'companies' => $companies, 
