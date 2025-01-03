@@ -141,7 +141,7 @@
         <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Notificação</h2>
 
         <!-- Formulário -->
-        <form action="{{ route('responsible.notifications.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('responsible.notifications.storeNotification') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             

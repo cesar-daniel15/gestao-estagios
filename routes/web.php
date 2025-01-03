@@ -136,7 +136,9 @@ Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class, C
     Route::get('/students', [ResponsibleController::class, 'listStudents'])->name('responsible.students');
     Route::post('/students', [ResponsibleController::class, 'store'])->name('responsible.students.store');
     Route::get('/notifications',[ResponsibleController::class, 'listNotifications'])->name('responsible.notifications');
-    Route::post('/notifications',[ResponsibleController::class, 'store'])->name('responsible.notifications.store');
+    Route::get('/notifications',[ResponsibleController::class, 'listNotifications'])->name('responsible.notifications');
+    Route::get('/notifications', [ResponsibleController::class, 'indexNotifications'])->name('users.responsible.notifications.index');
+    Route::post('/notifications',[ResponsibleController::class, 'storeNotification'])->name('responsible.notifications.storeNotification');
 
 });
 

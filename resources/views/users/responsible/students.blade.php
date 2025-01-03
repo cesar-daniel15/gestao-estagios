@@ -82,23 +82,26 @@
                     @foreach($students as $student)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $student['id'] }}</td>
-                            <td class="p-4 text-gray-600 student-name">{{ $student['user']['name']  }}</td>
+                            <td class="p-4 text-gray-600 student-name">
+                                {{ $student['user']['name'] ?? 'N/A' }}
+                            </td>
                             <td class="p-4 text-gray-600">
-                                @if($student['ucs']->isEmpty())
+                                @if($student['ucs'] ?? collect([]))->isEmpty()  <!-- Se $student['ucs'] for null, usa uma coleção vazia -->
                                     Sem Unidade Curricular
                                 @else
                                     {{ $student['ucs']->first()['lective_year'] }} 
                                 @endif
                             </td>
+
                             <td class="p-4 text-gray-600 institution">
-                                @if($student['ucs']->isEmpty())
+                                @if($student['ucs'] ?? collect([]))->isEmpty()
                                     Sem Unidade Curricular
                                 @else
                                     {{ $student['ucs']->first()['course']['institution']['acronym'] }} 
                                 @endif
                             </td>
                             <td class="p-4 text-gray-600">
-                                @if($student['ucs']->isEmpty())
+                                @if($student['ucs']?? collect([]))->isEmpty()
                                     Sem Unidade Curricular
                                 @else
                                     {{ $student['ucs']->first()['course']['name'] }} 
