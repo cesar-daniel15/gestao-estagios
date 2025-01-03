@@ -120,6 +120,9 @@ Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class, C
     Route::get('/courses', [InstitutionController::class, 'listCourses'])->name('institution.courses');
     Route::get('/units-curriculars', [InstitutionController::class, 'listUcs'])->name('institution.units');
     Route::get('/uc-responsibles', [InstitutionController::class, 'listUcResponsible'])->name('institution.uc_responsibles');
+    Route::get('/students', [InstitutionController::class, 'listStudents'])->name('institution.students');
+    Route::get('/internships', [InstitutionController::class, 'listInternships'])->name('institution.internships');
+    Route::post('/internships/{internship_offer}', [InstitutionController::class, 'finalEvaluation'])->name('institution.finalEvaluation');
 });
 
 // Rotas para perfil de aluno
