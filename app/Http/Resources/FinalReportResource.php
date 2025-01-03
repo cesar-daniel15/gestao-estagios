@@ -25,7 +25,7 @@ class FinalReportResource extends JsonResource
             'status' => $this->status === 'submitted' ? 'Submetido' : ($this->status === 'evaluated' ? 'Avaliado' : 'Rejeitado'),
             'created_at' => Carbon::parse($this->created_at)->locale('pt')->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->locale('pt')->diffForHumans(),
-            'internship_offer_title' => $this->internshipOffer->title ?? 'Não disponível', // Acessa o título da oferta de estágio
+            'internship_offer_title' => $this->internshipOffer->title ?? 'Não disponível', 
         ];
     }
 }

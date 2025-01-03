@@ -7,14 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\User; 
 use App\Models\Institution; 
 use App\Models\Course;
+use App\Models\Student;
 use App\Models\UnitCurricular; 
 use App\Models\UcResponsible; 
 use App\Models\UcToResponsible;
+use App\Models\UcToStudent;
+use App\Models\InternshipOffer;
+use App\Models\FinalReport;
 use Illuminate\Support\Str; 
 use App\Http\Resources\InstitutionResource; 
 use App\Http\Resources\CourseResource; 
 use App\Http\Resources\UnitResource;
 use App\Http\Resources\UcResponsibleResource;
+use App\Http\Resources\StudentResource;
+use App\Http\Resources\FinalReportResource;
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +39,21 @@ class InstitutionController extends Controller
 
         $user = Auth::user();
 
-        return view('users.institution.dashboard', compact('user'));
+        $institution = $user->institution;
+
+        // Conta o total de cursos 
+        $totalCourses = Course::where('institution_id', $institution->id)->count();
+
+        // Conta o total de unidades curriculares pertencente ao curso que esta ligado a instituicao logada
+        $totalUCs = Course::where('institution_id', $institution->id)->withCount('unitsCurriculars')->get()->sum('units_curriculars_count');
+
+        // Obtem as unidades curriculares diretamente através dos cursos da instituição
+        $unitsCurriculars = UnitCurricular::whereIn('course_id', Course::where('institution_id', $institution->id)->pluck('id'))->pluck('id');
+
+        // Obtem o registro total de alunos por unidade curricular
+        $userRegistration  = UcToStudent::selectRaw('lective_year as date, COUNT(*) as count')->whereIn('uc_id', $unitsCurriculars)->groupBy('lective_year') ->orderBy('lective_year')->get();
+
+        return view('users.institution.dashboard', compact('user', 'totalCourses', 'totalUCs','userRegistration'));
     }
     
 
@@ -136,6 +156,7 @@ class InstitutionController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validação dos dados
         $validator = Validator::make($request->all(), [
             'acronym' => 'required|string|max:10',  
             'phone' => 'required|string|max:11|unique:institutions,phone,' . $institution->id,
@@ -144,15 +165,9 @@ class InstitutionController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
-        // Verifica se a validacao falhou
+        // Se a validação falhar
         if ($validator->fails()) {
-
-            // Passa os erros para a session
-            session()->flash('error', 'Erro de validação!');
-            session()->flash('validation_errors', $validator->errors()->all());
-    
-            // Redireciona de volta com os erros armazenados na session
-            return redirect()->back()->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
     
         // Dados validados
@@ -219,7 +234,7 @@ class InstitutionController extends Controller
         // Instituicao associada ao user
         $institution = $user->institution;
 
-        // Obtel todos os cursos associados a instituicao
+        // Obtem todos os cursos associados a instituicao
         $courses = Course::where('institution_id', $institution->id)->get();
 
         $courses = CourseResource::collection($courses)->resolve();
@@ -230,25 +245,24 @@ class InstitutionController extends Controller
 
     // Listar todas as unidade curriculares da instituicao logada
     public function listUcs() {
-        
+
         // User logado
         $user = Auth::user();
-
+    
         // Instituicao associada ao user
         $institution = $user->institution;
-
-        // Obter todos os cursos associados à instituição
-        $courses = Course::where('institution_id', $institution->id)->pluck('id');
-
-        // Obter todas as unidades curriculares associadas aos cursos
-        $unitsCurriculars = UnitCurricular::whereIn('course_id', $courses)->get();
-
+    
+        // Obtem todos os cursos associados a instituição
+        $courses = Course::where('institution_id', $institution->id)->get();
+    
+        // Obtem todas as unidades curriculares associadas aos cursos
+        $unitsCurriculars = UnitCurricular::whereIn('course_id', $courses->pluck('id'))->get();
+    
         $unitsCurriculars = UnitResource::collection($unitsCurriculars)->resolve();
-
-        // Retorna a view com as unidades curriculares
-        return view('users.institution.units-curriculars', compact('unitsCurriculars'));
+    
+        // Retorna a view com as unidades curriculares e cursos
+        return view('users.institution.units-curriculars', compact('unitsCurriculars', 'courses'));
     }
-
 
     // Listar todos os responsáveis de UCs da instituição logada
     public function listUcResponsible() {
@@ -263,23 +277,102 @@ class InstitutionController extends Controller
             return redirect()->back()->with('error', 'Instituição não encontrada.');
         }
 
-        // Obter todos os cursos associados à instituição
+        // Obtem todos os cursos associados à instituição
         $courses = Course::where('institution_id', $institution->id)->pluck('id');
 
-        // Obter todas as unidades curriculares associadas aos cursos
+        // Obtem todas as unidades curriculares associadas aos cursos
         $unitsCurriculars = UnitCurricular::whereIn('course_id', $courses)->get();
 
-        // Obter todos os responsáveis associados às unidades curriculares
+        // Obtem todos os responsáveis associados às unidades curriculares
         $responsaveisIds = UcToResponsible::whereIn('uc_id', $unitsCurriculars->pluck('id'))->pluck('uc_responsible_id');
 
-        // Obter os responsáveis a partir dos IDs
+        // Obtem os responsáveis a partir dos IDs
         $responsaveis = UcResponsible::whereIn('id', $responsaveisIds)->get();
 
-        // Transformar os responsáveis usando o UcResponsibleResource
         $responsaveis = UcResponsibleResource::collection($responsaveis)->resolve();
 
         // Retorna a view com os responsáveis
         return view('users.institution.uc-responsibles', compact('responsaveis'));
     }
+
+    // Listar todos os students da instituicao logada
+    public function listStudents() {
+        // User logado
+        $user = Auth::user();
     
+        // Instituição associada ao user
+        $institution = $user->institution;
+    
+        $courses = Course::where('institution_id', $institution->id)->get();
+
+        // Listar todos os alunos da instituição logada através da tabela uc_to_students
+        $students = UcToStudent::with(['student', 'unitCurricular'])
+            ->whereHas('unitCurricular.course', function($query) use ($institution) {
+                $query->where('institution_id', $institution->id); 
+            })->get()->pluck('student'); 
+
+        $students = StudentResource::collection($students)->resolve();
+    
+        // Retorna a view com os alunos
+        return view('users.institution.students', compact('students','courses'));
+    }
+    
+
+   // Listar todas as ofertas de estágio de alunos da instituição
+    public function listInternships() {
+        // User logado
+        $user = Auth::user();
+        
+        // Instituição associada ao user
+        $institution = $user->institution;
+
+        // Obter todos os cursos da instituição
+        $courses = Course::where('institution_id', $institution->id)->pluck('id');
+
+        // Obter todas as unidades curriculares associadas aos cursos
+        $unitsCurriculars = UnitCurricular::whereIn('course_id', $courses)->pluck('id');
+
+        // Obter todos os alunos da instituição com estágios
+        $studentsWithInternships = UcToStudent::with(['student'])
+            ->whereIn('uc_id', $unitsCurriculars)
+            ->whereHas('student', function($query) {
+                $query->whereNotNull('assigned_internship_id');
+            })
+            ->get()
+            ->pluck('student');
+
+        // Obter os IDs dos estágios
+        $internshipIds = $studentsWithInternships->pluck('assigned_internship_id')->unique(); 
+
+        // Obter todos os final_reports associados aos estágios
+        $final_reports = FinalReport::whereIn('internship_offer_id', $internshipIds)->get(); 
+        
+        $final_reports = FinalReportResource::collection($final_reports)->resolve();
+        
+        return view('users.institution.internships', compact('final_reports'));
+    }
+
+    public function finalEvaluation(Request $request, $id) {
+        // Validacao
+        $validator = Validator::make($request->all(), [
+            'final_evaluation' => 'nullable|numeric|min:0|max:20', 
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        // Encontrar o relatorio final pelo ID
+        $finalReport = FinalReport::findOrFail($id);
+    
+        // Atualizar a avalicao final
+        $finalReport->final_evaluation = $request->input('final_evaluation');
+    
+        // Atualizar o status para avaliado
+        $finalReport->status = 'evaluated';
+    
+        $finalReport->save();
+    
+        return redirect()->route('institution.internships')->with('success', 'Avaliação final atualizada com sucesso!');
+    }
 }

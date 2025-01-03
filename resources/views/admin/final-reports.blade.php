@@ -73,7 +73,7 @@
                 <tbody>
                 @if (empty($final_reports))
                     <tr>
-                        <td colspan="6" class="p-4 text-gray-600 text-center">Ainda não existem relatórios finais registados</td>
+                        <td colspan="8" class="p-4 text-gray-600 text-center">Ainda não existem relatórios finais registados</td>
                     </tr>
                 @else
                     @foreach($final_reports as $final_report)
