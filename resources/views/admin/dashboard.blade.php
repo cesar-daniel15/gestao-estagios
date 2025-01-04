@@ -73,7 +73,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if (empty($contacts))
+                    @if ($contacts->isEmpty())
                         <tr>
                             <td colspan="5" class="p-4 text-gray-600 text-center">Ainda não existem pedidos de contas registados</td>
                         </tr>

@@ -17,7 +17,7 @@
 
 <div class="bg-gray-100 py-10">
     <div class="max-w-4xl mx-auto bg-white drop-shadow-md rounded-xl p-10">
-        <h2 class="text-xl font-bold text-gray-700 mb-6 text-center">Pedido para Criação de Conta</h2>
+        <h2 class="text-xl font-bold text-gray-700 mb-6 text-center">Pedido Criação de Conta</h2>
         
         <form action="{{ route('contact.store') }}" method="POST">
             @csrf
