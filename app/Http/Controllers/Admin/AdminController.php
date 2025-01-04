@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User; 
+use App\Models\Contact;
 use Illuminate\Support\Facades\DB; 
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,8 @@ class AdminController extends Controller
         if (Auth::user()->profile !== 'Admin') {
             return redirect()->back()->with('error', 'Você não tem permissão para eceder a esta página.');
         }
+
+        $contacts = Contact::all();
 
         $user = Auth::user();
 
@@ -34,6 +37,7 @@ class AdminController extends Controller
             ->get();
 
         return view('admin.dashboard', [
+            'contacts' => $contacts,
             'totalUsers' => $totalUsers,
             'mostCommonProfile' => $mostCommonProfile,
             'userRegistration' => $userRegistration,

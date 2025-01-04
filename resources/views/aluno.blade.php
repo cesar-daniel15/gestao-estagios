@@ -170,6 +170,7 @@
             Para garantir a segurança e a confiabilidade do sistema, o registo como este tipo de utilizador requer contato prévio com os nossos serviços administrativos. 
             Além disso, utilizadores com o perfil <span class="font-bold">"Aluno"</span> devem ser registados diretamente pelos seus coordenadores. 
             Essa prática assegura o funcionamento eficiente e confiável do sistema.
+            <a href="/contact" class="text-sky-500 hover:underline">Entrar em Contacto</a>
         </p>
     </div>
 

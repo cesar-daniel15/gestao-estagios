@@ -148,6 +148,7 @@
         <p>
             Para garantir a segurança e a confiabilidade da plataforma, o registo como este tipo de utilizador requer contato prévio com os nossos serviços administrativos. 
             Essa prática assegura o funcionamento eficiente e confiável do sistema.
+            <a href="/contact" class="text-sky-500 hover:underline">Entrar em Contacto</a>
         </p>
     </div>
 

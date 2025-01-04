@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AdminFinalReportsController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckVerifiedAccount;
 use App\Http\Middleware\CheckProfileCompletion;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\StudentController;
@@ -148,6 +149,13 @@ Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class, Check
     Route::get('/dashboard', [CompanyController::class, 'index'])->name('company.dashboard');
     Route::get('/profile', [CompanyController::class, 'show'])->name('company.profile');
     Route::post('/profile', [CompanyController::class, 'store'])->name('company.store');
+    Route::get('/internships', [CompanyController::class, 'listInternships'])->name('company.internships'); 
+    Route::post('/internships', [CompanyController::class, 'storeInternships'])->name('company.internships.store'); 
+    Route::post('/internships/close', [CompanyController::class, 'closeOffer'])->name('company.internships.close');
+    Route::get('/plans', [CompanyController::class, 'listPlans'])->name('company.plans');
+    Route::post('/plans', [CompanyController::class, 'storePlan'])->name('company.plans.store');
+
+
 });
 
 // Rotas de auth
@@ -158,6 +166,7 @@ Route::post('verify-account', [AuthController::class, 'verifyToken'])->name('ver
 Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot.password');
 Route::get('reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
 Route::get('/login', function () {
@@ -195,3 +204,7 @@ Route::get('/coordenadores', function () {
 Route::get('/aluno', function () {
     return view('aluno');
 });
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');

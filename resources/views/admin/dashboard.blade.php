@@ -55,6 +55,43 @@
 
     </div>
 
+    <div class="mt-10 bg-white drop-shadow-md rounded-xl p-10 mb-10">
+        <div class="text-lg font-bold text-gray-600 mb-6">
+            Pedidos de Contas
+        </div>
+
+            <!-- Tabela Contactos -->
+            <div class="overflow-x-auto">
+                <table class="table-auto w-full border-collapse text-center text-sm overflow-hidden rounded-xl" id="table">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="p-4 border-b text-gray-600">ID</th>
+                            <th class="p-4 border-b text-gray-600">Nome</th>
+                            <th class="p-4 border-b text-gray-600">Email</th>
+                            <th class="p-4 border-b text-gray-600">Perfil</th>
+                            <th class="p-4 border-b text-gray-600">Mensagem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (empty($contacts))
+                        <tr>
+                            <td colspan="5" class="p-4 text-gray-600 text-center">Ainda não existem pedidos de contas registados</td>
+                        </tr>
+                    @else
+                        @foreach($contacts as $contact)
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-4 text-gray-600">{{ $contact['id'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $contact['name'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $contact['email'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $contact['profile'] }}</td>
+                                <td class="p-4 text-gray-600">{{ $contact['message'] }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+        </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Dados fornecidos pelo servidor
