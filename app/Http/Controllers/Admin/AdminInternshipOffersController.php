@@ -127,7 +127,7 @@ class AdminInternshipOffersController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'deadline' => 'required|date',
-            'status' => 'required|in:Aberto,Fechado,Arquivado', // Aceita os valores em português
+            'status' => 'required|in:Aberto,Fechado,Arquivado', 
         ]);
 
         // Verifica se a validacao falhou
