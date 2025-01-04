@@ -94,9 +94,9 @@
                                         </a>
 
                                         <!-- Botão Avaliar -->
-                                        <button type="button" onclick="evaluateModal({{ $final_report['id'] }}, '{{ $final_report['final_evaluation'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                                <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
+                                        <button type="button" onclick="evaluateModal({{ $final_report['id'] }}, '{{ $final_report['final_evaluation'] }}')" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 rounded flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.667 21H6.333c-.31 0-.465 0-.592-.043c-.345-.115-.614-.452-.707-.884C5 19.915 5 19.722 5 19.334c0-.775 0-1.162.068-1.48c.185-.863.724-1.537 1.414-1.768C6.737 16 7.047 16 7.667 16h8.666c.62 0 .93 0 1.185.085c.69.231 1.229.905 1.414 1.768c.068.318.068.705.068 1.48c0 .388 0 .582-.034.74c-.093.432-.362.769-.707.884c-.127.043-.282.043-.592.043M9.5 16c.515-2.548.585-4.034.256-4.95a2.3 2.3 0 0 0-.316-.547c-.813-1.131-1.182-2.015-1.323-2.562a3.4 3.4 0 0 1-.093-.985a4.54 4.54 0 0 1 .855-2.394C9.729 3.372 11.313 3.007 12 3c.688.007 2.313.373 3.163 1.562a4.54 4.54 0 0 1 .855 2.394c.014.33-.011.665-.093.985c-.14.547-.51 1.43-1.323 2.562a2.3 2.3 0 0 0-.316.547c-.328.916-.3 2.402.214 4.95m-.5-3h-4" color="currentColor"/>
                                             </svg>
                                         </button>
 
@@ -115,7 +115,7 @@
         <!-- Modal de Avaliar -->
         <div id="evaluateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
             <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Fazer Avaliação do Estágio</h2>
+                <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Avaliar Estágio</h2>
 
                 <!-- Form -->
                 <form id="updateForm" action="{{ route('institution.finalEvaluation', $final_report['id']) }}" method="POST" enctype="multipart/form-data">
@@ -131,7 +131,7 @@
 
                     <div class="flex justify-end">
                         <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('evaluateModal')">Cancelar</button>
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Avaliar</button>
                     </div>
 
                 </form>
