@@ -154,8 +154,10 @@ Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class, Check
     Route::post('/internships/close', [CompanyController::class, 'closeOffer'])->name('company.internships.close');
     Route::get('/plans', [CompanyController::class, 'listPlans'])->name('company.plans');
     Route::post('/plans', [CompanyController::class, 'storePlan'])->name('company.plans.store');
-
-
+    Route::get('/attendance', [CompanyController::class, 'listAttendance'])->name('company.attendance');
+    Route::post('/attendance/{attendance_record}', [CompanyController::class, 'approveAttendance'])->name('company.attendance.approve');
+    Route::get('/evaluations', [CompanyController::class, 'listEvaluations'])->name('company.evaluations');
+    Route::post('/evaluations/{final_report}', [CompanyController::class, 'storeEvaluations'])->name('company.evaluations.store');
 });
 
 // Rotas de auth
