@@ -129,8 +129,16 @@ Route::prefix('institution')->middleware(['auth', CheckVerifiedAccount::class, C
 // Rotas para perfil de aluno
 Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class, CheckProfileCompletion::class])->group(function () {
     Route::get('/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+    Route::post('/dashboard/{notification}', [StudentController::class, 'readNotification'])->name('student.notification');
+    Route::post('/dashboard', [StudentController::class, 'storeAttendance'])->name('student.storeAttendance');
     Route::get('/profile', [StudentController::class, 'show'])->name('student.profile');
-    Route::post('/profile', [StudentController::class, 'store'])->name('student.store');});
+    Route::post('/profile', [StudentController::class, 'store'])->name('student.store');
+    Route::get('/internships', [StudentController::class, 'listInternships'])->name('student.internships');
+    Route::post('/internships/apply/{internship_offer}', [StudentController::class, 'applyInternships'])->name('student.internships.apply');
+    Route::post('/internships/remove/{internship_offer}', [StudentController::class, 'removeInternships'])->name('student.internships.remove');
+    Route::get('/reports', [StudentController::class, 'listReports'])->name('student.reports');
+    Route::post('/reports', [StudentController::class, 'storeReports'])->name('student.reports.store');
+});
 
 // Rotas para perfil de responsaveis pela uc
 Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class, CheckProfileCompletion::class])->group(function () {
