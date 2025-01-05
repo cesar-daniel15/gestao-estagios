@@ -123,8 +123,6 @@ class AdminCourseController extends Controller
         } else {
             return redirect()->route('admin.courses.index')->with('error', 'Curso atualizado com sucesso!');
         }
-
-        // Redireciona para a lista de cursos com uma mensagem de sucesso
     }
 
     /**
