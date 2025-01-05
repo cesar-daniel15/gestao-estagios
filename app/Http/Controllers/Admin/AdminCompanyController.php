@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 class AdminCompanyController extends Controller
 {
 
-    use HttpResponses;  // Usando o trait HttpResponses
+    use HttpResponses;  
 
     /**
      * Display a listing of the resource.
@@ -64,13 +64,13 @@ class AdminCompanyController extends Controller
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             if ($file->isValid()) {
-                $path = $file->store('images/uploads', 'public'); // Guarda na pasta public
+                $path = $file->store('images/uploads', 'public'); 
                 $data['logo'] = $path; 
             }
         }
     
         if ($company) {
-            // Da retur na para a pagina das instituicoes com uma mensagem de success
+            // Da return para a pagina das instituicoes com uma mensagem de success
             return redirect()->route('admin.companies.index')->with('success', 'Empresa criada com sucesso!');
 
         } else {
