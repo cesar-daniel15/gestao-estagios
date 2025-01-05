@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\UnitCurricular;
 use App\Models\UcResponsible;
 use App\Models\UcToStudent;
-use App\Models\UcToResponsible; // Importando o modelo correto
+use App\Models\UcToResponsible; 
 use App\Models\User;
 use App\Models\Notification;
 use App\Models\Student;
 
- 
+
 use Illuminate\Support\Str; 
 use App\Http\Resources\UcResponsibleResource; 
 use App\Http\Resources\StudentResource; 
@@ -67,6 +67,7 @@ class ResponsibleController extends Controller
         'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif',
         'picture.max' => 'A imagem não pode ter mais de 2048 KB',
     ]);
+
     if ($request->hasFile('picture')) {
         $path = $request->file('picture')->store('images/uploads', 'public');
         $responsible->update(['picture' => $path]);
@@ -114,19 +115,15 @@ class ResponsibleController extends Controller
         'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
-    // Verifica se a validação falhou
+    // Se a validacao falhar
     if ($validator->fails()) {
-        // Passa os erros para a sessão e redireciona
-        session()->flash('error', 'Erro de validação!');
-        session()->flash('validation_errors', $validator->errors()->all());
-
-        return redirect()->back()->withInput();
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
     // Dados validados
     $validated = $validator->validated();
 
-    // Prepara os dados para atualização
+    // Prepara os dados para atualizacao
     $dataToUpdate = [];
 
     // Atualiza apenas os campos que mudaram
@@ -174,8 +171,8 @@ class ResponsibleController extends Controller
 
     public function dashboard()
     {
-        // Pegando todos os alunos com estágio atribuído
-        $students = \App\Models\UcToStudent::whereNotNull('internship_id')->get();
+        // Pega todos os alunos com estágio atribuído
+        $students = UcToStudent::whereNotNull('internship_id')->get();
     
         // Se não houver alunos com estágio, retornamos um gráfico vazio
         if ($students->isEmpty()) {
@@ -194,62 +191,54 @@ class ResponsibleController extends Controller
 
     public function listStudents()
     {
-        // Obtém o usuário logado
+        // Obtém o user logado
         $user = Auth::user();
         
-        // Verifica se o usuário é um responsável
+        // Verifica se o user é um responsável
         if ($user->profile !== 'Responsible') {
             return redirect()->back()->with('error', 'Você não tem permissão para acessar esta página.');
         }
         
         // Supondo que o responsável tenha uma relação com as unidades curriculares que ele gere
-        $responsible = $user->responsible; // Obtém o responsável associado ao usuário
+        $responsible = $user->responsible; // Obtém o responsável associado ao user
         
         if (!$responsible) {
             return redirect()->back()->with('error', 'Responsável não encontrado.');
         }
 
-        // Buscar unidades curriculares associadas ao responsável
-        $unitCurricularIds = UcToResponsible::where('uc_responsible_id', $responsible->id)  // Alteração para o campo correto
-                                    ->pluck('uc_id');
+        // Procura unidades curriculares associadas ao responsável
+        $unitCurricularIds = UcToResponsible::where('uc_responsible_id', $responsible->id) ->pluck('uc_id');
         
         // Obter os alunos associados a essas unidades curriculares
-        $students = UcToStudent::whereIn('uc_id', $unitCurricularIds)  // Filtra pelas unidades curriculares
-                        ->join('students', 'uc_to_students.student_num', '=', 'students.id')  // Faz o join com os alunos
-                        ->select('students.*')
-                        ->get();
+        $students = UcToStudent::whereIn('uc_id', $unitCurricularIds) ->join('students', 'uc_to_students.student_num', '=', 'students.id')  ->select('students.*')->get();
 
         // Retorna a view com os alunos encontrados
         return view('users.responsible.students', compact('students'));
     }
-
-
-
 
     public function listNotifications()
     {
         // Obtém o ID do responsável autenticado
         $ucResponsiblesId = Auth::id();
         
-        // Busca todas as notificações associadas ao responsável
+        // Procura todas as notificações associadas ao responsável
         $notifications = Notification::where('uc_responsible_id', $ucResponsiblesId)->get();
         
-        // Busca os responsáveis pela UC associados ao responsável autenticado
+        // Procura os responsáveis pela UC associados ao responsável autenticado
         $ucResponsibles = UcResponsible::with(['users', 'ucs.course.institution'])
             ->where('id', $ucResponsiblesId)
             ->get();
         
-        // Aqui você vai buscar os alunos relacionados a esse responsável
-        // Assumindo que a relação entre UcResponsible e Student já esteja definida
+        // Procura os alunos relacionados a esse responsável
         $students = Student::whereHas('ucs', function ($query) use ($ucResponsiblesId) {
             $query->whereHas('course', function ($subQuery) use ($ucResponsiblesId) {
             });
         })->get();
         
-        // Obtém o usuário logado
+        // Obtém o user logado
         $user = Auth::user();
     
-        // Retorna a view com as notificações, responsáveis, alunos e o usuário
+        // Retorna a view com as notificações, responsáveis, alunos e o user
         return view('users.responsible.notifications', compact('notifications', 'ucResponsibles', 'students', 'user'));
     }
     
