@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('phone'); // Contacto  do aluno
             $table->string('picture')->nullable(); // Foto 
             $table->unsignedBigInteger('assigned_internship_id')->nullable()->unique(); // FK para o estágio
+            $table->unsignedBigInteger('pending_internship_offer_id')->nullable(); // Oferta de estagio pendete de aprovacao
             $table->timestamps();
 
             // Fk's
