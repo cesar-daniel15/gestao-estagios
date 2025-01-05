@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller; // Importe corretamente o Controller base
+use App\Http\Controllers\Controller; 
 use Illuminate\Http\Request;
 use App\Models\AttendanceRecord;
 use App\Models\InternshipOffer;
@@ -21,12 +21,12 @@ class AdminAttendanceRecordsController extends Controller
      */
     public function index()
     {
-        // Obtenha os registros de presença
+        // Obtem todos os registros de presenca
         $attendance_records = AttendanceRecord::all();
     
         $internship_offers = InternshipOffer::all(); 
     
-        // Retorne a view e passe as variáveis necessárias
+        // Retorna a view e passa as variaveis 
         return view('admin.attendance-records', [
             'attendance_records' => AttendanceRecordResource::collection($attendance_records)->resolve() ?? [],
             'internship_offers' => $internship_offers 
@@ -66,12 +66,12 @@ class AdminAttendanceRecordsController extends Controller
             'afternoon_end_time.after' => 'O horário de fim da tarde deve ser depois do início',
         ]);
         
-        // Se a validação falhar, retorna para a página anterior com os erros
+        // Se a validação falhar retorna para a página anterior com os erros
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // Obtém os dados validados
+        // Obtem os dados validados
         $data = $validator->validated();
     
         // Calcula o tempo total de aprovacao em segundos
@@ -83,7 +83,7 @@ class AdminAttendanceRecordsController extends Controller
         $formattedApprovalTime = gmdate('H:i', $totalSeconds);
 
         $data['approval_hours'] = $formattedApprovalTime; 
-        $data['approval_status'] = 'pending'; 
+        $data['approval_status'] = 'pending'; // Mete o status como pendente
     
         // Cria um novo registro de presença
         $attendanceRecord = AttendanceRecord::create($data);
@@ -92,7 +92,7 @@ class AdminAttendanceRecordsController extends Controller
         if ($attendanceRecord) {
             return redirect()->route('admin.internship_attendance_records.index')->with('success', 'Registro de presença criado com sucesso!');
         } else {
-            return redirect()->route('admin.internship_attendance_records.index')->with('error', 'Erro ao criar registro de presença.');
+            return redirect()->route('admin.internship_attendance_records.index')->with('error', 'Erro ao criar registro de presença');
         }
     }
 
@@ -133,7 +133,7 @@ class AdminAttendanceRecordsController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // Obtenção dos dados validados
+        // Obtem todos os dos dados validados
         $data = $validator->validated();
 
         switch ($data['approval_status']) {
@@ -148,10 +148,10 @@ class AdminAttendanceRecordsController extends Controller
                 break;
         }
         
-        // Atualiza o registro de presença de estágio
+        // Atualiza o registro de presenca de estagio
         $update = $attendance_record->update($data);
     
-        // Verifica se a atualização foi bem-sucedida
+        // Verifica se a atualizacao foi bem-sucedida
         if ($update) {
             return redirect()->route('admin.internship_attendance_records.index')->with('success', 'Registro de presença atualizado com sucesso!');
         } else {
@@ -164,7 +164,7 @@ class AdminAttendanceRecordsController extends Controller
      */
     public function destroy(AttendanceRecord $attendance_record)
     {
-        // Tenta remover o registro de presença de estágio da base de dados
+        // Remove o registro de presenca de estagio da base de dados
         $deleted = $attendance_record->delete();
 
         // Verificar se foi apagado com sucesso
