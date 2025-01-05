@@ -66,7 +66,7 @@ class AdminFinalReportsController extends Controller
 
         $data = $validator->validated();
         
-        // Calcular o total de horas aprovadas dos registos diarios apenas com status 'approved'
+        // Calcular o total de horas aprovadas dos registos diarios apenas com status aprovado
         $internshipOffer = InternshipOffer::find($data['internship_offer_id']);
         $totalApprovedHours = $internshipOffer->attendanceRecords()->where('approval_status', 'approved')->sum('approval_hours'); 
 
@@ -80,7 +80,7 @@ class AdminFinalReportsController extends Controller
         // Recupera o tatal de horas registadas apartir do plano
         $totalHoursFromPlan = $internshipOffer->plans()->sum('total_hours'); 
 
-        // Recupera o total de horas registadas a partir do último plano aprovado
+        // Recupera o total de horas registadas a partir do ultimo plano aprovado
         $lastApprovedPlan = $internshipOffer->plans()->where('status', 'approved')->orderBy('created_at', 'desc')->first();
         
         // Verifica se existe um plano aprovado
@@ -93,7 +93,7 @@ class AdminFinalReportsController extends Controller
         }
 
         // Verifica se as total_hours registadas sao iguais ou superiores as horas exigidas no plano
-        if ($totalApprovedHours < floatval($totalHoursFromPlan)) {
+        if ($totalApprovedHours <= floatval($totalHoursFromPlan)) {
             return redirect()->back()->withErrors([
                 'total_hours' => 'As horas registadas (' . $totalApprovedHours . ' horas) não correspondem às horas definidas no plano da oferta de estágio (' . $totalHoursFromPlan . ' horas).'
             ])->withInput();
