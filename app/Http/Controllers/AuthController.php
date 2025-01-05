@@ -136,7 +136,7 @@ class AuthController extends Controller
     
         // Se o token for inválido
         if (!$user) {
-            // Se o usuário não tiver um token, gera um novo
+            // Se o user não tiver um token, gera um novo
             if (is_null($user->token)) {
                 $newToken = rand(10000, 99999);
                 $user->update(['token' => $newToken]);
