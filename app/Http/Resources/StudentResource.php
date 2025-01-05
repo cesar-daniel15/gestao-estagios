@@ -44,6 +44,7 @@ class StudentResource extends JsonResource
                     'course' => [
                         'id' => $uc->course->id ?? 'Não disponível',
                         'name' => $uc->course->name ?? 'Não disponível',
+                        'acronym' => $uc->course->acronym ?? 'Não disponível',
                         'institution' => [
                             'id' => $uc->course->institution->id ?? 'Não disponível',
                             'acronym' => $uc->course->institution->acronym ?? 'Não disponível',
