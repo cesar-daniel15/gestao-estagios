@@ -18,6 +18,7 @@ class Student extends Model
         'phone',
         'picture',
         'assigned_internship_id', 
+        'pending_internship_offer_id',
     ];
 
     // Relacao com a tabela Users
