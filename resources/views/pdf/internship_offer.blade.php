@@ -81,13 +81,13 @@
                 </tr>
             </tbody>
         </table>
-        
+
         <h3 class="text-sky-400 text-lg font-bold mt-6 mb-4">Plano de Estágio</h3>
         <table class="min-w-full">
             <tbody>
                 @if($internship_offer->plans && $internship_offer->plans->isNotEmpty())
                     @foreach($internship_offer->plans as $plan)
-                        @if($plan->internship_offer_id === $internship_offer->id && $plan->status === 'approved') <!-- Verifica se o plano pertence à oferta de estágio atual e se está aprovado -->
+                        @if($plan->internship_offer_id === $internship_offer->id && $plan->status === 'approved')
                             <tr>
                                 <td class="border border-gray-300 p-2"><strong>Estado do Plano</strong></td>
                                 <td class="border border-gray-300 p-2">Aprovado</td>
