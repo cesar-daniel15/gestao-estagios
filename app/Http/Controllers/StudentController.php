@@ -255,8 +255,8 @@ class StudentController extends Controller
     
         $data['internship_offer_id'] = $student->assigned_internship_id; 
         
-        if (empty($data['internship_offer_id'])) {
-            return redirect()->route('student.dashboard')->with('error', 'Ainda não tens estagio atribuido');
+        if ($data['internship_offer_id'] === null) {
+            return redirect()->route('student.dashboard')->with('info', 'Ainda não tens estagio atribuido');
         }
 
         $data['date'] = now()->format('Y-m-d'); 
@@ -308,11 +308,23 @@ class StudentController extends Controller
 
         $internshipOffer = InternshipOffer::find($id);
 
+        // Verifica se o aluno já tem uma oferta pendente
+        if (!is_null($student->pending_internship_offer_id)) {
+            return redirect()->route('student.internships')->withErrors('Você já tem uma candidatura pendente. Não é possível candidatar-se a mais de uma oferta');
+        }
+
+        // Verifica se a oferta de estágio está fechada
+        if ($internshipOffer->status === 'closed') {
+            return redirect()->route('student.internships')->withErrors('A oferta de estágio está fechada. Não é possível candidatar-se');
+        }
+
         // Atualiza o status da oferta para fechado
         $internshipOffer->status = 'closed';
-
-        // Guarda
         $internshipOffer->save(); 
+
+        // Atualiza o campo pending_internship_offer_id do aluno
+        $student->pending_internship_offer_id = $internshipOffer->id;
+        $student->save(); 
         
 
         return redirect()->route('student.internships')->with('success', 'Candidatura realizada com sucesso. Aguarde a aprovação');
