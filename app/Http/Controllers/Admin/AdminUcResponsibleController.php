@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Institution; // Import do Model Institution
-use App\Models\Course; // Import do Model Course
-use App\Models\UnitCurricular; // Import do Model UnitCurricular
-use App\Models\UcResponsible; // Import do Model UcResponsible
+use App\Models\Institution; 
+use App\Models\Course; 
+use App\Models\UnitCurricular; 
+use App\Models\UcResponsible;
 use Illuminate\Support\Str; 
 use App\Http\Resources\InstitutionResource;
 use App\Http\Resources\CourseResource;
-use App\Http\Resources\UcResponsibleResource; // Import do UcResponsibleResource
-use App\Http\Resources\UnitResource; // Import do UnitResource
-use Illuminate\Support\Facades\Validator; // Import do Validator
-use App\Traits\HttpResponses; // Import do trait HttpResponses
+use App\Http\Resources\UcResponsibleResource; 
+use App\Http\Resources\UnitResource; 
+use Illuminate\Support\Facades\Validator; 
+use App\Traits\HttpResponses; 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -57,10 +57,10 @@ class AdminUcResponsibleController extends Controller
      */
     public function store(Request $request)
     {
-        // Validação dos dados enviados via POST
+        // Validação dos dados 
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:9|unique:uc_responsibles,phone,' . $UcResponsible->id,
-            'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validação para a imagem (se for enviada)
+            'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
     
         // Se a validação falhar
@@ -68,7 +68,7 @@ class AdminUcResponsibleController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // Se uma imagem foi enviada, faz o upload
+        // Se uma imagem foi enviada faz o upload
         $picturePath = null;
         if ($request->hasFile('picture')) {
             $picturePath = $request->file('picture')->store('uc_responsibles_pictures', 'public');
@@ -77,7 +77,7 @@ class AdminUcResponsibleController extends Controller
         // Cria o responsável da UC
         $uc_responsible = UcResponsible::create([
             'phone' => $request->phone,
-            'picture' => $picturePath,  // Armazena o caminho da imagem
+            'picture' => $picturePath,  // Guarda o caminho da imagem
         ]);
 
         // Verifica se a criação foi bem-sucedida
@@ -115,7 +115,7 @@ class AdminUcResponsibleController extends Controller
     public function update(Request $request, UcResponsible $UcResponsible)
     {
 
-        // Validação dos dados enviados via PUT
+        // Validação dos dados 
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:9',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
