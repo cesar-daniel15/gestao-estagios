@@ -165,7 +165,7 @@ class InstitutionController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
-        // Se a validação falhar
+        // Se a validacao falhar
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
