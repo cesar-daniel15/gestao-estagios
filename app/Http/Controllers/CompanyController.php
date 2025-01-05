@@ -193,7 +193,7 @@ class CompanyController extends Controller
         // Obtem todos os cursos
         $courses = Course::all();
 
-        // OObtembter todos os planos
+        // Obtem todos os planos
         $internship_plans = InternshipPlan::all(); 
 
         $finalReports = FinalReport::all();
@@ -253,7 +253,7 @@ class CompanyController extends Controller
         // Data de hoje
         $today = Carbon::now()->toDateString(); 
 
-        // Encontra todas as ofertas abertas cuja data limite já passou
+        // Encontra todas as ofertas abertas cuja data limite ja passou
         $offers = InternshipOffer::where('status', 'open')->where('deadline', '<', $today)->get();
         
         if ($offers->isEmpty()) {
@@ -277,19 +277,19 @@ class CompanyController extends Controller
         }
     }
 
-    // Metodo para listar todos os planos de estagios
+    // Metodo para listar todos os planos de estagis
     public function listPlans()
     {
     // User logado
         $user = Auth::user();
         
-        // Obtem as ofertas de estágio do user logado
+        // Obtem as ofertas de estagio do user logado
         $internship_offers = InternshipOffer::where('company_id', $user->company->id)->get();
         
         // Obtem os IDs das ofertas de estágio
         $internship_offer_ids = $internship_offers->pluck('id');
 
-        // Obtem os planos de estágio associados às ofertas da empresa
+        // Obtem os planos de estagio associados às ofertas da empresa
         $internship_plans = InternshipPlan::whereIn('internship_offer_id', $internship_offer_ids)->get();
         
         return view('users.company.plans', [
@@ -321,15 +321,15 @@ class CompanyController extends Controller
 
         $data['status'] = 'pending';
 
-        // Obtem a oferta de estágio correspondente
+        // Obtem a oferta de estagio correspondente
         $internshipOffer = InternshipOffer::find($data['internship_offer_id']);
         
-        // Verificar se a oferta de estágio tem um curso associado
+        // Verificar se a oferta de estagio tem um curso associado
         if (!$internshipOffer || !$internshipOffer->course_id) {
             return redirect()->back()->with('error', 'A oferta de estágio não tem um curso associado');
         }
 
-        // Obtem o curso associado à oferta de estágio
+        // Obtem o curso associado à oferta de estagio
         $course = Course::find($internshipOffer->course_id);
         
         // Procura a unidade curricular Estagio
