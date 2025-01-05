@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
-use App\Models\UcResponsible;  // Importando o modelo UcResponsible
+use App\Models\UcResponsible;  
 use App\Models\Student;
 use Illuminate\Support\Str; 
 use App\Http\Resources\NotificationResource;
-use App\Http\Resources\UcResponsibleResource;  // Importando o recurso UcResponsibleResource
+use App\Http\Resources\UcResponsibleResource; 
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
@@ -28,9 +28,9 @@ class AdminNotificationController extends Controller
             'ucResponsible.ucs.course.institution' 
         ])->get();
     
-        // Carregar responsáveis com a relação de usuários e instituições
+        // Carregar responsáveis com a relação aos users e instituicoes
         $ucResponsibles = UcResponsible::with(['users', 'ucs.course.institution'])->get();
-        // Carregar alunos com a relação de usuários e instituições
+        // Carregar alunos com a relação aos users e instituicoes
         $students = Student::with(['users', 'ucs.course.institution'])->get();
         
         return view('admin.notifications', [
@@ -124,7 +124,7 @@ class AdminNotificationController extends Controller
         // Dados validados
         $data = $validator->validated();
 
-        // Muda o staut para nao visualizado
+        // Muda o status para nao visualizado
         $data['status_visualization'] = 0;
 
         // Realiza a atualização da notificação
