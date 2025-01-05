@@ -66,12 +66,12 @@ class AdminUserController extends Controller
     
 
     if ($user) {
-        // Se a conta não estiver verificada, gera um token e envia o e-mail de verificação
+        // Se a conta não estiver verificada, gera um token e envia o e-mail de verificacao
         if (!$data['account_is_verified']) {
             $token = rand(10000, 99999); 
             $user->update(['token' => $token]);
 
-            // Envia o e-mail de verificação
+            // Envia o e-mail de verificacao
             Mail::send('emails.verification', ['token' => $token], function ($message) use ($user) {
                 $message->to($user->email);
                 $message->subject('Verificação de E-mail');
