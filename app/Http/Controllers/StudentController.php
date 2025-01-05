@@ -105,7 +105,7 @@ class StudentController extends Controller
             // Cria um novo registro
             $student = Student::create($data);
 
-            // Associa o student ao utilizador logado
+            // Associa o student ao user logado
             $user->id_student = $student->id;
             $user->save();
 
@@ -153,14 +153,9 @@ class StudentController extends Controller
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     
-        // Verifica se a validação falhou
+        // Se a validacao falhar
         if ($validator->fails()) {
-            // Passa os erros para a sessão
-            session()->flash('error', 'Erro de validação!');
-            session()->flash('validation_errors', $validator->errors()->all());
-    
-            // Redireciona de volta com os erros armazenados na sessão
-            return redirect()->back()->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
     
         // Dados validados
@@ -173,7 +168,7 @@ class StudentController extends Controller
     
         // Verifica se a foto foi enviada e processa o upload
         if ($request->hasFile('picture')) {
-            // Remove a foto antiga, se existir
+            // Remove a foto antiga se existir
             if ($student->picture && Storage::exists($student->picture)) {
                 Storage::delete($student->picture);
             }
@@ -396,7 +391,7 @@ class StudentController extends Controller
             ])->withInput();
         }
     
-        // Calcular o total de horas aprovadas dos registos diários apenas com status 'approved'
+        // Calcular o total de horas aprovadas dos registos diários apenas com status Aprovado
         $internshipOffer = InternshipOffer::find($assignedInternshipId);
         $totalApprovedHours = $internshipOffer->attendanceRecords()->where('approval_status', 'approved')->sum('approval_hours'); 
     
@@ -422,7 +417,7 @@ class StudentController extends Controller
         }
 
         // Verifica se as total_hours registadas são iguais ou superiores às horas exigidas no plano
-        if ($totalApprovedHours < floatval($totalHoursFromPlan)) {
+        if ($totalApprovedHours <= floatval($totalHoursFromPlan)) {
             return redirect()->back()->withErrors([
                 'total_hours' => 'As horas registadas (' . $totalApprovedHours . ' horas) não correspondem às horas definidas no plano da oferta de estágio (' . $totalHoursFromPlan . ' horas).'
             ])->withInput();
