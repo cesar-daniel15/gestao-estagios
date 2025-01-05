@@ -81,38 +81,40 @@
                 </tr>
             </tbody>
         </table>
-
+        
         <h3 class="text-sky-400 text-lg font-bold mt-6 mb-4">Plano de Estágio</h3>
         <table class="min-w-full">
             <tbody>
                 @if($internship_offer->plans && $internship_offer->plans->isNotEmpty())
-                @foreach($internship_offer->plans as $plan)
-                    <tr>
-                        <td class="border border-gray-300 p-2"><strong>Estado do Plano</strong></td>
-                        <td class="border border-gray-300 p-2">
-                            {{ $plan->status === 'pending' ? 'Pendente' : ($plan->status === 'approved' ? 'Aprovado' : 'Rejeitado') }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2"><strong>Data de Inicio</strong></td>
-                        <td class="border border-gray-300 p-2">{{ $plan->start_date }}</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2"><strong>Data de Fim</strong></td>
-                        <td class="border border-gray-300 p-2">{{ $plan->end_date }}</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2"><strong>Objetivos</strong></td>
-                        <td class="border border-gray-300 p-2">{{ $plan->objectives }}</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-gray-300 p-2"><strong>Atividades Planeadas</strong></td>
-                        <td class="border border-gray-300 p-2">{{ $plan->planned_activities }}</td>
-                    </tr>
+                    @foreach($internship_offer->plans as $plan)
+                        @if($plan->internship_offer_id === $internship_offer->id && $plan->status === 'approved') <!-- Verifica se o plano pertence à oferta de estágio atual e se está aprovado -->
+                            <tr>
+                                <td class="border border-gray-300 p-2"><strong>Estado do Plano</strong></td>
+                                <td class="border border-gray-300 p-2">Aprovado</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2"><strong>Data de Início</strong></td>
+                                <td class="border border-gray-300 p-2">{{ $plan->start_date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2"><strong>Data de Fim</strong></td>
+                                <td class="border border-gray-300 p-2">{{ $plan->end_date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2"><strong>Objetivos</strong></td>
+                                <td class="border border-gray-300 p-2">{{ $plan->objectives }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2"><strong>Atividades Planeadas</strong></td>
+                                <td class="border border-gray-300 p-2">{{ $plan->planned_activities }}</td>
+                            </tr>
+                        @endif
                     @endforeach
-                    @else
-                        Nenhum plano associado.
-                    @endif
+                @else
+                    <tr>
+                        <td colspan="2" class="border border-gray-300 p-2">Nenhum plano aprovado associado.</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
         
