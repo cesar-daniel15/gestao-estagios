@@ -62,19 +62,15 @@ class AdminStudentController extends Controller
     {
         // Validação dos dados
         $validator = Validator::make($request->all(), [
-            'name' => '|string|max:255',
             'phone' => 'required|string|max:9|unique:students,phone'. ($student ? ',' . $student->id : ''),
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'assigned_internship_id' => 'nullable|exists:internships,id', 
         ], [
-            'name.string' => 'O nome deve ser uma string',
             'phone.required' => 'O campo telefone é obrigatório',
             'phone.max' => 'O telefone não pode ter mais de 9 valores',
             'phone.unique' => 'O telefone já está em uso',
             'picture.image' => 'O arquivo deve ser uma imagem',
             'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif, svg',
             'picture.max' => 'A imagem não pode ter mais de 2048 KB',
-            'assigned_internship_id.exists' => 'O estágio atribuído não existe',
         ]);
 
         // Se a validação falhar, retorna com erros
