@@ -68,7 +68,7 @@ class AdminStudentController extends Controller
             'phone.required' => 'O campo telefone é obrigatório',
             'phone.max' => 'O telefone não pode ter mais de 9 valores',
             'phone.unique' => 'O telefone já está em uso',
-            'picture.image' => 'O arquivo deve ser uma imagem',
+            'picture.image' => 'O ficheiro deve ser uma imagem',
             'picture.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg, gif, svg',
             'picture.max' => 'A imagem não pode ter mais de 2048 KB',
         ]);
