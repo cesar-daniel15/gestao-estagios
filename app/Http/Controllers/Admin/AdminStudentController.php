@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Student; // Import do Model Student
+use App\Models\Student; 
 use Illuminate\Support\Str; 
-use App\Http\Resources\StudentResource; // Import do Student
-use Illuminate\Support\Facades\Validator; // Import do Validator
+use App\Http\Resources\StudentResource; 
+use Illuminate\Support\Facades\Validator; 
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Institution; // Import do Model Institution
-use App\Models\Course; // Import do Model Course
-use App\Models\UnitCurricular; // Import do Model 
+use App\Models\Institution; 
+use App\Models\Course; 
+use App\Models\UnitCurricular; 
 use App\Models\InternshipOffer;
-use App\Http\Resources\UnitResource; // Import do UnitResource
+use App\Http\Resources\UnitResource; 
 use App\Http\Resources\InstitutionResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\InternshipPlanResource;
@@ -84,21 +84,21 @@ class AdminStudentController extends Controller
 
         $data = $validator->validated();
 
-        // Cria o novo estudante
+        // Cria o novo student
         $student = Student::create($data);
 
-        // Verifica se o estudante foi criado com sucesso
+        // Verifica se o student foi criado com sucesso
         if ($student) {
-            // Verifica se o estudante tem uma foto (picture) e a armazena
+            // Verifica se o student tem uma foto e a guarda
             if ($request->hasFile('picture')) {
                 $path = $request->file('picture')->store('images/uploads', 'public');
-                $student->update(['picture' => $path]); // Atualiza o caminho da foto no banco
+                $student->update(['picture' => $path]); // Atualiza o caminho da foto na bd
             }
 
-            // Caso o estudante seja criado com sucesso, redireciona com sucesso
+            // Caso o student seja criado com sucesso, redireciona com sucesso
             return redirect()->route('admin.students.index')->with('success', 'Estudante criado com sucesso!');
         } else {
-            // Caso ocorra erro ao criar o estudante
+            // Caso ocorra erro ao criar o student
             return redirect()->route('admin.students.index')->with('error', 'Erro ao criar estudante');
         }
     }
@@ -151,7 +151,7 @@ class AdminStudentController extends Controller
     
         $data = $validator->validated();
     
-        // Verifica se há uma foto do estudante (picture)
+        // Verifica se há uma foto do student 
         if ($request->hasFile('picture')) {
             // Apaga a foto antiga
             if ($student->picture && Storage::disk('public')->exists($student->picture)) {
@@ -163,7 +163,7 @@ class AdminStudentController extends Controller
             $data['picture'] = $path; // Atualiza o caminho da foto
         }
     
-        // Faz a atualização dos dados do estudante
+        // Faz a atualização dos dados do student
         $update = $student->update($data);
     
         // Verifica se a atualização ocorreu com sucesso
@@ -214,7 +214,7 @@ class AdminStudentController extends Controller
         // Encontrar o aluno
         $student = Student::findOrFail($studentId);
 
-        // Verifica se a unidade curricular já está associada ao aluno
+        // Verifica se a unidade curricular ja esta associada ao aluno
         if ($student->ucs()->where('uc_id', $request->uc_id)->exists()) {
             return redirect()->route('admin.students.index')->with('info', 'O aluno já está associado a esta unidade curricular');
         }
