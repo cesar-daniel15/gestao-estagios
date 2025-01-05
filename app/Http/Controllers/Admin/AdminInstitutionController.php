@@ -68,11 +68,11 @@ class AdminInstitutionController extends Controller
                 $institution->update(['logo' => $path]);
             }
 
-            // Da retur na para a pagina das instituicoes com uma mensagem de success
+            // Da return para a pagina das instituicoes com uma mensagem de successo
             return redirect()->route('admin.institutions.index')->with('success', 'Instituição criada com sucesso!');
         } else {
 
-            // Da return para a pagina das instituicoes com uma mensagem de error
+            // Da return para a pagina das instituicoes com uma mensagem de erro
             return redirect()->route('admin.institutions.index')->with('error', 'Erro ao criar instituição');
         }
     }
