@@ -94,7 +94,7 @@
                                     {{ $attendance_record['approval_status'] }}
                                 </span>
                             </td>
-                            <td class="p-4 text-gray-600 flex items-center justify-center">
+                            <td class="p-4 text-gray-600 flex items-center justify-evenly space-x-1">
                                 <form action="{{ route('company.attendance.approve', $attendance_record['id']) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded flex items-center">
@@ -102,6 +102,16 @@
                                             <path fill="currentColor" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="m4 24l5-5l10 10L39 9l5 5l-25 25z" clip-rule="evenodd"/>
                                         </svg>
                                         Aprovar
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('company.attendance.disapprove', $attendance_record['id']) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                            <path fill="currentColor" d="M14.95 6.46L11.41 10l3.54 3.54l-1.41 1.41L10 11.42l-3.53 3.53l-1.42-1.42L8.58 10L5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"/>
+                                        </svg>
+                                        Reprovar
                                     </button>
                                 </form>
                             </td>
