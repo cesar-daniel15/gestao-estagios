@@ -65,7 +65,7 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="p-4 border-b text-gray-600">ID</th>
-                    <th class="p-4 border-b text-gray-600">Número do Aluno</th>
+                    <th class="p-4 border-b text-gray-600">Nome do Aluno</th>
                     <th class="p-4 border-b text-gray-600">Título</th>
                     <th class="p-4 border-b text-gray-600">Status de Visualização</th>
                     <th class="p-4 border-b text-gray-600">Data de Criação</th>
