@@ -400,6 +400,21 @@ class CompanyController extends Controller
         return redirect()->route('company.attendance')->with('success', 'Registro de presença aprovado com sucesso!');
     }
 
+    // Metodo para reprovar registos diarios
+    public function disapproveAttendance(Request $request, $id)
+    {
+        // Procura o registo de presenca pelo ID
+        $attendanceRecord = AttendanceRecord::find($id);
+
+        // Atualiza o status para Reprovado
+        $attendanceRecord->approval_status = 'rejected';
+
+        // Guarda
+        $attendanceRecord->save();
+
+        return redirect()->route('company.attendance')->with('success', 'Registro de presença reprovado com sucesso!');
+    }
+
     // Metodo para fazer a avaliacao no relatorio por parte da empresa
     public function listEvaluations()
     {
