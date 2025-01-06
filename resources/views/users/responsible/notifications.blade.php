@@ -19,7 +19,7 @@
 
             <!-- Barra de pesquisa -->
             <div class="relative w-full md:w-auto mb-4 md:mb-0">
-                <input type="text" id="search-title" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" placeholder="Procurar por Título" oninput="searchTitle()" />
+                <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 w-full p-2 text-start" placeholder="Procurar por Título" oninput="searchNotification()" />
                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500">
                     <path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/>
                 </svg>
@@ -65,11 +65,11 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="p-4 border-b text-gray-600">ID</th>
-                    <th class="p-4 border-b text-gray-600">Responsável UC</th>
                     <th class="p-4 border-b text-gray-600">Número do Aluno</th>
                     <th class="p-4 border-b text-gray-600">Título</th>
-                    <th class="p-4 border-b text-gray-600">Conteúdo</th>
+                    <th class="p-4 border-b text-gray-600">Status de Visualização</th>
                     <th class="p-4 border-b text-gray-600">Data de Criação</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -83,13 +83,6 @@
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 text-gray-600">{{ $notification['id'] }}</td>
                             <td class="p-4 text-gray-600">
-                                @if (isset($notification['uc_responsible']['user']) && !empty($notification['uc_responsible']['user']))
-                                    {{ $notification['uc_responsible']['user']['name'] ?? 'Não disponível' }}
-                                @else
-                                    'Responsável não disponível'
-                                @endif
-                            </td>
-                            <td class="p-4 text-gray-600">
                                 @if (isset($notification['student']['user']) && !empty($notification['student']['user']))
                                     {{ $notification['student']['user']['name'] ?? 'Não disponível' }}
                                 @else
@@ -97,6 +90,24 @@
                                 @endif
                             </td>
                             <td class="p-4 text-gray-600 notification-title">{{ $notification['title'] }}</td>
+                            <td class="p-4 text-gray-600 text-center">
+                                @if ($notification['status_visualization'] == 1)
+                                    <span class="flex items-center justify-center text-green-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Visualizada
+                                    </span>
+                                @else
+                                    <span class="flex items-center justify-center text-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        Não Visualizada
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="p-4 text-gray-600 notification-title">{{ $notification['created_at'] }}</td>
                             <td class="p-4 text-gray-600">
                                 <div class="flex space-x-2 justify-center">
                                     
@@ -106,24 +117,6 @@
                                             <path fill="currentColor" d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
                                         </svg>
                                     </a>
-
-                                    <!-- Botão Update -->
-                                    <button type="button" onclick="updateModal({{ $notification['id'] }}, '{{ $notification['title'] }}', '{{ $notification['content'] }}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                            <path fill="currentColor" d="m12.9 6.855l4.242 4.242l-9.9 9.9H3v-4.243zm1.414-1.415l2.121-2.121a1 1 0 0 1 1.414 0l2.829 2.828a1 1 0 0 1 0 1.415l-2.122 2.121z"/>
-                                        </svg>
-                                    </button>
-
-                                    <!-- Botão Apagar -->
-                                    <form id="deleteForm{{ $notification['id'] }}" action="{{ route('admin.notifications.destroy', $notification['id']) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" onclick="openDeleteModal({{ $notification['id'] }})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
-                                            </svg>
-                                        </button>
-                                    </form>
 
                                 </div>
                             </td>
@@ -141,26 +134,11 @@
         <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Registrar Notificação</h2>
 
         <!-- Formulário -->
-        <form action="{{ route('responsible.notifications.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('responsible.notifications.storeNotifications') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                
-            <div>
-                <label for="uc_responsible_id" class="block text-gray-600 mb-1">Responsável pela UC</label>
-                <select id="uc_responsible_id" name="uc_responsible_id" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
-                    <option value="{{ $user->id }}" selected>
-                        {{ $user->name }} / Responsável pela UC
-                    </option>
-                    @foreach($ucResponsibles as $ucResponsible)
-                        <option value="{{ $ucResponsible['id'] }}">
-                            {{ $ucResponsible['users'][0]['name'] ?? 'Não disponível' }} / 
-                            {{ $ucResponsible['ucs'][0]['course']['institution']['acronym'] ?? 'Não disponível' }} 
-                        </option>
-                    @endforeach
-                </select>
-            </div>
 
                 <div>
                     <label for="student_num" class="block text-gray-600 mb-1">Aluno</label>
@@ -181,7 +159,7 @@
                     <input type="text" id="title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" required>
                 </div>
 
-                <div>
+                <div class="sm:col-span-2">
                     <label for="content" class="block text-gray-600 mb-1">Conteúdo</label>
                     <textarea id="content" name="content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2" rows="4" required></textarea>
                 </div>
@@ -209,7 +187,7 @@
                     <div class="w-full p-4 flex flex-col text-start data-content">
                         <p><strong>ID:</strong> <span id="modal-id"></span> </p>
                         <p><strong>Responsável pela UC:</strong> <span id="modal-uc-responsible"></span> </p>
-                        <p><strong>Número de Aluno:</strong> <span id="modal-student-num"></span> </p>
+                        <p><strong>Nome de Aluno:</strong> <span id="modal-student-num"></span> </p>
                         <p><strong>Título:</strong> <span id="modal-notification-title"></span> </p>
                         <p><strong>Conteúdo:</strong> <span id="modal-content"></span> </p>
                         <p><strong>Data de Criação:</strong> <span id="modal-created-at"></span> </p>
@@ -223,54 +201,7 @@
         </div>
     </div>
 
-    <!-- Modal de Update -->
-    <div id="updateModal" class="fixed inset-0 items-center sm:h-screen justify-center z-50 bg-black bg-opacity-50 hidden text-sm">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
-            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Atualizar Notificação</h2>
-
-            <!-- Form -->
-            <form id="updateForm" action="{{ route('admin.notifications.update', $notification['id']) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-
-                    <div>
-                        <label for="title" class="block text-gray-600 mb-1">Título</label>
-                        <input type="text" id="update_title" name="title" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2">
-                    </div>
-
-                    <div>
-                        <label for="content" class="block text-gray-600 mb-1">Conteúdo</label>
-                        <textarea id="update_content" name="content" class="border border-gray-300 rounded-lg w-full p-1 xl:p-2"></textarea>
-                    </div>            
-
-                </div>
-
-                <div class="flex justify-end">
-                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-2 xl:px-4 rounded mr-2" onclick="closeModal('updateModal')">Cancelar</button>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 xl:px-4 rounded">Atualizar</button>
-                </div>
-
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmação -->
-    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg w-1/3">
-
-            <h2 class="text-md font-semibold py-10 text-center text-gray-500">Tem a certeza que deseja apagar esta notificação?</h2>
-
-            <div class="flex justify-center space-x-5">
-                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2.5 font-bold rounded" onclick="closeModal('deleteModal')">Cancelar</button>
-                <button id="confirmDeleteButton" class="bg-red-500 hover:bg-red-600 text-white p-2.5 font-bold rounded">Confirmar</button>
-            </div>
-        </div>
-    </div>
-    
     @endif
-
-
 
     <script>
 
@@ -325,41 +256,14 @@
             openModal('viewModal');
         }
 
-        // Abrir Modal para apagar uma Notificação
-        function openDeleteModal(id) {
-            openModal('deleteModal');  
-
-            const deleteForm = document.querySelector('#deleteForm' + id);
-            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-            confirmDeleteButton.onclick = function () {
-                deleteForm.submit(); // Submete o Form 
-            };
-        }
-
-        
-        // Função para abrir o modal de atualização das notificações
-        function updateModal(id, title, content) {
-            openModal('updateModal');  // Abre o modal de atualização
-
-            // Preenche os campos do formulário com os dados da notificação
-            document.getElementById('update_title').value = title;
-            document.getElementById('update_content').value = content;
-
-            const updateForm = document.getElementById('updateForm');
-            updateForm.action = `/users/notifications/${id}`;  
-        }
-
-
         // Função de pesquisa de Notificações
         function searchNotification() {
-            const searchValue = document.getElementById('search').value.toLowerCase(); // Obtém o valor de pesquisa
-            const rows = document.querySelectorAll("#notificationTable tbody tr"); // Seleciona todas as linhas da tabela de notificações
+            const searchValue = document.getElementById('search').value.toLowerCase(); 
+            const rows = document.querySelectorAll("#notificationTable tbody tr"); 
 
             rows.forEach(row => {
-                // Obtém o título da notificação na linha
                 const notificationTitle = row.querySelector(".notification-title").textContent.toLowerCase();
                 
-                // Mostra a linha se o título contiver o valor da pesquisa, caso contrário, oculta
                 row.style.display = notificationTitle.includes(searchValue) ? "" : "none";
             });
         }
