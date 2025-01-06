@@ -406,11 +406,11 @@ class StudentController extends Controller
 
         // Atualiza o status da oferta para aberto
         $internshipOffer->status = 'open';
-
-        // Guarda
         $internshipOffer->save(); 
-        
 
+        $student->pending_internship_offer_id = null;
+        $student->save(); 
+        
         return redirect()->route('student.internships')->with('success', 'Candidatura removida com sucesso');
     }
 
