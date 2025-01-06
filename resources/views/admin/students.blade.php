@@ -2,7 +2,7 @@
 
 @section('title', 'Gestão Estágios | Admin Dashboard')
 
-@section('page-name', 'Alunos / Alunos')
+@section('page-name', 'Alunos ')
 
 @section('content')
 
