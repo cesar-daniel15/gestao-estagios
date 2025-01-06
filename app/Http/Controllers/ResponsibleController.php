@@ -37,12 +37,38 @@ class ResponsibleController extends Controller
     public function index()
     {
         if (Auth::user()->profile !== 'Responsible') {
-            return redirect()->back()->with('error', 'Você não tem permissão para eceder a esta página.');
+            return redirect()->back()->with('error', 'Você não tem permissão para acessar esta página.');
         }
-
+    
         $user = Auth::user();
-
-        return view('users.responsible.dashboard', compact('user'));
+        $responsible = $user->responsible;
+    
+        // Obtem as unidades curriculares associadas ao responsavel
+        $unitCurricularIds = UcToResponsible::where('uc_responsible_id', $responsible->id)->pluck('uc_id');
+    
+        // Obtem os cursos associados às unidades curriculares
+        $courseIds = UnitCurricular::whereIn('id', $unitCurricularIds)->pluck('course_id');
+    
+        // Conta os alunos com estágio
+        $studentsCurrentlyInterning = Student::whereNotNull('assigned_internship_id')
+            ->whereHas('ucs', function ($query) use ($unitCurricularIds, $courseIds) {
+                $query->whereIn('uc_id', $unitCurricularIds)
+                    ->whereIn('course_id', $courseIds);
+            })->count();
+    
+        // Conta alunos sem estágio 
+        $studentsWithoutInternship = Student::whereNull('assigned_internship_id') 
+            ->whereHas('ucs', function ($query) use ($unitCurricularIds, $courseIds) {
+                $query->whereIn('uc_id', $unitCurricularIds)
+                    ->whereIn('course_id', $courseIds);
+            })->count();
+    
+        // Obtem estagios disponiveis
+        $internshipsAvailable = InternshipOffer::where('status', 'open')
+            ->whereIn('course_id', $courseIds)
+            ->count();
+    
+        return view('users.responsible.dashboard', compact('user', 'studentsCurrentlyInterning', 'studentsWithoutInternship', 'internshipsAvailable'));
     }
 
     /**
