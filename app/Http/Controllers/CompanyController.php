@@ -280,7 +280,7 @@ class CompanyController extends Controller
     // Metodo para listar todos os planos de estagis
     public function listPlans()
     {
-    // User logado
+        // User logado
         $user = Auth::user();
         
         // Obtem as ofertas de estagio do user logado
@@ -306,10 +306,12 @@ class CompanyController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'objectives' => 'required|string|max:1000',
             'planned_activities' => 'required|string|max:2000',
+            'internship_offer_id' => 'required|exists:internship_offers,id', 
         ], [
             'start_date.before_or_equal' => 'A data de início deve ser anterior ou igual à data de fim',
             'end_date.after_or_equal' => 'A data de fim deve ser posterior ou igual à data de início',
             'planned_activities.required' => 'As atividades planeadas são obrigatórias',
+            'internship_offer_id.exists' => 'A oferta de estágio selecionada não existe',
         ]);
 
         // Se a validação falhar
