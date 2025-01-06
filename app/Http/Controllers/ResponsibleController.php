@@ -113,8 +113,6 @@ class ResponsibleController extends Controller
         return redirect()->route('responsible.profile')->with('success', 'Perfil criado com sucesso!');
     }
 
-
-
     /**
      * Display the specified resource.
      */
@@ -183,7 +181,7 @@ class ResponsibleController extends Controller
     }
 
     return redirect()->route('responsibles.profile')->with('info', 'Nenhuma alteração foi feita.');
-}
+    }
 
     /**
      * Remove the specified resource from storage.
