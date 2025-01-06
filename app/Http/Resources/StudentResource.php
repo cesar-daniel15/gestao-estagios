@@ -28,6 +28,7 @@ class StudentResource extends JsonResource
             ],
             'id' => $this->id,
             'phone' => $this->phone,
+            'pending_internship_offer_id' => $this->pending_internship_offer_id,
             'picture' => $this->picture ? asset('storage/' . $this->picture) : asset('images/uploads/default-user.png'),
             'assigned_internship_id' => $this->assigned_internship_id ?? 'Sem Estágio',
                 'internship_offer' => [

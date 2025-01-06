@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class StudentController extends Controller
 {
@@ -272,6 +274,53 @@ class StudentController extends Controller
         }
     }
 
+    //  Metodo para fazer download de todos os registos em PDF
+    public function download()
+    {    
+        // Obtem todos os registros de presenca do aluno logado
+        $user = Auth::user();
+
+        // Obtem o student associado ao user logado
+        $student = $user->student; 
+        
+        $studentName = $user ? $user->name : 'Nome não encontrado';
+
+        // Obtem o assigned_internship_id do student
+        $assignedInternshipId = $student->assigned_internship_id;
+
+        // Filtra os registros de presenca aprovados com base no internship_offer_id 
+        $attendanceRecords = AttendanceRecord::where('internship_offer_id', $assignedInternshipId)
+        ->where('approval_status', 'approved') 
+        ->get();
+
+        $attendanceRecords = AttendanceRecordResource::collection($attendanceRecords)->resolve();  
+
+        $internshipOffer = InternshipOffer::find($assignedInternshipId);
+
+        // Configuracoes do Dompdf
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $dompdf = new Dompdf($options);
+    
+        // Renderiza para a view
+        $html = view('pdf.attendanceRecord', [
+            'attendanceRecords' => $attendanceRecords,
+            'studentName' => $studentName,
+            'internshipOffer' => $internshipOffer
+        ])->render();
+    
+        // Carrega o HTML no Dompdf
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+    
+        // Nome do arquivo para download
+        $fileName = 'Registos_Diários_' . $student->name . '.pdf';
+    
+        // Retorna o PDF para download
+        return $dompdf->stream($fileName, ['Attachment' => true]);
+    }
+
     // Metodo listar todas as ofertas de estagio
     public function listInternships(){
 
@@ -313,6 +362,11 @@ class StudentController extends Controller
             return redirect()->route('student.internships')->withErrors('Você já tem uma candidatura pendente. Não é possível candidatar-se a mais de uma oferta');
         }
 
+        // Verifica se o aluno já está associado a uma oferta de estágio
+        if (!is_null($student->assigned_internship_id)) {
+            return redirect()->route('student.internships')->withErrors('Você já está associado a uma oferta de estágio');
+        }
+
         // Verifica se a oferta de estágio está fechada
         if ($internshipOffer->status === 'closed') {
             return redirect()->route('student.internships')->withErrors('A oferta de estágio está fechada. Não é possível candidatar-se');
@@ -339,6 +393,16 @@ class StudentController extends Controller
         $student = $user->student; 
 
         $internshipOffer = InternshipOffer::find($id);
+
+         // Verifica se a oferta de estagio existe
+        if (!$internshipOffer) {
+            return redirect()->route('student.internships')->withErrors('Oferta de estágio não encontrada');
+        }
+
+        // Verifica se o aluno tem uma candidatura pendente para esta oferta
+        if ($student->pending_internship_offer_id !== $internshipOffer->id) {
+            return redirect()->route('student.internships')->withErrors('Você não pode remover esta candidatura, pois não é sua');
+        }
 
         // Atualiza o status da oferta para aberto
         $internshipOffer->status = 'open';
