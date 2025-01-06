@@ -227,7 +227,7 @@
                     <div class="w-full p-4 flex flex-col text-start data-content">
                         <p><strong>ID:</strong> <span id="modal-id"></span> </p>
                         <p><strong>Responsável pela UC:</strong> <span id="modal-uc-responsible"></span> </p>
-                        <p><strong>Número de Aluno:</strong> <span id="modal-student-num"></span> </p>
+                        <p><strong>Nomw de Aluno:</strong> <span id="modal-student-num"></span> </p>
                         <p><strong>Título:</strong> <span id="modal-notification-title"></span> </p>
                         <p><strong>Conteúdo:</strong> <span id="modal-content"></span> </p>
                         <p><strong>Status de Visualização:</strong> <span id="modal-status-visualization"></span> </p>
