@@ -15,7 +15,9 @@ class InternshipOfferResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $user = $this->company && $this->company->users ? $this->company->users->first() : null; 
+        $companyUser   = $this->company && $this->company->users ? $this->company->users->first() : null; 
+        $studentUser   = $this->student && $this->student->users ? $this->student->users->first() : null; 
+
     
         return [
             'id' => $this->id,
@@ -28,8 +30,8 @@ class InternshipOfferResource extends JsonResource
             'company' => [
                 'id' => $this->company->id ?? null,
                 'users' => [
-                    'name' => $user->name ?? 'Utilizador não disponível', 
-                    'email' => $user->email ?? 'Email não disponível', 
+                    'name' => $companyUser->name ?? 'Utilizador não disponível', 
+                    'email' => $companyUser->email ?? 'Email não disponível', 
                     'account_is_verified' => $user->account_is_verified ?? false, 
                 ],
             ],
@@ -46,10 +48,17 @@ class InternshipOfferResource extends JsonResource
                 'start_date' => $this->plans->first()->start_date ?? null,
                 'end_date' => $this->plans->first()->end_date ?? null,
                 'objectives' => $this->plans->first()->objectives ?? null,
+                'status' => $this->plans->isNotEmpty() ? ($this->plans->first()->status === 'pending' ? 'Pendente' : ($this->plans->first()->status === 'approved' ? 'Aprovado' : 'Rejeitado')) : 'Sem Status',
             ],
             'final_report' => [
                 'id' => $this->finalReport->id ?? null,
                 'title' => $this->finalReport->title ?? 'Relatório final não disponível',
+            ],
+            'student' => [
+                'id' => $student->id ?? null,
+                'users' => [
+                    'name' => $studentUser  ? $studentUser ->name : 'Aluno não disponível',
+                ],
             ],
         ];
     }
