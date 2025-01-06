@@ -133,6 +133,7 @@ Route::prefix('student')->middleware(['auth', CheckVerifiedAccount::class, Check
     Route::post('/dashboard', [StudentController::class, 'storeAttendance'])->name('student.storeAttendance');
     Route::get('/profile', [StudentController::class, 'show'])->name('student.profile');
     Route::post('/profile', [StudentController::class, 'store'])->name('student.store');
+    Route::get('/internships/download', [StudentController::class, 'download'])->name('student.internship.download');
     Route::get('/internships', [StudentController::class, 'listInternships'])->name('student.internships');
     Route::post('/internships/apply/{internship_offer}', [StudentController::class, 'applyInternships'])->name('student.internships.apply');
     Route::post('/internships/remove/{internship_offer}', [StudentController::class, 'removeInternships'])->name('student.internships.remove');
@@ -146,10 +147,16 @@ Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class, C
     Route::get('/profile', [ResponsibleController::class, 'show'])->name('responsible.profile');
     Route::post('/profile', [ResponsibleController::class, 'store'])->name('responsible.store');
     Route::get('/students', [ResponsibleController::class, 'listStudents'])->name('responsible.students');
-    Route::post('/students', [ResponsibleController::class, 'store'])->name('responsible.students.store');
+    Route::post('/students', [ResponsibleController::class, 'storeStudent'])->name('responsible.students.create');
+    Route::put('/students/{student}', [ResponsibleController::class, 'updateStudent'])->name('responsible.students.update');
+    Route::delete('/students/{student}', [ResponsibleController::class, 'destroyStudent'])->name('responsible.students.destroy');
+    Route::get('/internships', [ResponsibleController::class, 'listInternships'])->name('responsible.internships');
+    Route::post('/internships/{internship_plan}', [ResponsibleController::class, 'agreeInternships'])->name('responsible.internships.agree');
+    Route::post('/internships/{internship_offer}/associate', [ResponsibleController::class, 'associateInternships'])->name('responsible.internships.associate');
+    Route::get('/export', [ResponsibleController::class, 'listExportFiles'])->name('responsible.export.list');
+    Route::get('/export/download', [ResponsibleController::class, 'downloadExportFiles'])->name('responsible.export.downlad');
     Route::get('/notifications',[ResponsibleController::class, 'listNotifications'])->name('responsible.notifications');
-    Route::post('/notifications',[ResponsibleController::class, 'store'])->name('responsible.notifications.store');
-
+    Route::post('/notifications',[ResponsibleController::class, 'storeNotifications'])->name('responsible.notifications.storeNotifications');
 });
 
 // Rotas para perfil de empresa
