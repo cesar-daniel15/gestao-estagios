@@ -88,15 +88,15 @@
                                 <td class="p-4 text-gray-600">
                                     <div class="flex space-x-2 justify-center">
                                         
-                                    @if (isset($student['internship_offer']['id']) && !empty($student['internship_offer']['final_reports']['id'])) 
-                                        <a href="{{ route('responsible.export.internship.final', ['studentId' => $student['id'], 'finalReportId' => $student['internship_offer']['final_report']['id']]) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
-                                                <path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
-                                            </svg>
-                                        </a>
-                                    @else
-                                        <span>Relatório indisponivel</span>
-                                    @endif
+                                    @foreach ($finalReports as $finalReport)
+                                        <div class="flex items-center justify-between">
+                                            <a href="{{ route('responsible.export.internship.final', ['studentId' => $student['id'], 'finalReportId' => $finalReport['id']]) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-2 rounded">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                                    <path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    @endforeach
                                     </div>
                                 </td>
                             </tr>
