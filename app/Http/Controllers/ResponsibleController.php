@@ -17,17 +17,21 @@ use App\Models\Institution;
 use App\Models\Course;
 use App\Models\FinalReport;
 use App\Models\InternshipPlan;
+use App\Models\AttendanceRecord;
 use Illuminate\Support\Str; 
 use App\Http\Resources\UcResponsibleResource; 
 use App\Http\Resources\StudentResource; 
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\InternshipOfferResource;
+use App\Http\Resources\AttendanceRecordResource;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ResponsibleController extends Controller
 {
@@ -452,14 +456,119 @@ class ResponsibleController extends Controller
     // Metodo para listar todos os ficheiros disponiveis para exportar
     public function listExportFiles()
     {
+        // Obtem o user logado
+        $user = Auth::user();
+            
+        // Obtem o responsável associado ao user
+        $responsible = $user->responsible; 
+    
+        // Procura unidades curriculares associadas ao responsável
+        $unitCurricularIds = UcToResponsible::where('uc_responsible_id', $responsible->id)->pluck('uc_id');
+    
+        // Obtem os cursos associados às unidades curriculares
+        $courseIds = UnitCurricular::whereIn('id', $unitCurricularIds)->pluck('course_id'); 
+    
+        // Obtem os alunos associados a essas unidades curriculares e que pertencem ao mesmo curso
+        $students = Student::with('internshipOffer.finalReports') 
+        ->whereHas('ucs', function ($query) use ($unitCurricularIds, $courseIds) {
+            $query->whereIn('uc_id', $unitCurricularIds)
+                ->whereIn('course_id', $courseIds);
+        })
+        ->whereNotNull('assigned_internship_id') 
+        ->with('users')
+        ->get();
+        
+        // Obtem os IDs dos alunos
+        $studentIds = $students->pluck('id');
+    
+        // Obtem os registros de presenca dos alunos
+        $attendanceRecords = AttendanceRecord::whereIn('internship_offer_id', function ($query) use ($studentIds) {
+            $query->select('assigned_internship_id')
+                ->from('students')
+                ->whereIn('id', $studentIds);
+        })->get();    
 
-        return view('users.responsible.exports');
+        // Obtem os relatorio finais dos alunos
+        $finalReports = FinalReport::whereIn('internship_offer_id', function ($query) use ($studentIds) {
+            $query->select('internship_offer_id')
+                ->from('students')
+                ->whereIn('id', $studentIds);
+        })->get();   
+        
+        return view('users.responsible.exports', [
+            'students' => StudentResource::collection($students)->resolve() ?? [],
+            'attendanceRecords' => $attendanceRecords,
+            'finalReports' => $finalReports,
+        ]);
     }
 
-    // Metodo para fazer donwload dos ficheios
-    public function downloadExportFiles(){
+    public function downloadExportFilesIntership($studentId)
+    {
+        // Obtem o user logado
+        $user = Auth::user();
+    
+        // Obtem o responsável associado ao user logado
+        $responsible = $user->responsible;
+    
+        // Obtem o aluno associado ao responsável
+        $student = Student::with('internshipOffer.finalReports') 
+        ->where('id', $studentId)
+        ->whereHas('ucs', function ($query) use ($responsible) {
+                $unitCurricularIds = UcToResponsible::where('uc_responsible_id', $responsible->id)->pluck('uc_id');
+                $query->whereIn('uc_id', $unitCurricularIds);
+            })
+            ->firstOrFail(); 
 
-        return view('users.responsible.exports');
+        $studentName = $student->users->first()->name ?? 'Nome não encontrado';
+    
+        // Obtem o assigned_internship_id do student
+        $assignedInternshipId = $student->assigned_internship_id;
+    
+        // Filtra os registros de presenca aprovados com base no internship_offer_id 
+        $attendanceRecords = AttendanceRecord::where('internship_offer_id', $assignedInternshipId)
+            ->where('approval_status', 'approved') 
+            ->get();
+    
+        $attendanceRecords = AttendanceRecordResource::collection($attendanceRecords)->resolve();  
+    
+        $internshipOffer = InternshipOffer::find($assignedInternshipId);
+    
+        // Configuracoes do Dompdf
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $dompdf = new Dompdf($options);
+    
+        // Renderiza para a view
+        $html = view('pdf.attendanceRecord', [
+            'attendanceRecords' => $attendanceRecords,
+            'studentName' => $studentName,
+            'internshipOffer' => $internshipOffer
+        ])->render();
+    
+        // Carrega o HTML no Dompdf
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+    
+        // Nome do ficheiro para download
+        $fileName = 'Registos_Diários_' . $student['name'] . '.pdf';
+
+        // Retorna o PDF para download
+        return $dompdf->stream($fileName, ['Attachment' => true]);
+    }
+
+    public function downloadExportFilesFinal($studentId, $finalReportId = null)
+    {
+        if ($finalReportId === null) {
+            return redirect()->back()->with('info', 'Relatório final não está disponível');
+        }
+
+        $finalReport = FinalReport::findOrFail($finalReportId);
+    
+        // Verifica se o ficheiro existe
+        if (Storage::disk('public')->exists($finalReport->final_report_file_path)) {
+            return Storage::disk('public')->download($finalReport->final_report_file_path);
+        }
     }
 
     public function listNotifications()
