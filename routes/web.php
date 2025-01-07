@@ -154,7 +154,8 @@ Route::prefix('responsible')->middleware(['auth', CheckVerifiedAccount::class, C
     Route::post('/internships/{internship_plan}', [ResponsibleController::class, 'agreeInternships'])->name('responsible.internships.agree');
     Route::post('/internships/{internship_offer}/associate', [ResponsibleController::class, 'associateInternships'])->name('responsible.internships.associate');
     Route::get('/export', [ResponsibleController::class, 'listExportFiles'])->name('responsible.export.list');
-    Route::get('/export/download', [ResponsibleController::class, 'downloadExportFiles'])->name('responsible.export.downlad');
+    Route::get('/export/internship/download/{studentId}', [ResponsibleController::class, 'downloadExportFilesIntership'])->name('responsible.export.internship.downlad');
+    Route::get('/export/final/download/{studentId}/{finalReportId?}', [ResponsibleController::class, 'downloadExportFilesFinal'])->name('responsible.export.internship.final');
     Route::get('/notifications',[ResponsibleController::class, 'listNotifications'])->name('responsible.notifications');
     Route::post('/notifications',[ResponsibleController::class, 'storeNotifications'])->name('responsible.notifications.storeNotifications');
 });
@@ -170,7 +171,8 @@ Route::prefix('company')->middleware(['auth', CheckVerifiedAccount::class, Check
     Route::get('/plans', [CompanyController::class, 'listPlans'])->name('company.plans');
     Route::post('/plans', [CompanyController::class, 'storePlan'])->name('company.plans.store');
     Route::get('/attendance', [CompanyController::class, 'listAttendance'])->name('company.attendance');
-    Route::post('/attendance/{attendance_record}', [CompanyController::class, 'approveAttendance'])->name('company.attendance.approve');
+    Route::post('/attendance/{attendance_record}/approve', [CompanyController::class, 'approveAttendance'])->name('company.attendance.approve');
+    Route::post('/attendance/{attendance_record}/disapprove', [CompanyController::class, 'disapproveAttendance'])->name('company.attendance.disapprove');
     Route::get('/evaluations', [CompanyController::class, 'listEvaluations'])->name('company.evaluations');
     Route::post('/evaluations/{final_report}', [CompanyController::class, 'storeEvaluations'])->name('company.evaluations.store');
 });
