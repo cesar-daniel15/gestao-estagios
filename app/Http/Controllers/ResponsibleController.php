@@ -533,7 +533,6 @@ class ResponsibleController extends Controller
     
         $internshipOffer = InternshipOffer::find($assignedInternshipId);
         
-        // Configuracoes do Dompdf
         $options = new Options();
         $options->set('defaultFont', 'Courier');
         $dompdf = new Dompdf($options);
@@ -581,15 +580,15 @@ class ResponsibleController extends Controller
 
     public function listNotifications()
     {
-        // Obtem o usuário autenticado
+        // Obtem o utilizador autenticado
         $user = Auth::user(); 
     
-        // Obtem o responsável associado ao usuário
+        // Obtem o responsável associado ao utilizador
         $responsible = $user->responsible;
         
         // Verifica se o responsável existe
         if (!$responsible) {
-            return redirect()->back()->with('error', 'Nenhum responsável encontrado para este usuário.');
+            return redirect()->back()->with('error', 'Nenhum responsável encontrado para este utilizador');
         }
     
         // Procura todas as notificações associadas ao responsável
@@ -610,7 +609,7 @@ class ResponsibleController extends Controller
             $query->whereIn('id', $courseIds);
         })->get();
     
-        // Retorna a view com as notificações, responsáveis, alunos e o usuário
+        // Retorna a view com as notificações, responsáveis, alunos e o utilizador
         return view('users.responsible.notifications', compact('notifications', 'ucResponsibles', 'students', 'user'));
     }
     // Metodo para criar notficacoes
