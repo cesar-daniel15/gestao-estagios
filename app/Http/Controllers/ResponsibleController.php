@@ -532,7 +532,7 @@ class ResponsibleController extends Controller
         $attendanceRecords = AttendanceRecordResource::collection($attendanceRecords)->resolve();  
     
         $internshipOffer = InternshipOffer::find($assignedInternshipId);
-    
+        
         // Configuracoes do Dompdf
         $options = new Options();
         $options->set('defaultFont', 'Courier');
@@ -557,18 +557,26 @@ class ResponsibleController extends Controller
         return $dompdf->stream($fileName, ['Attachment' => true]);
     }
 
-    public function downloadExportFilesFinal($studentId, $finalReportId = null)
+    public function downloadExportFilesFinal($studentId, $finalReportId)
     {
         if ($finalReportId === null) {
             return redirect()->back()->with('info', 'Relatório final não está disponível');
         }
-
-        $finalReport = FinalReport::findOrFail($finalReportId);
+    
+        // Procura o relatorio final pelo ID
+        $finalReport = FinalReport::find($finalReportId);
+    
+        // Verifica se o relatório final existe
+        if (!$finalReport) {
+            return redirect()->back()->with('error', 'Relatório final não encontrado.');
+        }
     
         // Verifica se o ficheiro existe
         if (Storage::disk('public')->exists($finalReport->final_report_file_path)) {
             return Storage::disk('public')->download($finalReport->final_report_file_path);
         }
+    
+        return redirect()->back()->with('error', 'Ficheiro não encontrado.');
     }
 
     public function listNotifications()
