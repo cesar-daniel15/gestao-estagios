@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: */gestao-estagios:1.0.0
+    image: cesardaniel15/gestao-estagios:1.0.0
     ports:
       - "8000:80"
     volumes:
