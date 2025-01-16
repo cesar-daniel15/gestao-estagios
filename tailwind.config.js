@@ -1,4 +1,5 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
+import laravel from 'laravel-vite-plugin';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -30,5 +31,10 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
+        }),
+    ],
 };
