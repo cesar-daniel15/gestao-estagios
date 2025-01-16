@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean 
 
 # Instalar Node.js e npm
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs  # Instalar Node.js e npm
 
 # Instalar o Composer
@@ -29,6 +29,8 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/p
 
 # Instalar dependências do Laravel
 RUN composer install --no-interaction --prefer-dist 
+
+RUN npm install && npm run build
 
 # Ajustar permissões
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public  # Ajustar permissões para o usuário www-data
