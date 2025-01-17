@@ -67,6 +67,6 @@ https://hub.docker.com/repository/docker/cesardaniel15/gestao-estagios/general
 
 Para visualizar a documentação da API, clique no link abaixo:
 
-[Documentação da API](API.md)
+[Documentação da API](Api.md)
 
 
