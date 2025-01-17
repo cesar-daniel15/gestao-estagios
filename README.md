@@ -4,37 +4,30 @@
   <img src="public/images/white_icon.png"  height="200">
 </p>
 
+This project aims to create a platform to simplify the process of assigning, monitoring, and evaluating internships, allowing for easy and efficient interaction between students, coordinators, companies, and internship supervisors. The platform will be designed to ensure transparency, automation, and security in processes related to internships, minimizing the use of paper documents and facilitating real-time access to information.
 
-Este projeto, tem como principal objetivo criar uma plataforma com a finalidade de simplificar 
-o processo de atribuição, acompanhamento e avaliação de estágios, permitindo uma 
-interação fácil e eficiente entre alunos, coordenadores, empresas e responsáveis de estágio.  
-A plataforma será concebida com o foco em garantir a transparência, automação e segurança 
-dos processos relacionados com os estágios, minimizando o uso de documentos em papel e 
-facilitando o acesso à informação em tempo real.
+## 🗃️ Requirements
 
-## Requisitos
-
-Antes de executar o projeto, verifique se você possui os seguintes requisitos instalados:
+Before running the project, please ensure you have the following installed:
 
 - [Docker](https://www.docker.com/get-started)
 - [GitHub](https://docs.github.com/en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop)
 
-## Instalação
+## ➡️ Installation
 
 Siga os passos abaixo para clonar o repositório e instalar as dependências:
 
 ```bash
-# Clone o repositório
+# Clone the repository
 git clone https://github.com/cesar-daniel15/gestao-estagios
 
-# Navegue até a pasta do projeto
+# Navigate to the project folder
 cd gestao-estagios
 
 ```
 
-
-##  Configuração do Ambiente
-Crie um ficheiro .env na raiz do projeto:
+## 🛠️ Environment Configuration
+Create a .env file in the root of the project with the following content:
 
 ```env
 DB_CONNECTION=mysql
@@ -45,28 +38,33 @@ DB_USERNAME=admin
 DB_PASSWORD=root
 ```
 
-## Criar Container
-Para iniciar o contêiner, execute um dos seguintes comandos:
-
+## 🐳 Create Container
+To start the container, execute one of the following commands:
 
 ```bash
 docker up --build
 ```
-### Ou
-
+### Or
 
 ```bash
 docker pull cesardaniel15/gestao-estagios
 ```
 
-### Link da imagem do dokcer
+### Docker Image Link
+
+You can access the Docker image through the following link:
+
 
 https://hub.docker.com/repository/docker/cesardaniel15/gestao-estagios/general
 
-## API
+## 🔑 API
 
-Para visualizar a documentação da API, clique no link abaixo:
-
-[Documentação da API](Api.md)
+To view the API documentation, click the link below:
 
 
+[API Documentation](Api.md)
+
+
+## 📦 DataBase (PHP My Admin)
+
+http://127.0.0.1:8080/
