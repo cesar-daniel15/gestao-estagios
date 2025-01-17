@@ -33,7 +33,7 @@ RUN composer install --no-interaction --prefer-dist
 RUN npm install && npm run build
 
 # Ajustar permissões
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public  # Ajustar permissões para o usuário www-data
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public 
 
 # Expor a porta 9000 para o PHP-FPM
 EXPOSE 9000  
