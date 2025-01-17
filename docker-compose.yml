@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: cesardaniel15/gestao-estagios:1.0.0
+    image: toze25/gestao-estagios:1.0.0
     volumes:
       - .:/var/www/html
     environment:
@@ -28,7 +28,7 @@ services:
   db:
     image: mysql:5.7
     ports:
-      - "3306:3306"
+      - "3308:3308"
     environment:
       MYSQL_DATABASE: gestao-estagios
       MYSQL_USER: admin
