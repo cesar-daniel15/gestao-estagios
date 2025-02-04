@@ -15,7 +15,7 @@ Before running the project, please ensure you have the following installed:
 
 ## ➡️ Installation
 
-Siga os passos abaixo para clonar o repositório e instalar as dependências:
+Follow the steps below to clone the repository and install dependencies:
 
 ```bash
 # Clone the repository
