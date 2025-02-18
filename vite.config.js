@@ -9,7 +9,11 @@ export default defineConfig({
         }),
     ],
     server: {
-        port: 5173, 
-        host: '0.0.0.0', 
+        port: 5173,
+        host: '0.0.0.0',
+        strictPort: true,
+        hmr: {
+            host: 'localhost', // Se Docker usar outro hostname, troca "localhost" pelo nome do container
+        },
     },
 });
