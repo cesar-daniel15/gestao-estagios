@@ -10,7 +10,7 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "league/commonmark": "2.6.0",
+        "league/commonmark": "2.7.0",
         "symfony/http-foundation": "7.1.7"
     },
     "require-dev": {
